@@ -1,0 +1,22 @@
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Node (if any scripts use it)
+node_modules/
+
+# Logs
+*.log
+
+# Conductor runtime (generated per-project, not part of plugin)
+conductor/tracks/
+conductor/knowledge/
+.message-bus/
