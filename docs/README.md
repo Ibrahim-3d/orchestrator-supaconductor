@@ -1,17 +1,17 @@
-# Conductor Superpowers Plugin v3.1
+# Conductor Superpowers Plugin v3.2
 
-Parallel multi-agent orchestration with Evaluate-Loop, Board of Directors, and Superpowers integration for Claude Code.
+Parallel multi-agent orchestration with Evaluate-Loop, Board of Directors, and bundled Superpowers skills for Claude Code.
 
 ## What is Conductor?
 
 Conductor is a structured workflow system that organizes development work into **tracks** and **phases**, with detailed specifications, step-by-step implementation plans, and automated quality gates. It provides:
 
 - **Evaluate-Loop** — Plan → Evaluate Plan → Execute → Evaluate Execution → Fix cycle
-- **14 Specialized Agents** — Orchestrator, planners, executors, evaluators, fixers
+- **16 Specialized Agents** — Orchestrator, planners, executors, evaluators, fixers, code reviewer
 - **Board of Directors** — 5-member expert deliberation system (CA, CPO, CSO, COO, CXO)
 - **Parallel Execution** — DAG-based task parallelization with worker agents
 - **Lead Engineer System** — Architecture, Product, Tech, QA leads for autonomous decisions
-- **Superpowers Integration** — Battle-tested Claude Code skills for planning, execution, debugging
+- **Bundled Superpowers** — Battle-tested skills for planning, execution, debugging, TDD, code review
 
 ## Quick Start
 
@@ -56,6 +56,8 @@ Examples:
 
 ## Commands
 
+### Conductor Commands
+
 | Command | Description |
 |---------|-------------|
 | `/go <goal>` | Main entry point — state your goal, Conductor handles the rest |
@@ -68,6 +70,14 @@ Examples:
 | `/board-review [proposal]` | Quick board assessment |
 | `/cto-advisor` | CTO-level technical review |
 | `/ceo`, `/cmo`, `/cto`, `/ux-designer` | Executive advisor consultations |
+
+### Superpowers Commands (Bundled)
+
+| Command | Description |
+|---------|-------------|
+| `/write-plan` | Create an implementation plan using superpowers patterns |
+| `/execute-plan` | Execute a plan using superpowers patterns |
+| `/brainstorm` | Brainstorm approaches to a problem |
 
 ## Track Structure
 
@@ -100,14 +110,30 @@ PLAN → EVALUATE PLAN → EXECUTE → EVALUATE EXECUTION
 - **Board** — 5 directors with ASSESS → DISCUSS → VOTE → RESOLVE protocol
 - **Leads** — Architecture, Product, Tech, QA for autonomous decisions
 - **Workers** — Ephemeral parallel task executors
+- **Code Reviewer** — Superpowers code review agent
 
-### Superpowers Integration
+### Bundled Superpowers Skills
 
-New tracks use Superpowers by default:
-- `superpowers:writing-plans` instead of `loop-planner`
-- `superpowers:executing-plans` instead of `loop-executor`
-- `superpowers:systematic-debugging` instead of `loop-fixer`
-- `superpowers:brainstorming` for decision-making
+This plugin bundles [obra/superpowers](https://github.com/obra/superpowers) v4.3.0 (MIT License). These skills are used by the Conductor orchestrator for enhanced planning, execution, and debugging:
+
+| Skill | Purpose |
+|-------|---------|
+| `writing-plans` | Superior plan creation with DAG structure |
+| `executing-plans` | Plan execution with built-in TDD and debugging |
+| `systematic-debugging` | Structured root-cause analysis and fixes |
+| `brainstorming` | Creative problem-solving and decision-making |
+| `test-driven-development` | TDD workflow patterns |
+| `subagent-driven-development` | Multi-agent task execution |
+| `dispatching-parallel-agents` | Parallel agent coordination |
+| `verification-before-completion` | Pre-completion quality checks |
+| `requesting-code-review` | Code review workflow |
+| `receiving-code-review` | Handling review feedback |
+| `using-git-worktrees` | Git worktree workflows |
+| `finishing-a-development-branch` | Branch completion workflow |
+| `writing-skills` | Creating new Claude Code skills |
+| `using-superpowers` | Skills system introduction |
+
+New tracks use Superpowers by default. Legacy tracks fall back to the built-in loop agents.
 
 ## Documentation
 
@@ -124,6 +150,17 @@ Conductor is designed to work alongside project-specific skills. Keep project-sp
 - API integration specifics
 
 The generic orchestration (this plugin) handles the workflow; your project skills handle the domain knowledge.
+
+## Third-Party Licenses
+
+This plugin bundles the following third-party software:
+
+### Superpowers (v4.3.0)
+
+- **Author:** Jesse Vincent (jesse@fsck.com)
+- **License:** MIT
+- **Repository:** https://github.com/obra/superpowers
+- **License file:** [LICENSES/superpowers-MIT](../LICENSES/superpowers-MIT)
 
 ## License
 

@@ -1,7 +1,7 @@
 {
   "name": "conductor-superpowers",
-  "version": "3.1.0",
-  "description": "Conductor v3 — Parallel multi-agent orchestration with Evaluate-Loop, Board of Directors, and Superpowers integration for Claude Code",
+  "version": "3.2.0",
+  "description": "Conductor v3 — Parallel multi-agent orchestration with Evaluate-Loop, Board of Directors, and bundled Superpowers skills for Claude Code",
   "author": {
     "name": "Ibrahim"
   },
@@ -12,6 +12,18 @@
     "conductor",
     "superpowers",
     "parallel-agents",
-    "board-of-directors"
-  ]
+    "board-of-directors",
+    "tdd",
+    "debugging",
+    "planning"
+  ],
+  "hooks": "./hooks/hooks.json",
+  "bundledDependencies": {
+    "superpowers": {
+      "version": "4.3.0",
+      "author": "Jesse Vincent <jesse@fsck.com>",
+      "license": "MIT",
+      "repository": "https://github.com/obra/superpowers"
+    }
+  }
 }
