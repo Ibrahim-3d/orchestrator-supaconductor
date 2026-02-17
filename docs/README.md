@@ -17,14 +17,14 @@ Conductor is a structured workflow system that organizes development work into *
 
 ### 1. Install the Plugin
 
-The plugin should be installed at `~/.claude/plugins/conductor-superpowers/`.
+The plugin should be installed at `~/.claude/plugins/conductor-orchestrator-superpowers/`.
 
 ### 2. Initialize a Project
 
 Run the setup script to create the `conductor/` directory in your project:
 
 ```bash
-bash ~/.claude/plugins/conductor-superpowers/scripts/setup.sh
+bash ~/.claude/plugins/conductor-orchestrator-superpowers/scripts/setup.sh
 ```
 
 Or use the `/conductor setup` command in Claude Code.

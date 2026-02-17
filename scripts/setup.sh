@@ -1,6 +1,6 @@
 #!/bin/bash
 # Conductor Superpowers — Project Initialization Script
-# Usage: bash ~/.claude/plugins/conductor-superpowers/scripts/setup.sh [project-dir]
+# Usage: bash ~/.claude/plugins/conductor-orchestrator-superpowers/scripts/setup.sh [project-dir]
 #
 # Creates the conductor/ directory structure in your project.
 

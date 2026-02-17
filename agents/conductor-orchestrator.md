@@ -60,7 +60,7 @@ When invoking superpowers, use this standardized wrapper pattern to ensure consi
 # WRAPPER FUNCTION (use in orchestrator)
 invoke_superpower() {
     local superpower=$1    # e.g., "writing-plans", "executing-plans", "systematic-debugging", "brainstorming"
-    local track_id=$2      # e.g., "conductor-superpowers_20260213"
+    local track_id=$2      # e.g., "feature-auth_20260213"
     local track_dir="conductor/tracks/${track_id}"
 
     # Build parameters based on superpower type (using parameter-schema.md v1.0)
@@ -198,7 +198,7 @@ invoke_superpower() {
 }
 
 # USAGE EXAMPLES:
-# invoke_superpower "writing-plans" "conductor-superpowers_20260213"
+# invoke_superpower "writing-plans" "feature-auth_20260213"
 # invoke_superpower "executing-plans" "brand-gen-ux-overhaul_20260201" "2.3"  # with resumption
 # invoke_superpower "systematic-debugging" "supabase-integration_20260128"
 # invoke_superpower "brainstorming" "arch-decision_20260213" "Custom context"

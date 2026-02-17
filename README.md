@@ -1,5 +1,5 @@
 <p align="center">
-  <strong>Conductor Superpowers</strong>
+  <strong>Conductor Orchestrator Superpowers</strong>
 </p>
 
 <p align="center">
@@ -19,7 +19,7 @@
 
 ## What is this?
 
-Conductor Superpowers is a **Claude Code plugin** that turns Claude into a structured engineering team. Instead of ad-hoc coding, it organizes work into tracks with specs, plans, parallel execution, and automated evaluation — like having a project manager, architect, and QA team built into your CLI.
+Conductor Orchestrator Superpowers is a **Claude Code plugin** that turns Claude into a structured engineering team. Instead of ad-hoc coding, it organizes work into tracks with specs, plans, parallel execution, and automated evaluation — like having a project manager, architect, and QA team built into your CLI.
 
 **One command. Full automation.**
 
@@ -54,12 +54,12 @@ Bundles [superpowers](https://github.com/obra/superpowers) v4.3.0 (MIT) — no e
 ### Option 1: Clone directly (recommended)
 
 ```bash
-git clone https://github.com/Ibrahim-3d/conductor-superpowers.git ~/.claude/plugins/conductor-superpowers
+git clone https://github.com/Ibrahim-3d/conductor-orchestrator-superpowers.git ~/.claude/plugins/conductor-orchestrator-superpowers
 ```
 
 ### Option 2: Manual download
 
-Download the latest release and extract to `~/.claude/plugins/conductor-superpowers/`.
+Download the latest release and extract to `~/.claude/plugins/conductor-orchestrator-superpowers/`.
 
 ### Verify installation
 
@@ -200,7 +200,7 @@ For major decisions, a 5-member board deliberates:
 ### Directory Structure
 
 ```
-conductor-superpowers/
+conductor-orchestrator-superpowers/
 ├── .claude-plugin/
 │   └── plugin.json              # Plugin manifest
 ├── agents/                       # 16 agent definitions
