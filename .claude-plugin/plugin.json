@@ -1,0 +1,17 @@
+{
+  "name": "conductor-superpowers",
+  "version": "3.1.0",
+  "description": "Conductor v3 — Parallel multi-agent orchestration with Evaluate-Loop, Board of Directors, and Superpowers integration for Claude Code",
+  "author": {
+    "name": "Ibrahim"
+  },
+  "license": "MIT",
+  "keywords": [
+    "orchestration",
+    "evaluate-loop",
+    "conductor",
+    "superpowers",
+    "parallel-agents",
+    "board-of-directors"
+  ]
+}
