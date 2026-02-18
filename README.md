@@ -1,15 +1,23 @@
 <p align="center">
-  <strong>Conductor Orchestrator Superpowers</strong>
+  <img src="assets/conductor-banner.png" alt="Conductor Orchestrator Superpowers" width="800"/>
 </p>
 
 <p align="center">
-  Multi-agent orchestration system for <a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code</a> with parallel execution, automated quality gates, and a 5-member Board of Directors.
+  <strong>Multi-agent orchestration for Claude Code</strong><br/>
+  Parallel execution &bull; Automated quality gates &bull; Board of Directors
+</p>
+
+<p align="center">
+  <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-superpowers/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+  <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-superpowers"><img alt="Version" src="https://img.shields.io/badge/version-3.2.0-green.svg"/></a>
+  <a href="https://docs.anthropic.com/en/docs/claude-code"><img alt="Claude Code" src="https://img.shields.io/badge/Claude_Code-Plugin-blueviolet.svg"/></a>
+  <a href="https://github.com/obra/superpowers"><img alt="Superpowers" src="https://img.shields.io/badge/superpowers-v4.3.0-orange.svg"/></a>
 </p>
 
 <p align="center">
   <a href="#installation">Installation</a> &bull;
   <a href="#quick-start">Quick Start</a> &bull;
-  <a href="#how-it-works">How It Works</a> &bull;
+  <a href="#the-evaluate-loop">How It Works</a> &bull;
   <a href="#commands">Commands</a> &bull;
   <a href="#architecture">Architecture</a> &bull;
   <a href="#license">License</a>
@@ -19,39 +27,34 @@
 
 ## What is this?
 
-Conductor Orchestrator Superpowers is a **Claude Code plugin** that turns Claude into a structured engineering team. Instead of ad-hoc coding, it organizes work into tracks with specs, plans, parallel execution, and automated evaluation — like having a project manager, architect, and QA team built into your CLI.
+Conductor turns Claude Code into a **structured engineering team**. Instead of ad-hoc coding, it organizes work into tracks with specs, plans, parallel execution, and automated evaluation.
 
 **One command. Full automation.**
 
-```
+```bash
 /go Add user authentication with OAuth
 ```
 
-What happens behind the scenes:
-1. Creates a specification from your goal
-2. Generates a dependency-aware execution plan (DAG)
-3. Evaluates the plan for scope, overlap, and feasibility
-4. Executes tasks in parallel where possible
-5. Evaluates results (code quality, UI/UX, integrations, business logic)
-6. Fixes any issues automatically
-7. Reports completion
+That single command triggers the full lifecycle — spec, plan, execute, evaluate, fix — without any manual handoffs.
 
 ## What's Included
 
-| Component | Count | Description |
-|-----------|------:|-------------|
+| Component | Count | Highlights |
+|-----------|------:|------------|
 | **Agents** | 16 | Orchestrator, loop agents, board directors, executive advisors, workers |
-| **Skills** | 42 | Planning, execution, evaluation, debugging, TDD, code review, and more |
+| **Skills** | 42 | Planning, execution, evaluation, debugging, TDD, code review |
 | **Commands** | 22 | `/go`, `/conductor`, `/board-meeting`, `/cto-advisor`, and more |
 | **Evaluators** | 4 | UI/UX, Code Quality, Integration, Business Logic |
 | **Board of Directors** | 5 | Chief Architect, CPO, CSO, COO, CXO |
 | **Lead Engineers** | 4 | Architecture, Product, Tech, QA |
 
-Bundles [superpowers](https://github.com/obra/superpowers) v4.3.0 (MIT) — no external dependencies needed.
+Bundles [superpowers](https://github.com/obra/superpowers) v4.3.0 (MIT) — no external dependencies.
+
+---
 
 ## Installation
 
-### Option 1: Claude Code Plugin Marketplace (easiest)
+### Option 1: Plugin Marketplace (easiest)
 
 ```bash
 /plugin marketplace add Ibrahim-3d/conductor-orchestrator-superpowers
@@ -68,27 +71,23 @@ git clone https://github.com/Ibrahim-3d/conductor-orchestrator-superpowers.git ~
 
 Download the latest release and extract to `~/.claude/plugins/conductor-orchestrator-superpowers/`.
 
-### Verify installation
+### Verify
 
-Start a new Claude Code session. Type `/` and verify you see `/go`, `/conductor:implement`, `/board-meeting`, and other commands in the list.
+Start a new Claude Code session. Type `/` and check for `/go`, `/conductor:implement`, `/board-meeting` in the command list.
+
+---
 
 ## Quick Start
 
-### Initialize Conductor in your project
+**1. Initialize Conductor in your project:**
 
 ```bash
 /conductor:setup
 ```
 
-This creates a `conductor/` directory with track registry, workflow docs, and knowledge base.
+Creates a `conductor/` directory with track registry, workflow docs, and knowledge base.
 
-### Start building
-
-```bash
-/go <describe what you want to build>
-```
-
-Examples:
+**2. Build something:**
 
 ```bash
 /go Add Stripe payment integration with webhooks
@@ -97,7 +96,7 @@ Examples:
 /go Refactor the database layer to use connection pooling
 ```
 
-### More control
+**3. Monitor and control:**
 
 ```bash
 /conductor:status          # See all tracks and progress
@@ -106,62 +105,65 @@ Examples:
 /phase-review              # Run quality gate evaluation
 ```
 
-## How It Works
+---
 
-### The Evaluate-Loop
+## The Evaluate-Loop
 
-Every track follows a rigorous cycle:
+Every track follows a rigorous, automated cycle:
 
-```
-        +--------+     +-----------+     +---------+     +----------+
-   +--->|  PLAN  |---->| EVAL PLAN |---->| EXECUTE |---->| EVAL EXEC|---+
-   |    +--------+     +-----------+     +---------+     +----------+   |
-   |         ^              |                                  |        |
-   |         |            FAIL                               PASS     FAIL
-   |         |              |                                  |        |
-   |         +--------------+                                  v        |
-   |                                                    +-----------+   |
-   |                                                    | COMPLETE  |   |
-   |                                                    +-----------+   |
-   |                                                                    |
-   |    +-------+                                                       |
-   +----| FIX   |<-----------------------------------------------------+
-        +-------+
-```
+<p align="center">
+  <img src="assets/evaluate-loop.png" alt="Evaluate-Loop: Plan → Evaluate Plan → Execute → Evaluate Execution → Fix/Complete" width="700"/>
+</p>
 
-- **Plan** — Generates implementation steps with dependency graph (DAG)
-- **Evaluate Plan** — Checks scope, overlap with existing tracks, feasibility
-- **Execute** — Implements code, runs tests, updates progress
-- **Evaluate Execution** — Dispatches specialized evaluators (UI/UX, code quality, integration, business logic)
-- **Fix** — Addresses failures, loops back to evaluation (max 3 cycles)
+| Step | What Happens |
+|------|-------------|
+| **Plan** | Generates implementation steps with dependency graph (DAG) |
+| **Evaluate Plan** | Checks scope, overlap with existing tracks, feasibility |
+| **Execute** | Implements code, runs tests, updates progress |
+| **Evaluate Execution** | Dispatches specialized evaluators (UI/UX, code quality, integration, business logic) |
+| **Fix** | Addresses failures, loops back to evaluation (max 3 cycles) |
+| **Complete** | All evaluators pass — track marked done |
 
-### Parallel Execution
+The loop runs **fully automated**. It stops when the track is complete, when the fix cycle exceeds 3 iterations, or when it needs human input.
 
-Tasks without dependencies run simultaneously:
+---
 
-```
-Task 1: Create database schema ──────┐
-Task 2: Build API endpoints ─────────┼──> Task 5: Integration tests
-Task 3: Design UI components ────────┘
-Task 4: Write unit tests (independent) ──> Done
-```
+## Parallel Execution
 
-### Board of Directors
+Tasks without dependencies run simultaneously via DAG scheduling:
 
-For major decisions, a 5-member board deliberates:
+<p align="center">
+  <img src="assets/parallel-execution.png" alt="Parallel execution DAG showing tasks running simultaneously" width="700"/>
+</p>
+
+The orchestrator reads the dependency graph and dispatches independent tasks to parallel worker agents. When all upstream dependencies resolve, downstream tasks start automatically.
+
+---
+
+## Board of Directors
+
+For major architectural and strategic decisions, a 5-member board deliberates across 4 phases:
+
+<p align="center">
+  <img src="assets/board-of-directors.png" alt="Board of Directors: Chief Architect, CPO, CSO, COO, CXO around a decision table" width="700"/>
+</p>
 
 | Director | Domain | Focus |
 |----------|--------|-------|
-| **Chief Architect (CA)** | Technical | System design, patterns, scalability, tech debt |
-| **Chief Product Officer (CPO)** | Product | User value, market fit, scope discipline |
-| **Chief Security Officer (CSO)** | Security | Vulnerabilities, compliance, data protection |
-| **Chief Operations Officer (COO)** | Operations | Feasibility, timeline, resources, deployment |
-| **Chief Experience Officer (CXO)** | Experience | UX/UI, accessibility, user journey |
+| **Chief Architect** | Technical | System design, patterns, scalability, tech debt |
+| **Chief Product Officer** | Product | User value, market fit, scope discipline |
+| **Chief Security Officer** | Security | Vulnerabilities, compliance, data protection |
+| **Chief Operations Officer** | Operations | Feasibility, timeline, resources, deployment |
+| **Chief Experience Officer** | Experience | UX/UI, accessibility, user journey |
+
+Each director independently assesses, then they discuss and vote with written rationale.
 
 ```bash
 /board-meeting Should we migrate from REST to GraphQL?
 /board-review Add real-time notifications via WebSocket
 ```
+
+---
 
 ## Commands
 
@@ -202,53 +204,86 @@ For major decisions, a 5-member board deliberates:
 | `/execute-plan` | Execute a plan using superpowers patterns |
 | `/brainstorm` | Creative problem-solving session |
 
+---
+
 ## Architecture
 
-### Directory Structure
+### How the pieces fit together
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    /go <your goal>                           │
+│                         │                                   │
+│              ┌──────────▼──────────┐                        │
+│              │    Orchestrator     │  conductor-orchestrator │
+│              │  (master loop)      │                        │
+│              └──────────┬──────────┘                        │
+│                         │                                   │
+│    ┌────────────────────┼────────────────────┐              │
+│    ▼                    ▼                    ▼              │
+│ ┌──────┐         ┌──────────┐         ┌──────────┐         │
+│ │ Plan │ ──────▶ │ Execute  │ ──────▶ │ Evaluate │         │
+│ └──────┘         └──────────┘         └──────────┘         │
+│    │                    │                    │              │
+│    ▼                    ▼                    ▼              │
+│ loop-planner    parallel-dispatcher   4 evaluators          │
+│ plan-evaluator   ├─ task-worker       ├─ eval-ui-ux        │
+│ cto-reviewer     ├─ task-worker       ├─ eval-code-quality  │
+│                  └─ task-worker       ├─ eval-integration   │
+│                                       └─ eval-business      │
+│                                                             │
+│              ┌──────────────────────┐                       │
+│              │   Board of Directors │  (on-demand)          │
+│              │  5 directors + vote  │                       │
+│              └──────────────────────┘                       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Plugin directory structure
 
 ```
 conductor-orchestrator-superpowers/
 ├── .claude-plugin/
 │   └── plugin.json              # Plugin manifest
-├── agents/                       # 16 agent definitions
-│   ├── conductor-orchestrator.md # Master loop coordinator
-│   ├── loop-planner.md          # Plan creation
-│   ├── loop-executor.md         # Code implementation
-│   ├── loop-fixer.md            # Issue resolution
-│   ├── loop-plan-evaluator.md   # Plan validation
-│   ├── loop-execution-evaluator.md # Execution validation
-│   ├── board-meeting.md         # Board coordinator
-│   ├── code-reviewer.md         # Code review (superpowers)
-│   ├── parallel-dispatcher.md   # Parallel task dispatch
-│   ├── task-worker.md           # Ephemeral task executor
-│   └── ...                      # Executive advisors (CEO, CMO, CTO, UX)
-├── commands/                     # 22 slash commands
-├── skills/                       # 42 skills
-│   ├── conductor-orchestrator/   # Core loop orchestration
-│   ├── writing-plans/            # Plan creation (superpowers)
-│   ├── executing-plans/          # Plan execution (superpowers)
-│   ├── systematic-debugging/     # Debugging (superpowers)
-│   ├── eval-ui-ux/              # UI/UX evaluator
-│   ├── eval-code-quality/       # Code quality evaluator
-│   ├── eval-integration/        # Integration evaluator
-│   ├── eval-business-logic/     # Business logic evaluator
-│   ├── board-of-directors/      # Board deliberation system
-│   │   └── directors/           # 5 director profiles
-│   ├── leads/                   # 4 lead engineer roles
-│   ├── parallel-dispatch/       # DAG-based parallel execution
-│   ├── message-bus/             # Inter-agent communication
-│   ├── worker-templates/        # 5 worker templates
-│   └── ...                      # 25+ more skills
-├── hooks/                        # Session hooks
-├── lib/                          # Utility scripts
-├── docs/                         # Workflow and authority docs
-├── scripts/                      # Setup script
-└── LICENSES/                     # Third-party license files
+├── assets/                      # Diagrams and images
+├── agents/                      # 16 agent definitions
+│   ├── conductor-orchestrator.md
+│   ├── loop-planner.md
+│   ├── loop-executor.md
+│   ├── loop-fixer.md
+│   ├── loop-plan-evaluator.md
+│   ├── loop-execution-evaluator.md
+│   ├── board-meeting.md
+│   ├── code-reviewer.md
+│   ├── parallel-dispatcher.md
+│   ├── task-worker.md
+│   └── ...                      # Executive advisors
+├── commands/                    # 22 slash commands
+├── skills/                      # 42 skills
+│   ├── conductor-orchestrator/  # Core loop orchestration
+│   ├── writing-plans/           # Plan creation (superpowers)
+│   ├── executing-plans/         # Plan execution (superpowers)
+│   ├── systematic-debugging/    # Debugging (superpowers)
+│   ├── eval-ui-ux/             # UI/UX evaluator
+│   ├── eval-code-quality/      # Code quality evaluator
+│   ├── eval-integration/       # Integration evaluator
+│   ├── eval-business-logic/    # Business logic evaluator
+│   ├── board-of-directors/     # Board deliberation system
+│   │   └── directors/          # 5 director profiles
+│   ├── leads/                  # 4 lead engineer roles
+│   ├── parallel-dispatch/      # DAG-based parallel execution
+│   ├── message-bus/            # Inter-agent communication
+│   └── ...                     # 25+ more skills
+├── hooks/                       # Session hooks
+├── lib/                         # Utility scripts
+├── docs/                        # Workflow and authority docs
+├── scripts/                     # Setup script
+└── LICENSES/                    # Third-party license files
 ```
 
-### Track Structure (per project)
+### Track structure (created per project)
 
-When you run `/conductor setup`, it creates:
+When you run `/conductor:setup`, it creates:
 
 ```
 your-project/
@@ -259,16 +294,18 @@ your-project/
     ├── decision-log.md         # Architectural decisions
     ├── knowledge/
     │   └── patterns.md         # Learned patterns
-    └── tracks/                 # Individual tracks
+    └── tracks/
         └── feature-name/
             ├── spec.md         # Requirements
             ├── plan.md         # Implementation plan + DAG
             └── metadata.json   # State machine + config
 ```
 
+---
+
 ## Project-Specific Skills
 
-Conductor handles orchestration. Your project handles domain knowledge. Keep project-specific skills in your project's `.claude/skills/`:
+Conductor handles orchestration. Your project handles domain knowledge. Keep project-specific skills in `.claude/skills/`:
 
 ```
 your-project/.claude/skills/
@@ -280,6 +317,8 @@ your-project/.claude/skills/
 
 The orchestrator loads both plugin skills and project skills automatically.
 
+---
+
 ## Requirements
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI
@@ -287,8 +326,8 @@ The orchestrator loads both plugin skills and project skills automatically.
 
 ## Third-Party
 
-This plugin bundles [superpowers](https://github.com/obra/superpowers) v4.3.0 by [Jesse Vincent](https://github.com/obra), licensed under MIT. See [LICENSES/superpowers-MIT](LICENSES/superpowers-MIT).
+Bundles [superpowers](https://github.com/obra/superpowers) v4.3.0 by [Jesse Vincent](https://github.com/obra), licensed under MIT. See [LICENSES/superpowers-MIT](LICENSES/superpowers-MIT).
 
 ## License
 
-MIT - see [LICENSE](LICENSE)
+MIT — see [LICENSE](LICENSE)
