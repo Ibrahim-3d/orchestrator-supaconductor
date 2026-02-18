@@ -1,3 +1,13 @@
+---
+name: ui-audit
+description: "Run comprehensive UI/UX design validation against design principles, accessibility standards, and usability laws"
+arguments:
+  - name: target
+    description: "Component path, page URL, or --browser flag for live testing"
+    required: false
+user_invocable: true
+---
+
 # /ui-audit
 
 Run comprehensive UI/UX design validation against established design principles, usability laws, accessibility standards, and cognitive psychology principles.

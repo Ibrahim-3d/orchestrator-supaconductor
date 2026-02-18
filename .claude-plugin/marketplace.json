@@ -1,0 +1,37 @@
+{
+  "name": "conductor-orchestrator-superpowers",
+  "description": "Conductor v3 — Multi-agent orchestration with Evaluate-Loop, parallel execution, Board of Directors, and bundled Superpowers skills for Claude Code",
+  "version": "3.2.0",
+  "owner": {
+    "name": "Ibrahim",
+    "email": ""
+  },
+  "plugins": [
+    {
+      "name": "conductor-orchestrator-superpowers",
+      "source": {
+        "source": "github",
+        "repo": "Ibrahim-3d/conductor-orchestrator-superpowers"
+      },
+      "description": "Conductor v3 — Multi-agent orchestration with Evaluate-Loop, parallel execution, Board of Directors, and bundled Superpowers skills for Claude Code",
+      "version": "3.2.0",
+      "author": "Ibrahim",
+      "homepage": "https://github.com/Ibrahim-3d/conductor-orchestrator-superpowers",
+      "repository": "https://github.com/Ibrahim-3d/conductor-orchestrator-superpowers",
+      "license": "MIT",
+      "keywords": [
+        "orchestration",
+        "evaluate-loop",
+        "conductor",
+        "superpowers",
+        "parallel-agents",
+        "board-of-directors",
+        "tdd",
+        "debugging",
+        "planning",
+        "multi-agent"
+      ],
+      "category": "productivity"
+    }
+  ]
+}

@@ -1,3 +1,13 @@
+---
+name: cto-advisor
+description: "Run CTO-level technical review of the current execution plan - architecture, tech debt, engineering excellence"
+arguments:
+  - name: track_id
+    description: "Optional track ID to review (defaults to active track)"
+    required: false
+user_invocable: true
+---
+
 # /cto-advisor
 
 Run CTO-level technical review of the current execution plan. Uses the `cto-advisor` skill to evaluate architecture decisions, tech debt implications, technology choices, and engineering excellence.

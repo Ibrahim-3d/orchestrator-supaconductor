@@ -1,3 +1,13 @@
+---
+name: phase-review
+description: "Run post-execution quality gate - verifies all deliverables before marking a track complete"
+arguments:
+  - name: track_id
+    description: "Optional track ID to review (defaults to active track)"
+    required: false
+user_invocable: true
+---
+
 # /phase-review
 
 Run the **Evaluate Execution** step of the Evaluate-Loop workflow. This is the mandatory quality gate before marking any track or phase complete.

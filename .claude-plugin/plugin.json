@@ -17,6 +17,8 @@
     "debugging",
     "planning"
   ],
+  "homepage": "https://github.com/Ibrahim-3d/conductor-orchestrator-superpowers",
+  "repository": "https://github.com/Ibrahim-3d/conductor-orchestrator-superpowers",
   "hooks": "./hooks/hooks.json",
   "bundledDependencies": {
     "superpowers": {

@@ -6,6 +6,7 @@ arguments:
     type: string
     description: "The proposal, plan, or decision to deliberate on"
     required: false
+user_invocable: true
 ---
 
 # /board-meeting — Full Board Deliberation

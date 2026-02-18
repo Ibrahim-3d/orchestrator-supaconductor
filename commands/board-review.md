@@ -6,6 +6,7 @@ arguments:
     type: string
     description: "The proposal, plan, or decision to review"
     required: false
+user_invocable: true
 ---
 
 # /board-review — Quick Expert Assessment
