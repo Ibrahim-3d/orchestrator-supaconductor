@@ -319,6 +319,84 @@ The orchestrator loads both plugin skills and project skills automatically.
 
 ---
 
+## FAQ
+
+### How much context does this plugin use?
+
+Skills use **progressive disclosure** — only ~100 tokens per skill for metadata scanning. Full instructions load only when a skill activates (typically <5k tokens each). In practice, a `/go` session loads the orchestrator skill (~4k tokens) plus whichever evaluator/planner is active at that step. Inactive skills stay dormant. The 42 skills are **not** all loaded at once.
+
+Commands (slash commands) add zero context until invoked. Agents run as **subprocesses with their own context windows**, so they don't consume your main conversation's context.
+
+**Estimated overhead per step:**
+
+| Step | Context Added | Notes |
+|------|--------------|-------|
+| Orchestrator | ~4k tokens | Always active during `/go` |
+| Planner | ~3k tokens | Active during planning only |
+| Evaluator | ~2-3k tokens each | Only active evaluator loads |
+| Board meeting | ~5k tokens | On-demand, not part of default loop |
+| Idle (between steps) | ~500 tokens | Metadata only |
+
+### Does this work with Gemini CLI, Trae, Cursor, or other AI tools?
+
+**Short answer:** No. This is a Claude Code plugin that uses Claude Code's plugin system (agents, skills, slash commands, hooks). It cannot run in Gemini CLI, Trae, Cursor, Windsurf, or other tools — they have different architectures and APIs.
+
+**However**, the underlying concepts are portable:
+- The `conductor/` directory it creates in your project (specs, plans, track registry) is just Markdown files. Any AI tool can read them.
+- If you start a project with Conductor and later switch tools, your specs and plans remain useful documentation.
+- The Evaluate-Loop pattern (plan → evaluate → execute → evaluate → fix) is a workflow methodology, not locked to any runtime.
+
+### What does this cost in API credits?
+
+Conductor uses the same Claude API calls you'd make manually — it just structures them. Multi-agent orchestration does mean **more API calls** because:
+- Each agent subprocess is a separate conversation
+- Evaluation steps add calls you might skip manually
+- Board meetings use 5+ parallel agent calls
+
+**Rough multiplier:** A `/go` session for a medium feature uses roughly **3-5x** the API calls of doing it manually. You're trading credits for structure, quality gates, and reduced rework.
+
+**Ways to reduce cost:**
+- Use `/conductor:implement` (skips spec generation if you write your own)
+- Skip board meetings for small features (they're opt-in via `/board-meeting`)
+- Use Sonnet or Haiku for the model where possible (agent model selection respects your Claude Code config)
+
+### Which Claude models does this work with?
+
+All of them. The plugin works with whatever model you've configured in Claude Code (Opus, Sonnet, Haiku). Agents inherit the parent model by default, but the orchestrator can dispatch to specific models when appropriate (e.g., Haiku for simple tasks, Opus for complex evaluation).
+
+### Is this overkill for small projects?
+
+For a one-file script or a quick fix — yes, skip it. Use Conductor when:
+- The feature touches 3+ files
+- You'd normally spend time planning before coding
+- You want automated quality checks before shipping
+- You're building something that needs to be right the first time
+
+You can also use individual commands without the full loop:
+```bash
+/board-review Should we use Redis or Memcached?   # Just get board input
+/cto-advisor                                       # Just get architecture review
+/write-plan                                        # Just create a plan
+```
+
+### Can I use this alongside other Claude Code plugins?
+
+Yes. Conductor coexists with any other plugin. It doesn't override built-in commands or conflict with other plugin namespaces. Your other plugins' slash commands, agents, and MCP servers remain fully available during Conductor sessions.
+
+### How do I uninstall or disable it?
+
+```bash
+# Disable without removing
+/plugin          # Toggle off in the plugin menu
+
+# Full removal
+rm -rf ~/.claude/plugins/conductor-orchestrator-superpowers
+```
+
+The `conductor/` directory in your project persists after uninstall — it's just Markdown files that serve as documentation regardless.
+
+---
+
 ## Requirements
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI
