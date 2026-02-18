@@ -51,26 +51,33 @@ Bundles [superpowers](https://github.com/obra/superpowers) v4.3.0 (MIT) — no e
 
 ## Installation
 
-### Option 1: Clone directly (recommended)
+### Option 1: Claude Code Plugin Marketplace (easiest)
+
+```bash
+/plugin marketplace add Ibrahim-3d/conductor-orchestrator-superpowers
+/plugin install conductor-orchestrator-superpowers@conductor-orchestrator-superpowers
+```
+
+### Option 2: Clone directly
 
 ```bash
 git clone https://github.com/Ibrahim-3d/conductor-orchestrator-superpowers.git ~/.claude/plugins/conductor-orchestrator-superpowers
 ```
 
-### Option 2: Manual download
+### Option 3: Manual download
 
 Download the latest release and extract to `~/.claude/plugins/conductor-orchestrator-superpowers/`.
 
 ### Verify installation
 
-Start a new Claude Code session. You should see the superpowers skills load and the `/conductor` command become available.
+Start a new Claude Code session. Type `/` and verify you see `/go`, `/conductor:implement`, `/board-meeting`, and other commands in the list.
 
 ## Quick Start
 
 ### Initialize Conductor in your project
 
 ```bash
-/conductor setup
+/conductor:setup
 ```
 
 This creates a `conductor/` directory with track registry, workflow docs, and knowledge base.
@@ -93,9 +100,9 @@ Examples:
 ### More control
 
 ```bash
-/conductor status          # See all tracks and progress
-/conductor implement       # Continue work on current track
-/conductor new-track       # Create a track manually
+/conductor:status          # See all tracks and progress
+/conductor:implement       # Continue work on current track
+/conductor:new-track       # Create a track manually
 /phase-review              # Run quality gate evaluation
 ```
 
@@ -163,10 +170,10 @@ For major decisions, a 5-member board deliberates:
 | Command | Description |
 |---------|-------------|
 | `/go <goal>` | State your goal — Conductor handles everything |
-| `/conductor status` | View all tracks and current progress |
-| `/conductor implement` | Run the Evaluate-Loop on current track |
-| `/conductor new-track` | Create a new track with spec and plan |
-| `/conductor setup` | Initialize Conductor in a project |
+| `/conductor:status` | View all tracks and current progress |
+| `/conductor:implement` | Run the Evaluate-Loop on current track |
+| `/conductor:new-track` | Create a new track with spec and plan |
+| `/conductor:setup` | Initialize Conductor in a project |
 
 ### Quality & Review
 
