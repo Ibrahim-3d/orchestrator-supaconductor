@@ -1,87 +1,26 @@
-REDDIT RESPONSES — r/ClaudeCode Post: "I mixed Conductor + Superpowers + Orchestrator in one system"
-=================================================================================================
+# Reddit Follow-Up Replies (v3.3.0)
 
+Post: r/ClaudeCode — "I mixed Conductor + Superpowers + Orchestrator in one system"
 
---- b0307: "99% weekly usage consumed for minor decision of vibe coded orchestration" (8 upvotes) ---
+---
 
-Fair point, and this is the most common concern I hear. A few things to know:
+## Reply to u/ultrathink-art
 
-Skills are lazy-loaded, not dumped into context. Each skill is ~100 tokens of metadata until you actually invoke it. The full instructions (~3-5k tokens) only load when that specific skill fires. So having 40+ skills installed doesn't mean 40 skills worth of context sitting in your window.
-
-Subagents run in isolated sessions. When the orchestrator dispatches a planner, executor, or evaluator, each runs in its own Claude session via the Task tool. They don't consume your main conversation's context. The orchestrator itself stays lightweight — it just reads files and dispatches.
-
-The Board is opt-in for major decisions only. It triggers automatically for architecture tracks, infrastructure tracks, or tracks with 5+ tasks. It doesn't fire for "add a button" level work. If you're hitting it on minor stuff, you're likely running /conductor:board-meeting manually when you don't need to.
-
-That said — if you're using the Max plan with weekly limits, yes, multi-agent orchestration burns tokens faster than single-session work. That's the tradeoff: more structure and quality gates = more API calls. The /go command for a medium feature might dispatch 6-10 subagents across the loop. If you're on a tight budget, use individual skills directly (/brainstorming, /conductor:implement) instead of the full autonomous loop.
-
-TL;DR: It's not "vibe coded" — the context isolation is deliberate. But orchestration is inherently more expensive than single-shot coding. Use the pieces that match your budget.
-
-
---- ultrathink-art: "A Board that forgets last week's decision is just noise. How does your orchestrator handle state across runs?" (6 upvotes) ---
-
-ORIGINAL REPLY:
-
-Great question, and this is exactly what the Conductor layer solves.
-
-Everything persists to files, nothing lives in Claude's memory.
-
-Each track (feature/bugfix/refactor) gets its own directory at conductor/tracks/{track-id}/ with:
-- spec.md — requirements (immutable)
-- plan.md — implementation plan with task progress markers ([x] completed with commit SHA, [ ] pending)
-- metadata.json — state machine tracking exactly which step of the loop you're on
-
-Board decisions specifically get persisted to the message bus:
-
-.message-bus/board/
-├── session-{timestamp}.json  # Full session metadata + verdict
-├── assessments.json          # Each director's individual assessment
-├── discussion.jsonl          # Cross-director debate (3 rounds)
-├── votes.json                # Final votes with confidence scores
-└── resolution.md             # Human-readable decision document
-
-Board conditions (e.g., "approved with condition: add rate limiting") carry forward into metadata.json and are checked again at EVALUATE_EXECUTION. So the loop enforces what the Board required.
-
-For cross-session learning, there's a knowledge layer:
-- conductor/knowledge/patterns.md — reusable solutions extracted from completed tracks
-- conductor/knowledge/errors.json — structured error registry with known fixes
-
-When a new track starts, the Knowledge Manager agent injects relevant patterns and known errors before planning begins. So it literally learns from past work.
-
-Resumption works by reading files, not memory. New session -> /go -> reads metadata.json -> detects you're at EXECUTE step 3 of 7 -> continues from there. Zero context from the previous session needed.
-
-FOLLOW-UP (v3.3.0):
+> "A Board that forgets last week's decision is just noise"
 
 Hey, so you were right to call this out — I went and audited the board-meeting agent and the board skill, and while the message bus structure was *documented*, the agent instructions never actually told it to write the files. It described the format but didn't have a "you must do this" step. Classic case of docs existing but implementation not following through.
 
-I fixed this in v3.3.0 by adding a mandatory "Phase 5: Persist Decision" to both the board-meeting agent and the board-of-directors skill. Now after every deliberation, it's required to mkdir the board directory and write resolution.md + session-{timestamp}.json before returning. The agent also returns a concise JSON summary instead of dumping the full deliberation back.
+I fixed this in v3.3.0 by adding a mandatory "Phase 5: Persist Decision" to both the board-meeting agent and the board-of-directors skill. Now after every deliberation, it's required to mkdir the board directory and write `resolution.md` + `session-{timestamp}.json` before returning. The agent also returns a concise JSON summary instead of dumping the full deliberation back.
 
-I also wired up a retrospective agent at track completion that extracts patterns to conductor/knowledge/patterns.md and error fixes to conductor/knowledge/errors.json — so the learning layer is now actually triggered, not just documented.
+I also wired up a retrospective agent at track completion that extracts patterns to `conductor/knowledge/patterns.md` and error fixes to `conductor/knowledge/errors.json` — so the learning layer is now actually triggered, not just documented.
 
 Thanks for pushing on this, it was a real gap.
 
+---
 
---- Narrow-Belt-5030: "Does yours manage the context window (keeping it under 50% say) without human intervention?" (3 upvotes) ---
+## Reply to u/Narrow-Belt-5030
 
-ORIGINAL REPLY:
-
-Yes, by design — the orchestrator offloads work to subagents instead of doing it itself.
-
-The main session (orchestrator) stays thin. It reads metadata.json (~500 bytes), detects the current loop step, dispatches an agent via the Task tool, reads the result files, and moves to the next step. It never holds implementation context.
-
-Each agent (planner, executor, evaluator, fixer) runs in its own isolated Claude session with only the context it needs:
-- Planner gets: spec.md + knowledge patterns
-- Executor gets: plan.md (pending tasks only) + relevant code files
-- Evaluator gets: the diff + test results
-
-There's also a context-loader skill that implements priority tiers:
-- Tier 1: Manifests (package.json, etc.)
-- Tier 2: Conductor artifacts (product.md, tech-stack.md)
-- Tier 3: Active track spec + plan only
-- Files >1MB get truncated to first/last 20 lines
-
-So no, you don't need to manually clear context between phases. Each phase is a fresh subagent. The orchestrator just coordinates.
-
-FOLLOW-UP (v3.3.0):
+> "Does yours manage the context window without human intervention?"
 
 Coming back to this — I think we had an issue where the context-loader skill had the right idea (priority tiers, large file handling) but no actual enforcement. It was more like guidelines than rules. If a subagent decided to load 30 files or read a 2MB log, nothing stopped it.
 
@@ -93,97 +32,34 @@ Fixed in v3.3.0 with mandatory enforcement rules in the context-loader:
 
 Also fixed a bigger issue — agents were returning full reports (10-20KB) in their conversation responses back to the orchestrator, which accumulated across loop iterations. Now the orchestrator tells every agent: "write detailed output to files, return only a one-line JSON verdict." That alone should cut the orchestrator's context growth significantly.
 
+---
 
---- vollpo: "The new --auto flag runs through after the discuss phase, no more babysitting" (4 upvotes) ---
+## Reply to u/Fit-Palpitation-7427
 
-Exactly right. The /go command is the fully autonomous entry point — it analyzes your goal, creates or resumes a track, and runs the full Evaluate-Loop (plan -> evaluate plan -> execute -> evaluate execution -> fix if needed) without stopping.
+> "I need everything auto, not only after the discuss phase"
 
-It only pauses to ask you if:
-- The goal is ambiguous
-- The Board rejects the plan
-- The fix cycle hits 3 iterations without passing evaluation
+Quick update on this — I think there was an issue where the executing-plans skill was still designed for the standalone "batch of 3 tasks, then stop for feedback" workflow even when the Conductor orchestrator invoked it. So `/go` would kick off execution, but the skill would pause after 3 tasks and ask "Ready for feedback?" which kind of defeats the point of autonomous mode.
 
-Otherwise it handles the rest.
+Fixed in v3.3.0 — the executing-plans skill now has a "Conductor Integration (Autonomous Mode)" section. When the orchestrator passes `--plan`, `--track-dir`, and `--metadata` parameters, it runs ALL tasks without stopping. The batch-and-review mode still works for standalone use, but Conductor invocations go full autonomous. Same fix on the writing-plans side — when `--output-dir` is passed, it saves to the track directory and returns control instead of offering the "which execution approach?" choice.
 
+---
 
---- Fit-Palpitation-7427: "I need everything auto, not only after the discuss phase" (1 upvote) ---
+## Reply to u/thurn2
 
-ORIGINAL REPLY:
-
-That's what /go does. No discuss phase gate — you give it a goal and it runs end-to-end:
-
-/go Add OAuth login with Google provider
-
-It will: analyze the goal -> create a track -> generate spec -> write plan with DAG -> evaluate the plan -> execute tasks (in parallel where possible) -> evaluate the code -> fix failures -> complete.
-
-The only human touchpoints are genuine blockers (ambiguous requirements, repeated evaluation failures). For 90%+ of features, it runs start to finish autonomously.
-
-FOLLOW-UP (v3.3.0):
-
-Quick update on this — I think there was an issue where the executing-plans skill was still designed for the standalone "batch of 3 tasks, then stop for feedback" workflow even when the Conductor orchestrator invoked it. So /go would kick off execution, but the skill would pause after 3 tasks and ask "Ready for feedback?" which kind of defeats the point of autonomous mode.
-
-Fixed in v3.3.0 — the executing-plans skill now has a "Conductor Integration (Autonomous Mode)" section. When the orchestrator passes --plan, --track-dir, and --metadata parameters, it runs ALL tasks without stopping. The batch-and-review mode still works for standalone use, but Conductor invocations go full autonomous. Same fix on the writing-plans side — when --output-dir is passed, it saves to the track directory and returns control instead of offering the "which execution approach?" choice.
-
-
---- marky125: "I've been using Zeroshot - how would you say it compares?" (1 upvote) ---
-
-I haven't used Zeroshot directly, so I won't pretend to give a fair comparison. What I can say about this plugin's approach:
-
-- Persistent project context — Conductor tracks, product.md, tech-stack.md survive across sessions. You're not starting fresh each time.
-- Multi-agent with quality gates — It's not just "plan and execute." There's an evaluate-fix loop that catches issues before you see them.
-- Superpowers skills — TDD, systematic debugging, code review, git worktrees — these are battle-tested workflows from the Superpowers community (29k+ GitHub stars).
-- Board of Directors — For architectural decisions, 5 specialized directors debate and vote before proceeding.
-
-If Zeroshot is working well for you, the question is whether you need the orchestration layer and quality gates. This plugin is designed for larger features where autonomous execution with built-in review matters.
-
-
---- thurn2: "Have you run into problems with subagents being unable to spawn their own subagents? And agent teams flooding the context window with pointless notifications?" (1 upvote) ---
-
-ORIGINAL REPLY:
-
-On sub-subagents: Yes, Claude Code's Task tool supports hierarchical spawning — agents dispatched by the orchestrator can dispatch their own subagents. The executor can spawn worker agents for parallel tasks, and those workers can use the Task tool themselves if needed. This is how parallel execution works: the orchestrator dispatches a parallel-dispatcher, which spawns N task-workers simultaneously.
-
-On context flooding: This was a deliberate design choice. Agents communicate through files, not conversation context. The message bus is file-based:
-
-.message-bus/
-├── queue.jsonl          # Task queue
-├── worker-status.json   # Heartbeats
-└── events/
-    ├── TASK_COMPLETE_1.1.event
-    └── TASK_FAILED_1.2.event
-
-The orchestrator polls for completion by reading event files (Glob .message-bus/events/*.event), not by receiving messages in its context window. Workers write their results to files, the orchestrator reads them. No notification chatter in the conversation.
-
-Practical limits I'd be honest about:
-- Max 5 concurrent workers (to avoid rate limiting)
-- 30-minute timeout per worker
-- Stale worker detection via heartbeat (>10 min without update = timeout)
-
-If you're hitting context flooding in your setup, the fix is moving inter-agent communication to files instead of context. That's the core architectural decision that makes this work.
-
-FOLLOW-UP (v3.3.0):
+> "Have you run into problems with subagents being unable to spawn their own subagents? And agent teams flooding the context window with pointless notifications?"
 
 Hey, so I should be honest — you were right on both counts, and my original answer was a bit too optimistic.
 
 On sub-subagents: the task-worker agent didn't actually have the Task tool in its toolset. So while the architecture *supported* hierarchical spawning in theory, the worker couldn't actually spawn sub-workers. Fixed — Task tool is now in the task-worker's tools, and there's a "Parallel Decomposition" section explaining when to use it (3+ independent sub-components touching different files).
 
-On context flooding: the file-based message bus handles *inter-worker* communication fine. But the problem I missed was the *orchestrator-to-agent return path*. When each agent finished, it was returning its full report (evaluation results, execution logs, etc.) in the conversation response back to the orchestrator. Over 5-6 loop iterations that's 50-100KB of accumulated context. Fixed by adding a "Concise Agent Returns" rule — every agent now writes detailed output to files and returns only a JSON one-liner: {"verdict": "PASS", "summary": "...", "files_changed": N}. The orchestrator reads the files when it needs details.
+On context flooding: the file-based message bus handles *inter-worker* communication fine. But the problem I missed was the *orchestrator-to-agent return path*. When each agent finished, it was returning its full report (evaluation results, execution logs, etc.) in the conversation response back to the orchestrator. Over 5-6 loop iterations that's 50-100KB of accumulated context. Fixed by adding a "Concise Agent Returns" rule — every agent now writes detailed output to files and returns only a JSON one-liner: `{"verdict": "PASS", "summary": "...", "files_changed": N}`. The orchestrator reads the files when it needs details.
 
 Thanks for flagging both of these.
 
+---
 
---- semmy_t: "This is very nice, thank you for sharing :)" (1 upvote) ---
+## Reply to u/semmy_t
 
-Thanks! Happy to answer any questions if you try it out.
+> "This is very nice, thank you for sharing :)"
 
-Update: just shipped v3.3.0 with a bunch of fixes based on feedback from this thread. If you try it, let me know how it goes!
-
-
---- fredagainbutagain: "i found GSD... i wasn't getting anything done?" (2 upvotes) ---
-
-Ha — that's a common experience with framework-heavy tools. The difference here is /go is one command. You don't need to learn the framework to use it. Give it a goal and it handles the orchestration. If you want more control, the individual skills and commands are there, but they're not required.
-
-
---- xRedStaRx: "I made a fork in codex as well" (1 upvote) ---
-
-Nice — would be curious to see how you adapted it. The Conductor pattern (markdown-based project context) should translate well to other agents since the state is just files. If you want to share the fork, happy to link it from the README.
+Thanks! Just shipped v3.3.0 with a bunch of fixes based on feedback from this thread. If you try it, let me know how it goes!
