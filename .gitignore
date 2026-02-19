@@ -16,6 +16,9 @@ node_modules/
 # Logs
 *.log
 
+# Personal notes
+reddit-responses*
+
 # Conductor runtime (generated per-project, not part of plugin)
 conductor/tracks/
 conductor/knowledge/

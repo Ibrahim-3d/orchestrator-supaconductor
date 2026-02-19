@@ -123,6 +123,7 @@ Every track follows a rigorous, automated cycle:
 | **Evaluate Execution** | Dispatches specialized evaluators (UI/UX, code quality, integration, business logic) |
 | **Fix** | Addresses failures, loops back to evaluation (max 3 cycles) |
 | **Complete** | All evaluators pass — track marked done |
+| **Retrospective** | Extracts reusable patterns and error fixes to knowledge layer |
 
 The loop runs **fully automated**. It stops when the track is complete, when the fix cycle exceeds 3 iterations, or when it needs human input.
 
@@ -142,7 +143,7 @@ The orchestrator reads the dependency graph and dispatches independent tasks to 
 
 ## Board of Directors
 
-For major architectural and strategic decisions, a 5-member board deliberates across 4 phases:
+For major architectural and strategic decisions, a 5-member board deliberates across 5 phases:
 
 <p align="center">
   <img src="assets/board-of-directors.png" alt="Board of Directors: Chief Architect, CPO, CSO, COO, CXO around a decision table" width="700"/>
@@ -226,16 +227,16 @@ Each director independently assesses, then they discuss and vote with written ra
 │ └──────┘         └──────────┘         └──────────┘         │
 │    │                    │                    │              │
 │    ▼                    ▼                    ▼              │
-│ loop-planner    parallel-dispatcher   4 evaluators          │
+│ writing-plans   parallel-dispatcher   4 evaluators          │
 │ plan-evaluator   ├─ task-worker       ├─ eval-ui-ux        │
 │ cto-reviewer     ├─ task-worker       ├─ eval-code-quality  │
 │                  └─ task-worker       ├─ eval-integration   │
 │                                       └─ eval-business      │
 │                                                             │
-│              ┌──────────────────────┐                       │
-│              │   Board of Directors │  (on-demand)          │
-│              │  5 directors + vote  │                       │
-│              └──────────────────────┘                       │
+│  ┌──────────────────────┐  ┌─────────────────────────────┐  │
+│  │  Board of Directors  │  │  Knowledge / Retrospective  │  │
+│  │  5 directors + vote  │  │  patterns.md + errors.json  │  │
+│  └──────────────────────┘  └─────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
 ```
 
