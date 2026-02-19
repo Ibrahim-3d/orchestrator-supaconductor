@@ -52,6 +52,17 @@ claude --print "/loop-executor $TRACK_ID" &
 
 The `--print` flag outputs results to stdout. For parallel workers, use `&` to run in background and coordinate via message bus.
 
+### CRITICAL: Concise Agent Returns
+
+When dispatching ANY agent, append this to every prompt:
+
+> "IMPORTANT: Write detailed output to files (plan.md, evaluation-report.md, metadata.json).
+> Return ONLY a one-line JSON verdict:
+> `{"verdict": "PASS|FAIL", "summary": "<one sentence>", "files_changed": N}`
+> Do NOT return full reports in your response — the orchestrator reads files, not conversation."
+
+This prevents context flooding from 10-20KB agent returns accumulating over loop iterations.
+
 ### Superpower Invocation Wrapper
 
 When invoking superpowers, use this standardized wrapper pattern to ensure consistent parameter passing:
@@ -566,6 +577,12 @@ When reaching COMPLETE:
    ```
 
 5. **Report to user**:
+
+6. **Run Retrospective** (after completion commit):
+   Dispatch agent: "Read conductor/tracks/{trackId}/plan.md and git log.
+   Extract reusable patterns → append to conductor/knowledge/patterns.md
+   Extract error fixes → append to conductor/knowledge/errors.json
+   Create files if they don't exist."
    ```markdown
    ## ✅ Track Complete
 

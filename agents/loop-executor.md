@@ -92,6 +92,17 @@ If you discover work not in the plan, add it but DO NOT implement:
   - Recommendation: [Add to current track / Create new track]
 ```
 
+## Output Protocol
+
+Write detailed progress to plan.md (task markers, commit SHAs) and metadata.json (checkpoints).
+Return ONLY a concise JSON verdict to the orchestrator:
+
+```json
+{"verdict": "PASS|FAIL", "summary": "<one sentence>", "files_changed": N}
+```
+
+Do NOT return full reports in your response — the orchestrator reads files, not conversation.
+
 ## Success Criteria
 
 A successful execution:

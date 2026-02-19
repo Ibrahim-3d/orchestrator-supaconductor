@@ -102,6 +102,22 @@ Aggregate votes and produce board decision:
 | 4-1 or 5-0 REJECT | **REJECTED** — Significant rework needed |
 | 2-2-1 (tie with abstain) | **ESCALATE** — User makes final call |
 
+### Phase 5: Persist Decision (MANDATORY)
+
+After reaching resolution, you MUST persist the decision to files:
+
+1. Create directory: Use Bash `mkdir -p conductor/tracks/{trackId}/.message-bus/board/`
+2. Write `resolution.md` with the Board Output Format (below)
+3. Write `session-{timestamp}.json`:
+   ```json
+   {"session_id": "...", "verdict": "...", "vote_summary": {...}, "conditions": [...], "timestamp": "..."}
+   ```
+
+Then return ONLY this concise summary to the orchestrator:
+```json
+{"verdict": "APPROVED|REJECTED|ESCALATE", "conditions": ["..."], "vote": "4-1"}
+```
+
 ## Orchestrator Integration
 
 ### Invoke Board from Conductor

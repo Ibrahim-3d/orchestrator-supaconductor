@@ -76,6 +76,19 @@ After all tasks complete and verified:
 - Stop when blocked, don't guess
 - Never start implementation on main/master branch without explicit user consent
 
+## Conductor Integration (Autonomous Mode)
+
+When invoked with `--plan`, `--track-dir`, and `--metadata` parameters (from Conductor orchestrator):
+- Read plan from `--plan` path
+- Execute ALL tasks (not batches of 3) — run autonomously
+- Do NOT stop for human feedback between batches
+- After each task: use Edit tool to mark `[x]` in plan.md with commit SHA
+- After all tasks: update `--metadata` checkpoint to `EXECUTE: PASSED`
+- Return concise verdict: `{"verdict": "PASS", "tasks_completed": N}`
+- If `--resume-from` is provided, skip tasks before that task ID
+
+When these parameters are absent, fall back to the standalone batch workflow above.
+
 ## Integration
 
 **Required workflow skills:**

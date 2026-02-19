@@ -94,7 +94,19 @@ git commit -m "feat: add specific feature"
 - Reference relevant skills with @ syntax
 - DRY, YAGNI, TDD, frequent commits
 
-## Execution Handoff
+## Conductor Integration
+
+When invoked with `--output-dir` and `--spec` parameters (from Conductor orchestrator):
+- Save plan.md to the specified `--output-dir` (NOT `docs/plans/`)
+- Read spec from `--spec` path
+- Read project context from `--context-files` paths
+- Include DAG section if `--include-dag=true`
+- After saving, do NOT offer execution choice — return control to orchestrator
+- Update `--metadata` checkpoint to `PLAN: PASSED`
+
+When these parameters are absent, fall back to the standalone workflow below.
+
+## Execution Handoff (Standalone Mode)
 
 After saving the plan, offer execution choice:
 

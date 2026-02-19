@@ -866,6 +866,12 @@ When `current_step` reaches `COMPLETE`:
 4. **Commit** — `docs: complete [track-id] - evaluation passed`
 
 5. **Report to user**
+
+6. **Run Retrospective** (after completion commit):
+   Dispatch agent: "Read conductor/tracks/{trackId}/plan.md and git log.
+   Extract reusable patterns → append to conductor/knowledge/patterns.md
+   Extract error fixes → append to conductor/knowledge/errors.json
+   Create files if they don't exist."
 ```markdown
 ## Track Complete
 

@@ -61,6 +61,15 @@ For files over 1MB:
 - Read last 20 lines (exports/summary)
 - Skip middle content
 
+### Enforcement Rules (MANDATORY)
+
+1. Check file size via Bash `ls -la` before reading
+   - >500KB: Read first 20 + last 20 lines only
+   - >1MB: Skip entirely, log as "skipped: too large"
+2. Stop after Tier 1-3 files. Tier 4 (config files) only if task-specific.
+3. Never load completed tracks — only active track spec.md + plan.md.
+4. Maximum 15 files per context load. If more are needed, prioritize by tier.
+
 ## Context Loading Workflow
 
 ```

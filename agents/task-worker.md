@@ -9,6 +9,7 @@ tools:
   - Glob
   - Grep
   - Bash
+  - Task
 ---
 
 # Task Worker Agent
@@ -94,6 +95,14 @@ Worker: worker-1.1-1706789012345
 Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
+## Parallel Decomposition (Optional)
+
+For tasks with 3+ independent sub-components touching different files,
+you MAY use the Task tool to spawn parallel sub-workers. Only decompose when:
+- Sub-components are truly independent (no shared file edits)
+- Each sub-component is substantial enough to justify spawning overhead
+- The parent task's acceptance criteria can be verified after sub-workers complete
+
 ## File Locking
 
 If task modifies shared files, acquire lock first:
@@ -108,6 +117,17 @@ if (!locks[filePath]) {
 ```
 
 Release lock after completion.
+
+## Output Protocol
+
+Write detailed results to message bus event files (TASK_COMPLETE/TASK_FAILED) and worker-status.json.
+Return ONLY a concise JSON verdict to the orchestrator:
+
+```json
+{"verdict": "PASS|FAIL", "summary": "<one sentence>", "files_changed": N}
+```
+
+Do NOT return full reports in your response — the orchestrator reads files, not conversation.
 
 ## Success Criteria
 

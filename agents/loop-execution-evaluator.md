@@ -111,11 +111,22 @@ metadata.loop_state.fix_cycle_count++;
 
 If `fix_cycle_count >= 3`, escalate to user instead of continuing to FIX step.
 
+## Output Protocol
+
+Write detailed evaluation results to `conductor/tracks/{trackId}/evaluation-report.md`.
+Return ONLY a concise JSON verdict to the orchestrator:
+
+```json
+{"verdict": "PASS|FAIL", "summary": "<one sentence>", "files_changed": N}
+```
+
+Do NOT return full reports in your response — the orchestrator reads files, not conversation.
+
 ## Success Criteria
 
 A successful evaluation:
 - [ ] All relevant evaluators applied based on track type
 - [ ] Clear PASS/FAIL verdict with specific issues listed
-- [ ] Evaluation report appended to plan.md
+- [ ] Evaluation report written to evaluation-report.md
 - [ ] Metadata.json updated to next step (COMPLETE or FIX)
 - [ ] Fix cycle count checked before dispatching to FIX

@@ -114,6 +114,17 @@ metadata.loop_state.parallel_state = {
 };
 ```
 
+## Output Protocol
+
+Write detailed worker results to message bus event files and metadata.json parallel_state.
+Return ONLY a concise JSON verdict to the orchestrator:
+
+```json
+{"verdict": "PASS|FAIL", "summary": "<one sentence>", "files_changed": N}
+```
+
+Do NOT return full reports in your response — the orchestrator reads files, not conversation.
+
 ## Success Criteria
 
 A successful parallel dispatch:

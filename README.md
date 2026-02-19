@@ -9,7 +9,7 @@
 
 <p align="center">
   <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-superpowers/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-  <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-superpowers"><img alt="Version" src="https://img.shields.io/badge/version-3.2.0-green.svg"/></a>
+  <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-superpowers"><img alt="Version" src="https://img.shields.io/badge/version-3.3.0-green.svg"/></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img alt="Claude Code" src="https://img.shields.io/badge/Claude_Code-Plugin-blueviolet.svg"/></a>
   <a href="https://github.com/obra/superpowers"><img alt="Superpowers" src="https://img.shields.io/badge/superpowers-v4.3.0-orange.svg"/></a>
 </p>
@@ -276,7 +276,7 @@ conductor-orchestrator-superpowers/
 │   └── ...                     # 25+ more skills
 ├── hooks/                       # Session hooks
 ├── lib/                         # Utility scripts
-├── docs/                        # Workflow and authority docs
+├── docs/                        # Workflow, authority, and protocol docs
 ├── scripts/                     # Setup script
 └── LICENSES/                    # Third-party license files
 ```
@@ -293,7 +293,8 @@ your-project/
     ├── authority-matrix.md     # Decision boundaries
     ├── decision-log.md         # Architectural decisions
     ├── knowledge/
-    │   └── patterns.md         # Learned patterns
+    │   ├── patterns.md         # Learned patterns
+    │   └── errors.json         # Error-fix registry
     └── tracks/
         └── feature-name/
             ├── spec.md         # Requirements
