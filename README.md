@@ -58,7 +58,7 @@ Bundles [superpowers](https://github.com/obra/superpowers) v4.3.0 (MIT) — no e
 
 ```bash
 /plugin marketplace add Ibrahim-3d/conductor-orchestrator-superpowers
-/plugin install conductor-orchestrator-superpowers@conductor-orchestrator-superpowers
+/plugin install conductor-orchestrator-superpowers@ibrahim-plugins
 ```
 
 ### Option 2: Clone directly
