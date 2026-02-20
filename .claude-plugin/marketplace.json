@@ -1,5 +1,5 @@
 {
-  "name": "conductor-orchestrator-superpowers",
+  "name": "ibrahim-plugins",
   "description": "Conductor v3 — Multi-agent orchestration with Evaluate-Loop, parallel execution, Board of Directors, and bundled Superpowers skills for Claude Code",
   "version": "3.2.0",
   "owner": {
