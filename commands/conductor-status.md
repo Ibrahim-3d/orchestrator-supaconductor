@@ -1,5 +1,5 @@
 ---
-name: status
+name: conductor:status
 description: "Show current track status, loop step, tasks completed, and next action"
 user_invocable: true
 ---

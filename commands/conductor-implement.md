@@ -1,5 +1,5 @@
 ---
-name: implement
+name: conductor:implement
 description: "Run the full Evaluate-Loop automatically from current track state to completion"
 arguments:
   - name: track_id

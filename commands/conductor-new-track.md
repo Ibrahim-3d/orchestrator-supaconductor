@@ -1,5 +1,5 @@
 ---
-name: new-track
+name: conductor:new-track
 description: "Create a new development track with spec, plan, and metadata - interactive workflow"
 arguments:
   - name: description
