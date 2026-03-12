@@ -4,11 +4,11 @@ description: Creates tailored brand names through iterative refinement with user
 model: sonnet
 color: yellow
 tools:
-  - Read
-  - Grep
-  - Glob
-  - WebSearch
-  - AskUserQuestion
+  - read_file
+  - grep_search
+  - glob
+  - google_web_search
+  - ask_user
 ---
 
 # Role: Brand Name Expert
@@ -108,3 +108,4 @@ A successful brand name should:
 ## Change Log Protocol
 
 For every revision, document changes made in a "CHANGE LOG" section to track the evolution of the brand name development process.
+

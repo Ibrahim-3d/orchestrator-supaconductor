@@ -1,8 +1,8 @@
 # Skill authoring best practices
 
-> Learn how to write effective Skills that Claude can discover and use successfully.
+> Learn how to write_file effective Skills that Claude can discover and use successfully.
 
-Good Skills are concise, well-structured, and tested with real usage. This guide provides practical authoring decisions to help you write Skills that Claude can discover and use effectively.
+Good Skills are concise, well-structured, and tested with real usage. This guide provides practical authoring decisions to help you write_file Skills that Claude can discover and use effectively.
 
 For conceptual background on how Skills work, see the [Skills overview](/en/docs/agents-and-tools/agent-skills/overview).
 
@@ -187,7 +187,7 @@ Consistent naming makes it easier to:
 The `description` field enables Skill discovery and should include both what the Skill does and when to use it.
 
 <Warning>
-  **Always write in third person**. The description is injected into the system prompt, and inconsistent point-of-view can cause discovery problems.
+  **Always write_file in third person**. The description is injected into the system prompt, and inconsistent point-of-view can cause discovery problems.
 
   * **Good:** "Processes Excel files and generates reports"
   * **Avoid:** "I can help you process Excel files"
@@ -296,7 +296,7 @@ Claude loads FORMS.md, REFERENCE.md, or EXAMPLES.md only when needed.
 
 #### Pattern 2: Domain-specific organization
 
-For Skills with multiple domains, organize content by domain to avoid loading irrelevant context. When a user asks about sales metrics, Claude only needs to read sales-related schemas, not finance or marketing data. This keeps token usage low and context focused.
+For Skills with multiple domains, organize content by domain to avoid loading irrelevant context. When a user asks about sales metrics, Claude only needs to read_file sales-related schemas, not finance or marketing data. This keeps token usage low and context focused.
 
 ```
 bigquery-skill/
@@ -320,12 +320,12 @@ bigquery-skill/
 
 ## Quick search
 
-Find specific metrics using grep:
+Find specific metrics using grep_search:
 
 ```bash
-grep -i "revenue" reference/finance.md
-grep -i "pipeline" reference/sales.md
-grep -i "api usage" reference/product.md
+grep_search -i "revenue" reference/finance.md
+grep_search -i "pipeline" reference/sales.md
+grep_search -i "api usage" reference/product.md
 ```
 ````
 
@@ -352,7 +352,7 @@ Claude reads REDLINING.md or OOXML.md only when the user needs those features.
 
 ### Avoid deeply nested references
 
-Claude may partially read files when they're referenced from other referenced files. When encountering nested references, Claude might use commands like `head -100` to preview content rather than reading entire files, resulting in incomplete information.
+Claude may partially read_file files when they're referenced from other referenced files. When encountering nested references, Claude might use commands like `head -100` to preview content rather than reading entire files, resulting in incomplete information.
 
 **Keep references one level deep from SKILL.md**. All reference files should link directly from SKILL.md to ensure Claude reads complete files when needed.
 
@@ -391,7 +391,7 @@ For reference files longer than 100 lines, include a table of contents at the to
 
 ## Contents
 - Authentication and setup
-- Core methods (create, read, update, delete)
+- Core methods (create, read_file, update, delete)
 - Advanced features (batch operations, webhooks)
 - Error handling patterns
 - Code examples
@@ -403,7 +403,7 @@ For reference files longer than 100 lines, include a table of contents at the to
 ...
 ```
 
-Claude can then read the complete file or jump to specific sections as needed.
+Claude can then read_file the complete file or jump to specific sections as needed.
 
 For details on how this filesystem-based architecture enables progressive disclosure, see the [Runtime environment](#runtime-environment) section in the Advanced section below.
 
@@ -422,14 +422,14 @@ Copy this checklist and track your progress:
 
 ```
 Research Progress:
-- [ ] Step 1: Read all source documents
+- [ ] Step 1: read_file all source documents
 - [ ] Step 2: Identify key themes
 - [ ] Step 3: Cross-reference claims
 - [ ] Step 4: Create structured summary
 - [ ] Step 5: Verify citations
 ```
 
-**Step 1: Read all source documents**
+**Step 1: read_file all source documents**
 
 Review each document in the `sources/` directory. Note the main arguments and supporting evidence.
 
@@ -465,7 +465,7 @@ Copy this checklist and check off items as you complete them:
 ```
 Task Progress:
 - [ ] Step 1: Analyze the form (run analyze_form.py)
-- [ ] Step 2: Create field mapping (edit fields.json)
+- [ ] Step 2: Create field mapping (replace fields.json)
 - [ ] Step 3: Validate mapping (run validate_fields.py)
 - [ ] Step 4: Fill the form (run fill_form.py)
 - [ ] Step 5: Verify output (run verify_output.py)
@@ -479,7 +479,7 @@ This extracts form fields and their locations, saving to `fields.json`.
 
 **Step 2: Create field mapping**
 
-Edit `fields.json` to add values for each field.
+replace `fields.json` to add values for each field.
 
 **Step 3: Validate mapping**
 
@@ -715,7 +715,7 @@ Guide Claude through decision points:
 ```
 
 <Tip>
-  If workflows become large or complicated with many steps, consider pushing them into separate files and tell Claude to read the appropriate file based on the task at hand.
+  If workflows become large or complicated with many steps, consider pushing them into separate files and tell Claude to read_file the appropriate file based on the task at hand.
 </Tip>
 
 ## Evaluation and iteration
@@ -729,7 +729,7 @@ Guide Claude through decision points:
 1. **Identify gaps**: Run Claude on representative tasks without a Skill. Document specific failures or missing context
 2. **Create evaluations**: Build three scenarios that test these gaps
 3. **Establish baseline**: Measure Claude's performance without the Skill
-4. **Write minimal instructions**: Create just enough content to address the gaps and pass evaluations
+4. **write_file minimal instructions**: Create just enough content to address the gaps and pass evaluations
 5. **Iterate**: Execute evaluations, compare against baseline, and refine
 
 This approach ensures you're solving actual problems rather than anticipating requirements that may never materialize.
@@ -755,7 +755,7 @@ This approach ensures you're solving actual problems rather than anticipating re
 
 ### Develop Skills iteratively with Claude
 
-The most effective Skill development process involves Claude itself. Work with one instance of Claude ("Claude A") to create a Skill that will be used by other instances ("Claude B"). Claude A helps you design and refine instructions, while Claude B tests them in real tasks. This works because Claude models understand both how to write effective agent instructions and what information agents need.
+The most effective Skill development process involves Claude itself. Work with one instance of Claude ("Claude A") to create a Skill that will be used by other instances ("Claude B"). Claude A helps you design and refine instructions, while Claude B tests them in real tasks. This works because Claude models understand both how to write_file effective agent instructions and what information agents need.
 
 **Creating a new Skill:**
 
@@ -813,7 +813,7 @@ The same hierarchical pattern continues when improving Skills. You alternate bet
 
 As you iterate on Skills, pay attention to how Claude actually uses them in practice. Watch for:
 
-* **Unexpected exploration paths**: Does Claude read files in an order you didn't anticipate? This might indicate your structure isn't as intuitive as you thought
+* **Unexpected exploration paths**: Does Claude read_file files in an order you didn't anticipate? This might indicate your structure isn't as intuitive as you thought
 * **Missed connections**: Does Claude fail to follow references to important files? Your links might need to be more explicit or prominent
 * **Overreliance on certain sections**: If Claude repeatedly reads the same file, consider whether that content should be in the main SKILL.md instead
 * **Ignored content**: If Claude never accesses a bundled file, it might be unnecessary or poorly signaled in the main instructions
@@ -863,12 +863,12 @@ def process_file(path):
     """Process a file, creating it if it doesn't exist."""
     try:
         with open(path) as f:
-            return f.read()
+            return f.read_file()
     except FileNotFoundError:
         # Create file with default content instead of failing
         print(f"File {path} not found, creating default")
         with open(path, 'w') as f:
-            f.write('')
+            f.write_file('')
         return ''
     except PermissionError:
         # Provide alternative instead of failing
@@ -881,7 +881,7 @@ def process_file(path):
 ```python  theme={null}
 def process_file(path):
     # Just fail and let Claude figure it out
-    return open(path).read()
+    return open(path).read_file()
 ```
 
 Configuration parameters should also be justified and documented to avoid "voodoo constants" (Ousterhout's law). If you don't know the right value, how will Claude determine it?
@@ -907,7 +907,7 @@ RETRIES = 5   # Why 5?
 
 ### Provide utility scripts
 
-Even if Claude could write a script, pre-made scripts offer advantages:
+Even if Claude could write_file a script, pre-made scripts offer advantages:
 
 **Benefits of utility scripts**:
 
@@ -923,7 +923,7 @@ The diagram above shows how executable scripts work alongside instruction files.
 **Important distinction**: Make clear in your instructions whether Claude should:
 
 * **Execute the script** (most common): "Run `analyze_form.py` to extract fields"
-* **Read it as reference** (for complex logic): "See `analyze_form.py` for the field extraction algorithm"
+* **read_file it as reference** (for complex logic): "See `analyze_form.py` for the field extraction algorithm"
 
 For most utility scripts, execution is preferred because it's more reliable and efficient. See the [Runtime environment](#runtime-environment) section below for details on how script execution works.
 
@@ -977,7 +977,7 @@ When inputs can be rendered as images, have Claude analyze them:
 ````
 
 <Note>
-  In this example, you'd need to write the `pdf_to_images.py` script.
+  In this example, you'd need to write_file the `pdf_to_images.py` script.
 </Note>
 
 Claude's vision capabilities help understand layouts and structures.
@@ -1012,16 +1012,16 @@ List required packages in your SKILL.md and verify they're available in the [cod
 
 ### Runtime environment
 
-Skills run in a code execution environment with filesystem access, bash commands, and code execution capabilities. For the conceptual explanation of this architecture, see [The Skills architecture](/en/docs/agents-and-tools/agent-skills/overview#the-skills-architecture) in the overview.
+Skills run in a code execution environment with filesystem access, run_shell_command commands, and code execution capabilities. For the conceptual explanation of this architecture, see [The Skills architecture](/en/docs/agents-and-tools/agent-skills/overview#the-skills-architecture) in the overview.
 
 **How this affects your authoring:**
 
 **How Claude accesses Skills:**
 
 1. **Metadata pre-loaded**: At startup, the name and description from all Skills' YAML frontmatter are loaded into the system prompt
-2. **Files read on-demand**: Claude uses bash Read tools to access SKILL.md and other files from the filesystem when needed
-3. **Scripts executed efficiently**: Utility scripts can be executed via bash without loading their full contents into context. Only the script's output consumes tokens
-4. **No context penalty for large files**: Reference files, data, or documentation don't consume context tokens until actually read
+2. **Files read_file on-demand**: Claude uses run_shell_command read_file tools to access SKILL.md and other files from the filesystem when needed
+3. **Scripts executed efficiently**: Utility scripts can be executed via run_shell_command without loading their full contents into context. Only the script's output consumes tokens
+4. **No context penalty for large files**: Reference files, data, or documentation don't consume context tokens until actually read_file
 
 * **File paths matter**: Claude navigates your skill directory like a filesystem. Use forward slashes (`reference/guide.md`), not backslashes
 * **Name files descriptively**: Use names that indicate content: `form_validation_rules.md`, not `doc2.md`
@@ -1029,10 +1029,10 @@ Skills run in a code execution environment with filesystem access, bash commands
   * Good: `reference/finance.md`, `reference/sales.md`
   * Bad: `docs/file1.md`, `docs/file2.md`
 * **Bundle comprehensive resources**: Include complete API docs, extensive examples, large datasets; no context penalty until accessed
-* **Prefer scripts for deterministic operations**: Write `validate_form.py` rather than asking Claude to generate validation code
+* **Prefer scripts for deterministic operations**: write_file `validate_form.py` rather than asking Claude to generate validation code
 * **Make execution intent clear**:
   * "Run `analyze_form.py` to extract fields" (execute)
-  * "See `analyze_form.py` for the extraction algorithm" (read as reference)
+  * "See `analyze_form.py` for the extraction algorithm" (read_file as reference)
 * **Test file access patterns**: Verify Claude can navigate your directory structure by testing with real requests
 
 **Example:**
@@ -1046,7 +1046,7 @@ bigquery-skill/
     └── product.md (usage analytics)
 ```
 
-When the user asks about revenue, Claude reads SKILL.md, sees the reference to `reference/finance.md`, and invokes bash to read just that file. The sales.md and product.md files remain on the filesystem, consuming zero context tokens until needed. This filesystem-based model is what enables progressive disclosure. Claude can navigate and selectively load exactly what each task requires.
+When the user asks about revenue, Claude reads SKILL.md, sees the reference to `reference/finance.md`, and invokes run_shell_command to read_file just that file. The sales.md and product.md files remain on the filesystem, consuming zero context tokens until needed. This filesystem-based model is what enables progressive disclosure. Claude can navigate and selectively load exactly what each task requires.
 
 For complete details on the technical architecture, see [How Skills work](/en/docs/agents-and-tools/agent-skills/overview#how-skills-work) in the Skills overview.
 
@@ -1148,3 +1148,4 @@ Before sharing a Skill, verify:
     Upload and use Skills programmatically
   </Card>
 </CardGroup>
+

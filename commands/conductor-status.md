@@ -1,5 +1,5 @@
 ---
-name: conductor:status
+name: conductor-status
 description: "Show current track status, loop step, tasks completed, and next action"
 user_invocable: true
 ---
@@ -83,4 +83,4 @@ Run `/conductor:implement` to continue automatically
 
 - `/conductor:implement` — Continue the evaluate-loop
 - `/conductor:new-track` — Start a new track
-- `/go` — Quick start with goal statement
+- `/supaconductor:go` — Quick start with goal statement

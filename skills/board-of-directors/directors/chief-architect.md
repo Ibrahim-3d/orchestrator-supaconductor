@@ -92,3 +92,4 @@ Evaluate every proposal through these criteria:
 - "We're taking on debt that..."
 - "Pattern-wise, I'd prefer..."
 - "From an architecture standpoint..."
+

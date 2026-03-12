@@ -170,7 +170,7 @@ async function generateSpecFromGoal(goal: string, analysis: GoalAnalysis): strin
 ```typescript
 // If goal is ambiguous, ask for clarification
 if (analysis.ambiguous) {
-  return askUserQuestion({
+  return ask_user({
     questions: [{
       question: "I need clarification on your goal. Which do you mean?",
       header: "Clarify",
@@ -185,7 +185,7 @@ if (analysis.ambiguous) {
 
 // If multiple tracks match, ask which one
 if (matchingTracks.length > 1) {
-  return askUserQuestion({
+  return ask_user({
     questions: [{
       question: "This goal matches multiple existing tracks. Which one?",
       header: "Track",
@@ -222,7 +222,7 @@ if (matchingTracks.length > 1) {
 
 ## State Detection (New v2 Protocol)
 
-### Primary: Read metadata.json
+### Primary: read_file metadata.json
 
 ```typescript
 async function detectCurrentStep(trackId: string) {
@@ -278,10 +278,10 @@ Before escalating a decision to user, consult the appropriate Lead Engineer:
 
 | Question Category | Lead to Consult | Skill Path |
 |-------------------|-----------------|------------|
-| Architecture, patterns, component organization | Architecture Lead | `.claude/skills/leads/architecture-lead/SKILL.md` |
-| Scope interpretation, requirements, copy | Product Lead | `.claude/skills/leads/product-lead/SKILL.md` |
-| Implementation, dependencies, tooling | Tech Lead | `.claude/skills/leads/tech-lead/SKILL.md` |
-| Testing, coverage, quality gates | QA Lead | `.claude/skills/leads/qa-lead/SKILL.md` |
+| Architecture, patterns, component organization | Architecture Lead | `${CLAUDE_PLUGIN_ROOT}/skills/leads/architecture-lead/SKILL.md` |
+| Scope interpretation, requirements, copy | Product Lead | `${CLAUDE_PLUGIN_ROOT}/skills/leads/product-lead/SKILL.md` |
+| Implementation, dependencies, tooling | Tech Lead | `${CLAUDE_PLUGIN_ROOT}/skills/leads/tech-lead/SKILL.md` |
+| Testing, coverage, quality gates | QA Lead | `${CLAUDE_PLUGIN_ROOT}/skills/leads/qa-lead/SKILL.md` |
 
 ### Consultation Flow
 
@@ -380,7 +380,7 @@ Task({
     - Resume from: Next [ ] task after "${lastTask}"
 
     Your task:
-    1. Read conductor/tracks/${trackId}/plan.md
+    1. read_file conductor/tracks/${trackId}/plan.md
     2. Skip all [x] tasks - they are already done
     3. Find first [ ] task after "${lastTask}"
     4. Implement following loop-executor skill
@@ -402,7 +402,7 @@ Task({
 |------|-------|-------|---------------------------|
 | PRE-PLAN | Knowledge Manager | `knowledge-manager` | Load patterns + errors for this track type |
 | PLAN | Planner | `loop-planner` | Create plan.md WITH DAG, update metadata |
-| EVALUATE_PLAN | Plan Evaluator | `loop-plan-evaluator` | Run 6 checks (+ DAG + Board), write verdict |
+| EVALUATE_PLAN | Plan Evaluator | `loop-plan-evaluator` | Run 6 checks (+ DAG + Board), write_file verdict |
 | EVALUATE_PLAN | **Board** | `board-of-directors` | **NEW**: Full deliberation for major tracks |
 | PARALLEL_EXECUTE | **Workers** | `worker-templates/*` | **NEW**: Parallel Task calls via agent-factory |
 | EVALUATE_EXECUTION | Exec Evaluator | `loop-execution-evaluator` | Dispatch evaluators + quick board review |
@@ -791,7 +791,7 @@ async function resumeOrchestration(trackId: string) {
 ┌─────────────────────────────────────────────────────────────────┐
 │                        ORCHESTRATOR                             │
 │                                                                 │
-│  1. Read metadata.json → detect current_step + step_status      │
+│  1. read_file metadata.json → detect current_step + step_status      │
 │  2. Dispatch appropriate agent via Task tool                    │
 │  3. Agent updates metadata.json checkpoints                     │
 │  4. Agent returns → orchestrator reads new state                │
@@ -868,7 +868,7 @@ When `current_step` reaches `COMPLETE`:
 5. **Report to user**
 
 6. **Run Retrospective** (after completion commit):
-   Dispatch agent: "Read conductor/tracks/{trackId}/plan.md and git log.
+   Dispatch agent: "read_file conductor/tracks/{trackId}/plan.md and git log.
    Extract reusable patterns → append to conductor/knowledge/patterns.md
    Extract error fixes → append to conductor/knowledge/errors.json
    Create files if they don't exist."
@@ -943,7 +943,7 @@ async function dispatchPlannerWithKnowledge(trackId: string) {
          - Known errors to avoid
          - Similar previous tracks (if any)
 
-      Follow .claude/skills/knowledge/knowledge-manager/SKILL.md`
+      Follow ${CLAUDE_PLUGIN_ROOT}/skills/knowledge/knowledge-manager/SKILL.md`
   });
 
   // 2. Dispatch planner WITH knowledge brief injected
@@ -959,7 +959,7 @@ async function dispatchPlannerWithKnowledge(trackId: string) {
       Create plan.md using the patterns above where applicable.
       Avoid the known errors listed.
 
-      Follow .claude/skills/loop-planner/SKILL.md`
+      Follow ${CLAUDE_PLUGIN_ROOT}/skills/loop-planner/SKILL.md`
   });
 }
 ```
@@ -977,15 +977,15 @@ async function runPostCompletionRetrospective(trackId: string) {
 
       Track: ${trackId}
 
-      1. Read conductor/tracks/${trackId}/plan.md (all tasks and fix cycles)
-      2. Read conductor/tracks/${trackId}/metadata.json (fix counts, consultations)
+      1. read_file conductor/tracks/${trackId}/plan.md (all tasks and fix cycles)
+      2. read_file conductor/tracks/${trackId}/metadata.json (fix counts, consultations)
       3. Analyze: What worked? What failed? What patterns emerged?
       4. Update conductor/knowledge/patterns.md with new reusable solutions
       5. Update conductor/knowledge/errors.json with new error patterns
-      6. Write retrospective to conductor/tracks/${trackId}/retrospective.md
+      6. write_file retrospective to conductor/tracks/${trackId}/retrospective.md
       7. Propose skill improvements if workflow issues found
 
-      Follow .claude/skills/knowledge/retrospective-agent/SKILL.md`
+      Follow ${CLAUDE_PLUGIN_ROOT}/skills/knowledge/retrospective-agent/SKILL.md`
   });
 }
 ```
@@ -1079,8 +1079,8 @@ async function logNewError(pattern, solution, trackId) {
 User: /conductor implement
 
 Orchestrator:
-1. Read conductor/tracks.md → get active track
-2. Read conductor/tracks/[track]/metadata.json → get loop_state
+1. read_file conductor/tracks.md → get active track
+2. read_file conductor/tracks/[track]/metadata.json → get loop_state
 3. Determine current step and status
 4. Dispatch appropriate agent
 5. Loop until complete
@@ -1101,3 +1101,4 @@ Orchestrator:
 - `conductor/tracks/[track]/metadata.json` — State updates
 - `conductor/tracks.md` — Completion tracking
 - `conductor/index.md` — Current status
+

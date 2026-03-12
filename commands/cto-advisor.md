@@ -8,7 +8,7 @@ arguments:
 user_invocable: true
 ---
 
-# /cto-advisor
+# /supaconductor:cto-advisor
 
 Run CTO-level technical review of the current execution plan. Uses the `cto-advisor` skill to evaluate architecture decisions, tech debt implications, technology choices, and engineering excellence.
 
@@ -27,10 +27,10 @@ Run this command to get technical leadership guidance on:
 
 ```bash
 # Review current track's plan
-/cto-advisor
+/supaconductor:cto-advisor
 
 # Or manually specify track
-/cto-advisor TRACK-001-core-feature
+/supaconductor:cto-advisor TRACK-001-core-feature
 ```
 
 ## What It Does
@@ -188,10 +188,10 @@ The command invokes the `cto-plan-reviewer` skill, which:
 This command is automatically invoked by the conductor during plan evaluation for technical tracks:
 
 ```
-/conductor implement
+/supaconductor:implement
   → detects technical track (keywords: architecture, API, database, etc.)
   → dispatches loop-plan-evaluator
-    → invokes /cto-advisor automatically
+    → invokes /supaconductor:cto-advisor automatically
   → aggregates standard checks + CTO review
   → PASS/FAIL verdict
 ```
@@ -214,20 +214,20 @@ The conductor automatically includes CTO review when the track's `spec.md` or `p
 
 ### Automatic (Recommended)
 ```bash
-/conductor implement
+/supaconductor:implement
 # CTO review runs automatically for technical tracks during plan evaluation
 ```
 
 ### Manual (When Needed)
 ```bash
 # Get CTO review anytime
-/cto-advisor
+/supaconductor:cto-advisor
 
 # Review specific track
-/cto-advisor TRACK-002-integration
+/supaconductor:cto-advisor TRACK-002-integration
 
 # Get architecture guidance before planning
-/cto-advisor
+/supaconductor:cto-advisor
 ```
 
 ## CTO Advisor Frameworks Used
@@ -318,7 +318,7 @@ The command leverages these frameworks from the `cto-advisor` skill:
 
 ## Related
 
-- `.claude/skills/cto-plan-reviewer/SKILL.md` — Full CTO review agent documentation
-- `.claude/skills/cto-advisor/SKILL.md` — Core CTO advisor frameworks and tools
-- `/conductor implement` — Automated loop that includes CTO review
+- `.claude/skills/supaconductor:cto-plan-reviewer/SKILL.md` — Full CTO review agent documentation
+- `.claude/skills/supaconductor:cto-advisor/SKILL.md` — Core CTO advisor frameworks and tools
+- `/supaconductor:implement` — Automated loop that includes CTO review
 - `conductor/workflow.md` — Evaluate-Loop process

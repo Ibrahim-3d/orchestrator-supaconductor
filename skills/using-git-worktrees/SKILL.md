@@ -30,7 +30,7 @@ ls -d worktrees 2>/dev/null      # Alternative
 ### 2. Check CLAUDE.md
 
 ```bash
-grep -i "worktree.*director" CLAUDE.md 2>/dev/null
+grep_search -i "worktree.*director" CLAUDE.md 2>/dev/null
 ```
 
 **If preference specified:** Use it without asking.
@@ -216,3 +216,4 @@ Ready to implement auth feature
 
 **Pairs with:**
 - **finishing-a-development-branch** - REQUIRED for cleanup after work complete
+

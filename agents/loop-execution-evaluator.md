@@ -3,13 +3,12 @@ name: loop-execution-evaluator
 description: Verifies implementation quality by dispatching specialized evaluators. Evaluate-Loop Step 4.
 model: sonnet
 tools:
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
-  - Task
+  - read_file
+  - write_file
+  - replace
+  - glob
+  - grep_search
+  - run_shell_command
 ---
 
 # Loop Execution Evaluator Agent
@@ -29,15 +28,15 @@ Based on track type, dispatch appropriate evaluators:
 
 ## Dispatch Evaluators
 
-Read the relevant skill and apply its checks:
+read_file the relevant skill and apply its checks:
 
 ```javascript
 // For UI tracks
-const uiSkill = await Read(`.claude/skills/eval-ui-ux/SKILL.md`);
+const uiSkill = await read_file(`${CLAUDE_PLUGIN_ROOT}/skills/eval-ui-ux/SKILL.md`);
 // Apply all 8 passes defined in the skill
 
 // For code quality
-const codeSkill = await Read(`.claude/skills/eval-code-quality/SKILL.md`);
+const codeSkill = await read_file(`${CLAUDE_PLUGIN_ROOT}/skills/eval-code-quality/SKILL.md`);
 // Apply all 6 passes defined in the skill
 ```
 
@@ -74,7 +73,7 @@ const codeSkill = await Read(`.claude/skills/eval-code-quality/SKILL.md`);
 
 ## Output
 
-Write evaluation report to plan.md:
+write_file evaluation report to plan.md:
 
 ```markdown
 ## Execution Evaluation Report
@@ -113,7 +112,7 @@ If `fix_cycle_count >= 3`, escalate to user instead of continuing to FIX step.
 
 ## Output Protocol
 
-Write detailed evaluation results to `conductor/tracks/{trackId}/evaluation-report.md`.
+write_file detailed evaluation results to `conductor/tracks/{trackId}/evaluation-report.md`.
 Return ONLY a concise JSON verdict to the orchestrator:
 
 ```json
@@ -130,3 +129,4 @@ A successful evaluation:
 - [ ] Evaluation report written to evaluation-report.md
 - [ ] Metadata.json updated to next step (COMPLETE or FIX)
 - [ ] Fix cycle count checked before dispatching to FIX
+

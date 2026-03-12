@@ -136,7 +136,7 @@ Append new patterns to the appropriate category section:
 Add new error patterns:
 
 ```typescript
-// Read current errors.json
+// read_file current errors.json
 const errors = JSON.parse(await readFile('conductor/knowledge/errors.json'));
 
 // Add new error
@@ -153,13 +153,13 @@ errors.errors.push({
   discovered_in: trackId
 });
 
-// Write back
+// write_file back
 await writeFile('conductor/knowledge/errors.json', JSON.stringify(errors, null, 2));
 ```
 
 ### 6. Create Track Retrospective
 
-Write a retrospective file for the track:
+write_file a retrospective file for the track:
 
 **Location**: `conductor/tracks/[track-id]/retrospective.md`
 
@@ -253,12 +253,12 @@ async function runRetrospective(trackId: string) {
 
       Track: ${trackId}
 
-      1. Read conductor/tracks/${trackId}/plan.md
-      2. Read conductor/tracks/${trackId}/metadata.json
+      1. read_file conductor/tracks/${trackId}/plan.md
+      2. read_file conductor/tracks/${trackId}/metadata.json
       3. Analyze what worked and what failed
       4. Extract patterns → Update conductor/knowledge/patterns.md
       5. Extract errors → Update conductor/knowledge/errors.json
-      6. Write retrospective to conductor/tracks/${trackId}/retrospective.md
+      6. write_file retrospective to conductor/tracks/${trackId}/retrospective.md
 
       Return summary of learnings added.`
   });
@@ -291,3 +291,4 @@ Over time, the knowledge base grows:
 - Skill improvements → Better workflows
 
 The goal: **Every track makes the next track easier.**
+

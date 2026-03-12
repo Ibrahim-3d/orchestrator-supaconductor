@@ -51,8 +51,8 @@ Agent skills must reflect current decisions so agents make correct choices:
 
 | Skill | Location | Reflects | Update When |
 |-------|----------|----------|-------------|
-| **Product knowledge skill** | `.claude/skills/*/SKILL.md` | product.md, pricing model, personas | Product rules, pricing tiers, personas change |
-| **Integration skills** | `.claude/skills/*/SKILL.md` | tech-stack.md, API docs | SDK patterns, model strategy, cost data, API changes |
+| **Product knowledge skill** | `${CLAUDE_PLUGIN_ROOT}/skills/*/SKILL.md` | product.md, pricing model, personas | Product rules, pricing tiers, personas change |
+| **Integration skills** | `${CLAUDE_PLUGIN_ROOT}/skills/*/SKILL.md` | tech-stack.md, API docs | SDK patterns, model strategy, cost data, API changes |
 
 ### Tier 4: Strategy Archives (Reference only — do NOT update)
 
@@ -115,7 +115,7 @@ Run this checklist whenever a sync trigger fires. Check each item and update if 
 ## Sync Execution Protocol
 
 ### Step 1: Identify What Changed
-Read the trigger source (evaluation report, track completion, user instruction) and extract:
+read_file the trigger source (evaluation report, track completion, user instruction) and extract:
 - **Decision**: What was decided?
 - **Impact**: Which documents does this affect?
 - **Scope**: Tier 1 only? Tier 1-2? Tier 1-3?
@@ -169,3 +169,4 @@ The `loop-execution-evaluator` checks for business doc staleness as part of its 
 - `conductor/product.md` — Tier 1 source of truth (product)
 - `conductor/business-strategy.md` — Tier 1 source of truth (business)
 - `conductor/tech-stack.md` — Tier 1 source of truth (technology)
+

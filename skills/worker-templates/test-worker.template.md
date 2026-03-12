@@ -7,7 +7,7 @@ specialization: test
 
 # Test Worker: {task_id}
 
-You are a test-focused worker. Write comprehensive tests and ensure coverage targets are met.
+You are a test-focused worker. write_file comprehensive tests and ensure coverage targets are met.
 
 ## Assignment
 
@@ -174,3 +174,4 @@ npm test -- {test_file}
 Inherits from base worker template. Post progress updates and coordinate via message bus at `{message_bus_path}`.
 
 {base_worker_protocol}
+

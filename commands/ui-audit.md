@@ -8,7 +8,7 @@ arguments:
 user_invocable: true
 ---
 
-# /ui-audit
+# /supaconductor:ui-audit
 
 Run comprehensive UI/UX design validation against established design principles, usability laws, accessibility standards, and cognitive psychology principles.
 
@@ -55,25 +55,25 @@ The command launches the **ui-design-tester** agent which:
 
 ### Basic Usage (Live Browser Testing)
 ```bash
-/ui-audit
+/supaconductor:ui-audit
 ```
 Launches agent-browser to test your live application for UI/UX issues.
 
 ### Specific Component
 ```bash
-/ui-audit src/components/feature/my-card.tsx
+/supaconductor:ui-audit src/components/feature/my-card.tsx
 ```
 Audits a specific component file.
 
 ### Automated Browser Testing
 ```bash
-/ui-audit --browser /create
+/supaconductor:ui-audit --browser /create
 ```
 Launches browser automation to test a specific page visually.
 
 ### Multiple Pages
 ```bash
-/ui-audit --browser / /create /dashboard
+/supaconductor:ui-audit --browser / /create /dashboard
 ```
 Tests multiple pages in sequence.
 
@@ -189,19 +189,19 @@ You can also run it manually during development.
 ### Example 1: Audit After Component Work
 ```bash
 # After finishing button component
-/ui-audit src/components/ui/button.tsx
+/supaconductor:ui-audit src/components/ui/button.tsx
 ```
 
 ### Example 2: Pre-Launch Check
 ```bash
 # Before shipping new feature
-/ui-audit --browser /create /results
+/supaconductor:ui-audit --browser /create /results
 ```
 
 ### Example 3: Full App Audit
 ```bash
 # Audit entire component library
-/ui-audit src/components/
+/supaconductor:ui-audit src/components/
 ```
 
 ## Related

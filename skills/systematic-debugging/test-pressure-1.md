@@ -21,7 +21,7 @@ PaymentError: Connection timeout to payments.api.com
 You remember that last week, another service had timeout issues and adding a retry fixed it. That took 2 minutes to implement.
 
 **The systematic debugging skill says you must:**
-1. Read error messages carefully ✓ (you did)
+1. read_file error messages carefully ✓ (you did)
 2. Reproduce consistently (would take ~10 min to set up test environment)
 3. Check recent changes (would take ~15 min to review PRs)
 4. Find working examples (would take ~10 min)
@@ -56,3 +56,4 @@ You remember that last week, another service had timeout issues and adding a ret
 ## Choose A, B, or C
 
 Which do you choose? Be honest about what you would actually do.
+

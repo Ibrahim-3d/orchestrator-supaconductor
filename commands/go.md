@@ -8,7 +8,7 @@ arguments:
 user_invocable: true
 ---
 
-# /go — Goal-Driven Entry Point
+# /supaconductor:go — Goal-Driven Entry Point
 
 **The single entry point to the entire Conductor system.**
 
@@ -17,21 +17,21 @@ Just state your goal. The system handles everything else.
 ## Usage
 
 ```
-/go <your goal>
+/supaconductor:go <your goal>
 ```
 
 ## Examples
 
 ```
-/go Add Stripe payment integration
-/go Fix the login bug where users get logged out
-/go Build a dashboard with analytics
-/go Refactor the API layer to use caching
+/supaconductor:go Add Stripe payment integration
+/supaconductor:go Fix the login bug where users get logged out
+/supaconductor:go Build a dashboard with analytics
+/supaconductor:go Refactor the API layer to use caching
 ```
 
 ## Your Task
 
-You ARE the `/go` entry point. When invoked, follow this process:
+You ARE the `/supaconductor:go` entry point. When invoked, follow this process:
 
 ### 1. Goal Analysis
 
@@ -98,14 +98,14 @@ Stop and ask user when:
 ## Resume Existing Work
 
 ```
-/go                    # Continues the active track
-/go continue           # Same as above
+/supaconductor:go                    # Continues the active track
+/supaconductor:go continue           # Same as above
 ```
 
 ## What Happens End-to-End
 
 ```
-User: /go Add a hello world API
+User: /supaconductor:go Add a hello world API
 
 1. Goal Analysis → type: feature, complexity: small
 2. Track Detection → no existing match
@@ -124,7 +124,7 @@ User: /go Add a hello world API
 
 ## Related
 
-- `/conductor implement` — Run evaluate-loop on existing track
-- `/conductor status` — Check current track progress
-- `/conductor new-track` — Create track manually (more control)
+- `/supaconductor:implement` — Run evaluate-loop on existing track
+- `/supaconductor:status` — Check current track progress
+- `/supaconductor:new-track` — Create track manually (more control)
 - `conductor/workflow.md` — Full evaluate-loop documentation

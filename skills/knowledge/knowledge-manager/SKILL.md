@@ -21,7 +21,7 @@ Searches the knowledge base for relevant patterns and errors before a track begi
 
 ### 1. Extract Keywords from Spec
 
-Read the track's `spec.md` and extract relevant keywords:
+read_file the track's `spec.md` and extract relevant keywords:
 
 ```typescript
 const keywords = extractKeywords(spec);
@@ -189,7 +189,7 @@ Prioritize patterns from recent tracks (more likely to be relevant to current co
 
 ## Maintaining the Knowledge Base
 
-The Knowledge Manager is read-only. Writing to the knowledge base is done by:
+The Knowledge Manager is read_file-only. Writing to the knowledge base is done by:
 - **Retrospective Agent** — After track completion
 - **Fixer Agent** — When discovering new error patterns
 
@@ -207,3 +207,4 @@ If no relevant patterns or errors are found, return:
 ```
 
 This is fine — it means we're doing something new. The retrospective will capture learnings after.
+

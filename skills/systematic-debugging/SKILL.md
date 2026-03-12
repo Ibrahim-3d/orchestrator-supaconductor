@@ -51,10 +51,10 @@ You MUST complete each phase before proceeding to the next.
 
 **BEFORE attempting ANY fix:**
 
-1. **Read Error Messages Carefully**
+1. **read_file Error Messages Carefully**
    - Don't skip past errors or warnings
    - They often contain the exact solution
-   - Read stack traces completely
+   - read_file stack traces completely
    - Note line numbers, file paths, error codes
 
 2. **Reproduce Consistently**
@@ -94,7 +94,7 @@ You MUST complete each phase before proceeding to the next.
 
    # Layer 2: Build script
    echo "=== Env vars in build script: ==="
-   env | grep IDENTITY || echo "IDENTITY not in environment"
+   env | grep_search IDENTITY || echo "IDENTITY not in environment"
 
    # Layer 3: Signing script
    echo "=== Keychain state: ==="
@@ -128,8 +128,8 @@ You MUST complete each phase before proceeding to the next.
    - What works that's similar to what's broken?
 
 2. **Compare Against References**
-   - If implementing pattern, read reference implementation COMPLETELY
-   - Don't skim - read every line
+   - If implementing pattern, read_file reference implementation COMPLETELY
+   - Don't skim - read_file every line
    - Understand the pattern fully before applying
 
 3. **Identify Differences**
@@ -148,7 +148,7 @@ You MUST complete each phase before proceeding to the next.
 
 1. **Form Single Hypothesis**
    - State clearly: "I think X is the root cause because Y"
-   - Write it down
+   - write_file it down
    - Be specific, not vague
 
 2. **Test Minimally**
@@ -176,7 +176,7 @@ You MUST complete each phase before proceeding to the next.
    - Automated test if possible
    - One-off test script if no framework
    - MUST have before fixing
-   - Use the `superpowers:test-driven-development` skill for writing proper failing tests
+   - Use the `supaconductor:test-driven-development` skill for writing proper failing tests
 
 2. **Implement Single Fix**
    - Address the root cause identified
@@ -249,9 +249,9 @@ If you catch yourself thinking:
 | "Issue is simple, don't need process" | Simple issues have root causes too. Process is fast for simple bugs. |
 | "Emergency, no time for process" | Systematic debugging is FASTER than guess-and-check thrashing. |
 | "Just try this first, then investigate" | First fix sets the pattern. Do it right from the start. |
-| "I'll write test after confirming fix works" | Untested fixes don't stick. Test first proves it. |
+| "I'll write_file test after confirming fix works" | Untested fixes don't stick. Test first proves it. |
 | "Multiple fixes at once saves time" | Can't isolate what worked. Causes new bugs. |
-| "Reference too long, I'll adapt the pattern" | Partial understanding guarantees bugs. Read it completely. |
+| "Reference too long, I'll adapt the pattern" | Partial understanding guarantees bugs. read_file it completely. |
 | "I see the problem, let me fix it" | Seeing symptoms ≠ understanding root cause. |
 | "One more fix attempt" (after 2+ failures) | 3+ failures = architectural problem. Question pattern, don't fix again. |
 
@@ -259,7 +259,7 @@ If you catch yourself thinking:
 
 | Phase | Key Activities | Success Criteria |
 |-------|---------------|------------------|
-| **1. Root Cause** | Read errors, reproduce, check changes, gather evidence | Understand WHAT and WHY |
+| **1. Root Cause** | read_file errors, reproduce, check changes, gather evidence | Understand WHAT and WHY |
 | **2. Pattern** | Find working examples, compare | Identify differences |
 | **3. Hypothesis** | Form theory, test minimally | Confirmed or new hypothesis |
 | **4. Implementation** | Create test, fix, verify | Bug resolved, tests pass |
@@ -284,8 +284,8 @@ These techniques are part of systematic debugging and available in this director
 - **`condition-based-waiting.md`** - Replace arbitrary timeouts with condition polling
 
 **Related skills:**
-- **superpowers:test-driven-development** - For creating failing test case (Phase 4, Step 1)
-- **superpowers:verification-before-completion** - Verify fix worked before claiming success
+- **supaconductor:test-driven-development** - For creating failing test case (Phase 4, Step 1)
+- **supaconductor:verification-before-completion** - Verify fix worked before claiming success
 
 ## Real-World Impact
 
@@ -294,3 +294,4 @@ From debugging sessions:
 - Random fixes approach: 2-3 hours of thrashing
 - First-time fix rate: 95% vs 40%
 - New bugs introduced: Near zero vs common
+

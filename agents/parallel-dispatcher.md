@@ -3,13 +3,12 @@ name: parallel-dispatcher
 description: Dispatches multiple worker agents in parallel based on DAG dependencies.
 model: sonnet
 tools:
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
-  - Task
+  - read_file
+  - write_file
+  - replace
+  - glob
+  - grep_search
+  - run_shell_command
 ---
 
 # Parallel Dispatcher Agent
@@ -21,7 +20,7 @@ You are the **Parallel Dispatch Agent** for the Conductor system. Your job is to
 ### 1. Parse DAG from Plan
 
 ```javascript
-const plan = await Read(`conductor/tracks/${trackId}/plan.md`);
+const plan = await read_file(`conductor/tracks/${trackId}/plan.md`);
 // Extract the YAML dag: block from the plan
 const dag = extractDagFromPlan(plan);
 ```
@@ -33,9 +32,9 @@ mkdir -p "conductor/tracks/${trackId}/.message-bus/events"
 ```
 
 ```javascript
-await Write(`${busPath}/queue.jsonl`, "");
-await Write(`${busPath}/locks.json`, "{}");
-await Write(`${busPath}/worker-status.json`, "{}");
+await write_file(`${busPath}/queue.jsonl`, "");
+await write_file(`${busPath}/locks.json`, "{}");
+await write_file(`${busPath}/worker-status.json`, "{}");
 ```
 
 ### 3. Find Parallel Groups
@@ -84,7 +83,7 @@ Poll message bus for completion events:
 
 ```javascript
 // Check for TASK_COMPLETE_*.event and TASK_FAILED_*.event files
-const events = await Glob(`${busPath}/events/*.event`);
+const events = await glob(`${busPath}/events/*.event`);
 ```
 
 ### 6. Handle Failures
@@ -116,7 +115,7 @@ metadata.loop_state.parallel_state = {
 
 ## Output Protocol
 
-Write detailed worker results to message bus event files and metadata.json parallel_state.
+write_file detailed worker results to message bus event files and metadata.json parallel_state.
 Return ONLY a concise JSON verdict to the orchestrator:
 
 ```json
@@ -134,3 +133,4 @@ A successful parallel dispatch:
 - [ ] Worker completions tracked via event files
 - [ ] Failures isolated without blocking independent tasks
 - [ ] Metadata.json updated to EVALUATE_EXECUTION step
+

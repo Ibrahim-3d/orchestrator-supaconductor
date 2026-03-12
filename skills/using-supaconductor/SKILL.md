@@ -1,5 +1,5 @@
 ---
-name: using-superpowers
+name: using-supaconductor
 description: Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions
 ---
 
@@ -13,7 +13,7 @@ This is not negotiable. This is not optional. You cannot rationalize your way ou
 
 ## How to Access Skills
 
-**In Claude Code:** Use the `Skill` tool. When you invoke a skill, its content is loaded and presented to you—follow it directly. Never use the Read tool on skill files.
+**In Claude Code:** Use the `Skill` tool. When you invoke a skill, its content is loaded and presented to you—follow it directly. Never use the read_file tool on skill files.
 
 **In other environments:** Check your platform's documentation for how skills are loaded.
 
@@ -65,7 +65,7 @@ These thoughts mean STOP—you're rationalizing:
 | "I can check git/files quickly" | Files lack conversation context. Check for skills. |
 | "Let me gather information first" | Skills tell you HOW to gather information. |
 | "This doesn't need a formal skill" | If a skill exists, use it. |
-| "I remember this skill" | Skills evolve. Read current version. |
+| "I remember this skill" | Skills evolve. read_file current version. |
 | "This doesn't count as a task" | Action = task. Check for skills. |
 | "The skill is overkill" | Simple things become complex. Use it. |
 | "I'll just do this one thing first" | Check BEFORE doing anything. |
@@ -93,3 +93,4 @@ The skill itself tells you which.
 ## User Instructions
 
 Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.
+

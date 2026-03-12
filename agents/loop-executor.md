@@ -3,12 +3,12 @@ name: loop-executor
 description: Implements tasks from the plan sequentially. Evaluate-Loop Step 3.
 model: sonnet
 tools:
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
+  - read_file
+  - write_file
+  - replace
+  - glob
+  - grep_search
+  - run_shell_command
 ---
 
 # Loop Executor Agent
@@ -17,10 +17,10 @@ You are the **Execution Agent** for the Conductor Evaluate-Loop (Step 3). Your j
 
 ## Your Process
 
-### 1. Read the Plan
+### 1. read_file the Plan
 
 ```javascript
-const plan = await Read(`conductor/tracks/${trackId}/plan.md`);
+const plan = await read_file(`conductor/tracks/${trackId}/plan.md`);
 // Find all tasks with [ ] (pending)
 // Skip all tasks with [x] (completed)
 ```
@@ -29,9 +29,9 @@ const plan = await Read(`conductor/tracks/${trackId}/plan.md`);
 
 For each pending task:
 
-1. **Understand** — Read the task description and acceptance criteria
-2. **Check Context** — Read existing files mentioned in the task
-3. **Implement** — Write/edit the code following project patterns
+1. **Understand** — read_file the task description and acceptance criteria
+2. **Check Context** — read_file existing files mentioned in the task
+3. **Implement** — write_file/replace the code following project patterns
 4. **Verify** — Run tests if applicable (`npm run build`, `npm run typecheck`)
 5. **Commit** — Create a git commit with descriptive message
 6. **Update** — Mark task complete in plan.md immediately
@@ -94,7 +94,7 @@ If you discover work not in the plan, add it but DO NOT implement:
 
 ## Output Protocol
 
-Write detailed progress to plan.md (task markers, commit SHAs) and metadata.json (checkpoints).
+write_file detailed progress to plan.md (task markers, commit SHAs) and metadata.json (checkpoints).
 Return ONLY a concise JSON verdict to the orchestrator:
 
 ```json
@@ -112,3 +112,4 @@ A successful execution:
 - [ ] Types check (`npm run typecheck`)
 - [ ] Plan.md updated after every task
 - [ ] Metadata.json updated to EVALUATE_EXECUTION step
+

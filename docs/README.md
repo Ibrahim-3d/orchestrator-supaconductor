@@ -1,10 +1,10 @@
-# Conductor Superpowers Plugin v3.2
+# SupaConductor plugin v3.3.1
 
 Parallel multi-agent orchestration with Evaluate-Loop, Board of Directors, and bundled Superpowers skills for Claude Code.
 
-## What is Conductor?
+## What is SupaConductor?
 
-Conductor is a structured workflow system that organizes development work into **tracks** and **phases**, with detailed specifications, step-by-step implementation plans, and automated quality gates. It provides:
+SupaConductor is a structured workflow system that organizes development work into **tracks** and **phases**, with detailed specifications, step-by-step implementation plans, and automated quality gates. It provides:
 
 - **Evaluate-Loop** — Plan → Evaluate Plan → Execute → Evaluate Execution → Fix cycle
 - **16 Specialized Agents** — Orchestrator, planners, executors, evaluators, fixers, code reviewer
@@ -17,21 +17,21 @@ Conductor is a structured workflow system that organizes development work into *
 
 ### 1. Install the Plugin
 
-The plugin should be installed at `~/.claude/plugins/conductor-orchestrator-superpowers/`.
+The plugin should be installed at `~/.claude/plugins/supaconductor/`.
 
 ### 2. Initialize a Project
 
 Run the setup script to create the `conductor/` directory in your project:
 
 ```bash
-bash ~/.claude/plugins/conductor-orchestrator-superpowers/scripts/setup.sh
+bash ~/.claude/plugins/supaconductor/scripts/setup.sh
 ```
 
-Or use the `/conductor setup` command in Claude Code.
+Or use the `/supaconductor:setup` command in Claude Code.
 
 ### 3. Start Working
 
-The simplest way to use Conductor:
+The simplest way to use SupaConductor:
 
 ```bash
 /go <your goal>
@@ -56,15 +56,15 @@ Examples:
 
 ## Commands
 
-### Conductor Commands
+### SupaConductor Commands
 
 | Command | Description |
 |---------|-------------|
-| `/go <goal>` | Main entry point — state your goal, Conductor handles the rest |
-| `/conductor status` | View current progress across all tracks |
-| `/conductor new-track` | Create a new development track |
-| `/conductor implement` | Run the automated Evaluate-Loop |
-| `/conductor setup` | Initialize Conductor in a new project |
+| `/go <goal>` | Main entry point — state your goal, SupaConductor handles the rest |
+| `/supaconductor:status` | View current progress across all tracks |
+| `/supaconductor:new-track` | Create a new development track |
+| `/supaconductor:implement` | Run the automated Evaluate-Loop |
+| `/supaconductor:setup` | Initialize SupaConductor in a new project |
 | `/phase-review` | Run post-execution quality gate |
 | `/board-meeting [proposal]` | Full 4-phase board deliberation |
 | `/board-review [proposal]` | Quick board assessment |
@@ -73,10 +73,12 @@ Examples:
 
 ### Superpowers Commands (Bundled)
 
+These commands are provided by the bundled [superpowers](https://github.com/obra/superpowers) toolkit:
+
 | Command | Description |
 |---------|-------------|
-| `/write-plan` | Create an implementation plan using superpowers patterns |
-| `/execute-plan` | Execute a plan using superpowers patterns |
+| `/supaconductor:writing-plans` | Create an implementation plan using superpowers patterns |
+| `/supaconductor:executing-plans` | Execute a plan using superpowers patterns |
 | `/brainstorm` | Brainstorm approaches to a problem |
 
 ## Track Structure
@@ -105,7 +107,7 @@ PLAN → EVALUATE PLAN → EXECUTE → EVALUATE EXECUTION
 ### Agent System
 
 - **Orchestrator** — Detects track state, dispatches agents, manages loop
-- **Loop Agents** — Planner, Executor, Fixer (legacy or Superpowers-enhanced)
+- **Loop Agents** — Planner, Executor, Fixer (Legacy or Superpowers-enhanced)
 - **Evaluators** — Plan evaluator, Execution evaluator (dispatches to specialized: UI/UX, Code Quality, Integration, Business Logic)
 - **Board** — 5 directors with ASSESS → DISCUSS → VOTE → RESOLVE protocol
 - **Leads** — Architecture, Product, Tech, QA for autonomous decisions
@@ -114,7 +116,7 @@ PLAN → EVALUATE PLAN → EXECUTE → EVALUATE EXECUTION
 
 ### Bundled Superpowers Skills
 
-This plugin bundles [obra/superpowers](https://github.com/obra/superpowers) v4.3.0 (MIT License). These skills are used by the Conductor orchestrator for enhanced planning, execution, and debugging:
+This plugin bundles [obra/superpowers](https://github.com/obra/superpowers) v4.3.0 (MIT License). These skills are used by the SupaConductor orchestrator for enhanced planning, execution, and debugging:
 
 | Skill | Purpose |
 |-------|---------|
@@ -131,7 +133,7 @@ This plugin bundles [obra/superpowers](https://github.com/obra/superpowers) v4.3
 | `using-git-worktrees` | Git worktree workflows |
 | `finishing-a-development-branch` | Branch completion workflow |
 | `writing-skills` | Creating new Claude Code skills |
-| `using-superpowers` | Skills system introduction |
+| `using-supaconductor` | Skills system introduction |
 
 New tracks use Superpowers by default. Legacy tracks fall back to the built-in loop agents.
 
@@ -142,7 +144,7 @@ New tracks use Superpowers by default. Legacy tracks fall back to the built-in l
 
 ## Project-Specific Skills
 
-Conductor is designed to work alongside project-specific skills. Keep project-specific knowledge in your project's `.claude/skills/` directory:
+SupaConductor is designed to work alongside project-specific skills. Keep project-specific knowledge in your project's `.claude/skills/` directory:
 
 - Product rules, personas, and domain knowledge
 - Framework-specific patterns (e.g., Next.js, Rails)
@@ -160,7 +162,7 @@ This plugin bundles the following third-party software:
 - **Author:** Jesse Vincent (jesse@fsck.com)
 - **License:** MIT
 - **Repository:** https://github.com/obra/superpowers
-- **License file:** [LICENSES/superpowers-MIT](../LICENSES/superpowers-MIT)
+- **License file:** [LICENSES/supaconductor-MIT](../LICENSES/supaconductor-MIT)
 
 ## License
 

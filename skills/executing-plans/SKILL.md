@@ -16,7 +16,7 @@ Load plan, review critically, execute tasks in batches, report for review betwee
 ## The Process
 
 ### Step 1: Load and Review Plan
-1. Read plan file
+1. read_file plan file
 2. Review critically - identify any questions or concerns about the plan
 3. If concerns: Raise them with your human partner before starting
 4. If no concerns: Create TodoWrite and proceed
@@ -46,7 +46,7 @@ Based on feedback:
 
 After all tasks complete and verified:
 - Announce: "I'm using the finishing-a-development-branch skill to complete this work."
-- **REQUIRED SUB-SKILL:** Use superpowers:finishing-a-development-branch
+- **REQUIRED SUB-SKILL:** Use supaconductor:finishing-a-development-branch
 - Follow that skill to verify tests, present options, execute choice
 
 ## When to Stop and Ask for Help
@@ -79,10 +79,10 @@ After all tasks complete and verified:
 ## Conductor Integration (Autonomous Mode)
 
 When invoked with `--plan`, `--track-dir`, and `--metadata` parameters (from Conductor orchestrator):
-- Read plan from `--plan` path
+- read_file plan from `--plan` path
 - Execute ALL tasks (not batches of 3) — run autonomously
 - Do NOT stop for human feedback between batches
-- After each task: use Edit tool to mark `[x]` in plan.md with commit SHA
+- After each task: use replace tool to mark `[x]` in plan.md with commit SHA
 - After all tasks: update `--metadata` checkpoint to `EXECUTE: PASSED`
 - Return concise verdict: `{"verdict": "PASS", "tasks_completed": N}`
 - If `--resume-from` is provided, skip tasks before that task ID
@@ -92,6 +92,7 @@ When these parameters are absent, fall back to the standalone batch workflow abo
 ## Integration
 
 **Required workflow skills:**
-- **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
-- **superpowers:writing-plans** - Creates the plan this skill executes
-- **superpowers:finishing-a-development-branch** - Complete development after all tasks
+- **supaconductor:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+- **supaconductor:writing-plans** - Creates the plan this skill executes
+- **supaconductor:finishing-a-development-branch** - Complete development after all tasks
+

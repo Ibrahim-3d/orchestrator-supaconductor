@@ -197,7 +197,7 @@ When making decisions, consult:
 
 ### Example 3: Test Type Selection
 
-**Question**: "Should I write unit tests or integration tests for the Stripe webhook handler?"
+**Question**: "Should I write_file unit tests or integration tests for the Stripe webhook handler?"
 
 **Process**:
 1. Webhook handler involves external integration
@@ -307,3 +307,4 @@ When evaluating track completion, verify:
 4. **Documentation**
    - [ ] Test patterns documented if novel
    - [ ] Coverage exceptions documented
+

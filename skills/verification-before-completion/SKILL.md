@@ -28,7 +28,7 @@ BEFORE claiming any status or expressing satisfaction:
 
 1. IDENTIFY: What command proves this claim?
 2. RUN: Execute the FULL command (fresh, complete)
-3. READ: Full output, check exit code, count failures
+3. read_file: Full output, check exit code, count failures
 4. VERIFY: Does output confirm the claim?
    - If NO: State actual status with evidence
    - If YES: State claim WITH evidence
@@ -83,7 +83,7 @@ Skip any step = lying, not verifying
 
 **Regression tests (TDD Red-Green):**
 ```
-✅ Write → Run (pass) → Revert fix → Run (MUST FAIL) → Restore → Run (pass)
+✅ write_file → Run (pass) → Revert fix → Run (MUST FAIL) → Restore → Run (pass)
 ❌ "I've written a regression test" (without red-green verification)
 ```
 
@@ -95,7 +95,7 @@ Skip any step = lying, not verifying
 
 **Requirements:**
 ```
-✅ Re-read plan → Create checklist → Verify each → Report gaps or completion
+✅ Re-read_file plan → Create checklist → Verify each → Report gaps or completion
 ❌ "Tests pass, phase complete"
 ```
 
@@ -134,6 +134,7 @@ From 24 failure memories:
 
 **No shortcuts for verification.**
 
-Run the command. Read the output. THEN claim the result.
+Run the command. read_file the output. THEN claim the result.
 
 This is non-negotiable.
+

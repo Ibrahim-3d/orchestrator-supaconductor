@@ -324,3 +324,4 @@ claude /cto-advisor
 # Conductor detects Step 2 (Evaluate Plan) + technical track -> automatically calls cto-plan-reviewer
 # Report generated -> included in plan evaluation -> execution proceeds or blocks
 ```
+

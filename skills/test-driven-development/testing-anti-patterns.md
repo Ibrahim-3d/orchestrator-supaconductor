@@ -121,7 +121,7 @@ BEFORE adding any method to production class:
 ```typescript
 // ❌ BAD: Mock breaks test logic
 test('detects duplicate server', () => {
-  // Mock prevents config write that test depends on!
+  // Mock prevents config write_file that test depends on!
   vi.mock('ToolCatalog', () => ({
     discoverAndCacheTools: vi.fn().mockResolvedValue(undefined)
   }));
@@ -242,7 +242,7 @@ BEFORE creating mock responses:
 **The fix:**
 ```
 TDD cycle:
-1. Write failing test
+1. write_file failing test
 2. Implement to pass
 3. Refactor
 4. THEN claim complete
@@ -263,7 +263,7 @@ TDD cycle:
 ## TDD Prevents These Anti-Patterns
 
 **Why TDD helps:**
-1. **Write test first** → Forces you to think about what you're actually testing
+1. **write_file test first** → Forces you to think about what you're actually testing
 2. **Watch it fail** → Confirms test tests real behavior, not mocks
 3. **Minimal implementation** → No test-only methods creep in
 4. **Real dependencies** → You see what the test actually needs before mocking
@@ -297,3 +297,4 @@ TDD cycle:
 If TDD reveals you're testing mock behavior, you've gone wrong.
 
 Fix: Test real behavior or question why you're mocking at all.
+

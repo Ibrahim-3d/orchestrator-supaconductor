@@ -33,10 +33,10 @@ Task:
 ## Example Usage
 
 ```
-/cmo How should I position my product?
-/cmo What marketing channels should I prioritize?
-/cmo Help me plan our product launch
-/cmo
+/supaconductor:cmo How should I position my product?
+/supaconductor:cmo What marketing channels should I prioritize?
+/supaconductor:cmo Help me plan our product launch
+/supaconductor:cmo
 ```
 
 ## What to Pass to the Agent

@@ -33,10 +33,10 @@ Task:
 ## Example Usage
 
 ```
-/ux-designer How should I structure the navigation?
-/ux-designer Review this user flow for pain points
-/ux-designer What's the best pattern for this form?
-/ux-designer
+/supaconductor:ux-designer How should I structure the navigation?
+/supaconductor:ux-designer Review this user flow for pain points
+/supaconductor:ux-designer What's the best pattern for this form?
+/supaconductor:ux-designer
 ```
 
 ## What to Pass to the Agent

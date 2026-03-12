@@ -1,5 +1,5 @@
 ---
-name: conductor:setup
+name: conductor-setup
 description: "Initialize the Conductor environment in a new project - creates conductor/ directory structure"
 user_invocable: true
 ---
@@ -137,10 +137,10 @@ Copy or reference the Conductor workflow documentation from the plugin's `docs/w
 
 **Next Steps**:
 1. Run `/conductor:new-track` to create your first development track
-2. Or run `/go <your goal>` to create and start a track automatically
+2. Or run `/supaconductor:go <your goal>` to create and start a track automatically
 
 **Quick Start**:
-/go Add user authentication
+/supaconductor:go Add user authentication
 ```
 
 ## Re-initialization
@@ -159,5 +159,5 @@ Run `/conductor:status` to see current state.
 ## Related
 
 - `/conductor:new-track` — Create your first track
-- `/go` — Start working immediately
+- `/supaconductor:go` — Start working immediately
 - `conductor/workflow.md` — Full process documentation

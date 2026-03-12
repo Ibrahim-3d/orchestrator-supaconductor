@@ -76,7 +76,7 @@ def post_message(bus_path: str, msg_type: str, source: str, payload: dict):
 
     # Append to queue (atomic via file locking)
     with open(f"{bus_path}/queue.jsonl", "a") as f:
-        f.write(json.dumps(message) + "\n")
+        f.write_file(json.dumps(message) + "\n")
 
     # Create event file for polling
     if msg_type in ["TASK_COMPLETE", "FILE_UNLOCK", "BOARD_RESOLVE"]:
@@ -125,7 +125,7 @@ def wait_for_event(bus_path: str, event_pattern: str, timeout: int = 300) -> boo
 def acquire_lock(bus_path: str, filepath: str, worker_id: str) -> bool:
     locks_file = f"{bus_path}/locks.json"
 
-    # Read current locks
+    # read_file current locks
     locks = json.load(open(locks_file)) if os.path.exists(locks_file) else {}
 
     # Check if already locked
@@ -197,7 +197,7 @@ Each director posts their assessment:
 def post_board_assessment(bus_path: str, director: str, assessment: dict):
     board_path = f"{bus_path}/board"
 
-    # Read existing assessments
+    # read_file existing assessments
     assess_file = f"{board_path}/assessments.json"
     assessments = json.load(open(assess_file)) if os.path.exists(assess_file) else {}
 
@@ -231,7 +231,7 @@ def post_board_discussion(bus_path: str, from_dir: str, to_dir: str,
 
     # Append to discussion log
     with open(f"{board_path}/discussion.jsonl", "a") as f:
-        f.write(json.dumps(discussion_msg) + "\n")
+        f.write_file(json.dumps(discussion_msg) + "\n")
 
     # Post to main queue
     post_message(bus_path, "BOARD_DISCUSS", from_dir, discussion_msg)
@@ -393,7 +393,7 @@ def init_message_bus(track_path: str):
 ## Worker Protocol
 
 1. **On Start**:
-   - Read message bus for TASK_COMPLETE events of dependencies
+   - read_file message bus for TASK_COMPLETE events of dependencies
    - Verify all dependencies are met
    - Update worker-status.json with RUNNING
 
@@ -422,12 +422,12 @@ def init_message_bus(track_path: str):
 ## Board Protocol
 
 1. **Phase 1 (ASSESS)**:
-   - All 5 directors read proposal
+   - All 5 directors read_file proposal
    - Each posts BOARD_ASSESS to assessments.json
    - Wait for all 5 assessments
 
 2. **Phase 2 (DISCUSS)** -- 3 rounds:
-   - Directors read others' assessments
+   - Directors read_file others' assessments
    - Post BOARD_DISCUSS messages
    - Respond to challenges and questions
 
@@ -694,3 +694,4 @@ def get_messages_for_director(bus_path: str, director: str) -> list:
 │   }
 └── resolution.md                       # Phase 4: Board decision
 ```
+

@@ -12,7 +12,7 @@ Help turn ideas into fully formed designs and specs through natural collaborativ
 Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval.
 
 <HARD-GATE>
-Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
+Do NOT invoke any implementation skill, write_file any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
 </HARD-GATE>
 
 ## Anti-Pattern: "This Is Too Simple To Need A Design"
@@ -27,7 +27,7 @@ You MUST create a task for each of these items and complete them in order:
 2. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
 3. **Propose 2-3 approaches** — with trade-offs and your recommendation
 4. **Present design** — in sections scaled to their complexity, get user approval after each section
-5. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
+5. **write_file design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
 6. **Transition to implementation** — invoke writing-plans skill to create implementation plan
 
 ## Process Flow
@@ -39,7 +39,7 @@ digraph brainstorming {
     "Propose 2-3 approaches" [shape=box];
     "Present design sections" [shape=box];
     "User approves design?" [shape=diamond];
-    "Write design doc" [shape=box];
+    "write_file design doc" [shape=box];
     "Invoke writing-plans skill" [shape=doublecircle];
 
     "Explore project context" -> "Ask clarifying questions";
@@ -47,8 +47,8 @@ digraph brainstorming {
     "Propose 2-3 approaches" -> "Present design sections";
     "Present design sections" -> "User approves design?";
     "User approves design?" -> "Present design sections" [label="no, revise"];
-    "User approves design?" -> "Write design doc" [label="yes"];
-    "Write design doc" -> "Invoke writing-plans skill";
+    "User approves design?" -> "write_file design doc" [label="yes"];
+    "write_file design doc" -> "Invoke writing-plans skill";
 }
 ```
 
@@ -78,7 +78,7 @@ digraph brainstorming {
 ## After the Design
 
 **Documentation:**
-- Write the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
+- write_file the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
 - Use elements-of-style:writing-clearly-and-concisely skill if available
 - Commit the design document to git
 
@@ -94,3 +94,4 @@ digraph brainstorming {
 - **Explore alternatives** - Always propose 2-3 approaches before settling
 - **Incremental validation** - Present design, get approval before moving on
 - **Be flexible** - Go back and clarify when something doesn't make sense
+

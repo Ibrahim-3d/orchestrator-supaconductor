@@ -16,7 +16,7 @@ Code review requires technical evaluation, not emotional performance.
 ```
 WHEN receiving code review feedback:
 
-1. READ: Complete feedback without reacting
+1. read_file: Complete feedback without reacting
 2. UNDERSTAND: Restate requirement in own words (or ask)
 3. VERIFY: Check against codebase reality
 4. EVALUATE: Technically sound for THIS codebase?
@@ -89,7 +89,7 @@ IF conflicts with your human partner's prior decisions:
 
 ```
 IF reviewer suggests "implementing properly":
-  grep codebase for actual usage
+  grep_search codebase for actual usage
 
   IF unused: "This endpoint isn't called. Remove it (YAGNI)?"
   IF used: Then implement properly
@@ -145,7 +145,7 @@ When feedback IS correct:
 
 **Why no thanks:** Actions speak. Just fix it. The code itself shows you heard the feedback.
 
-**If you catch yourself about to write "Thanks":** DELETE IT. State the fix instead.
+**If you catch yourself about to write_file "Thanks":** DELETE IT. State the fix instead.
 
 ## Gracefully Correcting Your Pushback
 
@@ -211,3 +211,4 @@ When replying to inline review comments on GitHub, reply in the comment thread (
 Verify. Question. Then implement.
 
 No performative agreement. Technical rigor always.
+

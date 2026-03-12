@@ -92,3 +92,4 @@ Test at breakpoints:
 Inherits from base worker template. Post progress updates and coordinate via message bus at `{message_bus_path}`.
 
 {base_worker_protocol}
+

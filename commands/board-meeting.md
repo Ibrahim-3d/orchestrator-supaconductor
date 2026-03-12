@@ -9,14 +9,14 @@ arguments:
 user_invocable: true
 ---
 
-# /board-meeting — Full Board Deliberation
+# /supaconductor:board-meeting — Full Board Deliberation
 
 Run a complete 4-phase board meeting with the 5-member Board of Directors. Directors assess, discuss, debate, and vote to reach consensus.
 
 ## Usage
 
 ```
-/board-meeting [proposal or leave blank to review current track]
+/supaconductor:board-meeting [proposal or leave blank to review current track]
 ```
 
 ## The 4 Phases

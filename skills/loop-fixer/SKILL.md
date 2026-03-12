@@ -17,7 +17,7 @@ Handles the loop-back when an evaluation fails. Takes the evaluator's failure re
 
 ### 1. Parse Evaluation Failures
 
-Read the evaluation report and extract:
+read_file the evaluation report and extract:
 - Which passes failed (scope, overlap, deliverables, build, quality, etc.)
 - Specific fix instructions from the evaluator
 - Severity of each issue
@@ -179,15 +179,16 @@ The fixer MUST update the track's `metadata.json` at key points:
 ```
 
 ### Update Protocol
-1. Read current `metadata.json`
+1. read_file current `metadata.json`
 2. Check `fix_cycle_count` — if >= 3, escalate to user
 3. Increment `fix_cycle_count` at start
 4. Update `fixes_applied` and `fixes_remaining` after each fix
 5. On completion: Set `current_step` back to the evaluator step
-6. Write back to `metadata.json`
+6. write_file back to `metadata.json`
 
 ## Handoff
 
 After fixes complete → Conductor dispatches the original evaluator agent to re-run:
 - Plan fixes → `loop-plan-evaluator`
 - Execution fixes → `loop-execution-evaluator`
+

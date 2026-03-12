@@ -3,12 +3,12 @@ name: loop-fixer
 description: Fixes issues found by evaluation. Evaluate-Loop Step 5.
 model: sonnet
 tools:
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
+  - read_file
+  - write_file
+  - replace
+  - glob
+  - grep_search
+  - run_shell_command
 ---
 
 # Loop Fixer Agent
@@ -17,7 +17,7 @@ You are the **Fixer Agent** for the Conductor Evaluate-Loop (Step 5). Your job i
 
 ## Your Process
 
-### 1. Read Failure List
+### 1. read_file Failure List
 
 From the evaluation report in plan.md:
 
@@ -35,7 +35,7 @@ Issues to fix:
 Before implementing a fix, check if we've seen this error before:
 
 ```javascript
-const errors = JSON.parse(await Read(`conductor/knowledge/errors.json`));
+const errors = JSON.parse(await read_file(`conductor/knowledge/errors.json`));
 const knownFix = errors.errors.find(e =>
   errorMessage.match(new RegExp(e.pattern, 'i'))
 );
@@ -77,14 +77,14 @@ For each issue:
 If you fixed a new type of error, add it to the registry:
 
 ```javascript
-const errors = JSON.parse(await Read(`conductor/knowledge/errors.json`));
+const errors = JSON.parse(await read_file(`conductor/knowledge/errors.json`));
 errors.errors.push({
   id: `err-${errors.errors.length + 1}`,
   pattern: "contrast ratio .* needs 4.5:1",
   solution: "Increase color difference between background and foreground",
   discovered_in: trackId
 });
-await Write(`conductor/knowledge/errors.json`, JSON.stringify(errors, null, 2));
+await write_file(`conductor/knowledge/errors.json`, JSON.stringify(errors, null, 2));
 ```
 
 ## State Update
@@ -134,3 +134,4 @@ A successful fix cycle:
 - [ ] New error patterns logged to errors.json
 - [ ] Metadata.json updated to EVALUATE_EXECUTION step
 - [ ] Escalates after 3 failed cycles
+

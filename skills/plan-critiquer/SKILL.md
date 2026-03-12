@@ -29,7 +29,7 @@ This skill provides **harsh, unfiltered critique** of strategic documents to exp
 
 ## Workflow
 
-### Step 1: Identify and Read Input Documents
+### Step 1: Identify and read_file Input Documents
 
 The user will provide one or more strategic documents to critique. Common types:
 - Validation reports
@@ -39,11 +39,11 @@ The user will provide one or more strategic documents to critique. Common types:
 - Product roadmaps
 - Go-to-market strategies
 
-Read all provided documents completely to understand the full context.
+read_file all provided documents completely to understand the full context.
 
 ### Step 2: Load Critique Framework
 
-Read `references/critique_framework.md` - this contains the multi-pass analytical framework with specific questions and techniques for identifying blind spots.
+read_file `references/critique_framework.md` - this contains the multi-pass analytical framework with specific questions and techniques for identifying blind spots.
 
 ### Step 3: Apply Critique Framework (Multi-Pass Analysis)
 
@@ -143,7 +143,7 @@ For each action item:
 - **`tracks.md`** - Create new tracks for: validation experiments, research tasks, prototypes, risk mitigation projects
 - **New track (spec.md + plan.md)** - For substantial work requiring phased execution
 
-### Step 6: Write Output File
+### Step 6: write_file Output File
 
 Save the critique report as a markdown file in the project root with a descriptive name:
 - `[ProjectName]_Critique_Report_[Date].md`
@@ -246,3 +246,4 @@ The skill uses `assets/critique_template.md` as the base structure. Customize se
 3. **Act on findings:** A critique without action is wasted effort
 4. **Iterate:** Critique → Update → Critique again for high-stakes decisions
 5. **Time-box:** Don't let perfect critique delay necessary action - set a deadline
+

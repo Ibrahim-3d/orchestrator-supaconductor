@@ -13,7 +13,7 @@ Use this skill when:
 
 - Starting work on a new track or feature
 - User mentions: "load context", "project context", "get context"
-- Beginning `/conductor:implement` workflow
+- Beginning `/supaconductor:implement` workflow
 - Need to understand project structure without reading all files
 
 ## Token Optimization Protocol
@@ -44,7 +44,7 @@ For directory structure:
 git ls-files --exclude-standard -co | xargs -n 1 dirname | sort -u
 ```
 
-### 3. Priority Files (Read First)
+### 3. Priority Files (read_file First)
 
 | Priority | File Type | Examples                                          |
 | -------- | --------- | ------------------------------------------------- |
@@ -57,14 +57,14 @@ git ls-files --exclude-standard -co | xargs -n 1 dirname | sort -u
 
 For files over 1MB:
 
-- Read first 20 lines (header/imports)
-- Read last 20 lines (exports/summary)
+- read_file first 20 lines (header/imports)
+- read_file last 20 lines (exports/summary)
 - Skip middle content
 
 ### Enforcement Rules (MANDATORY)
 
-1. Check file size via Bash `ls -la` before reading
-   - >500KB: Read first 20 + last 20 lines only
+1. Check file size via run_shell_command `ls -la` before reading
+   - >500KB: read_file first 20 + last 20 lines only
    - >1MB: Skip entirely, log as "skipped: too large"
 2. Stop after Tier 1-3 files. Tier 4 (config files) only if task-specific.
 3. Never load completed tracks — only active track spec.md + plan.md.
@@ -105,3 +105,4 @@ After loading context, summarize:
 **Completed Tasks**: [count of [x] tasks]
 **Loop Step**: [current Evaluate-Loop step — Plan/Execute/Evaluate/Fix]
 ```
+

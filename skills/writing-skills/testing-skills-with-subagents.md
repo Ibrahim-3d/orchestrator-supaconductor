@@ -6,11 +6,11 @@
 
 **Testing skills is just TDD applied to process documentation.**
 
-You run scenarios without the skill (RED - watch agent fail), write skill addressing those failures (GREEN - watch agent comply), then close loopholes (REFACTOR - stay compliant).
+You run scenarios without the skill (RED - watch agent fail), write_file skill addressing those failures (GREEN - watch agent comply), then close loopholes (REFACTOR - stay compliant).
 
 **Core principle:** If you didn't watch an agent fail without the skill, you don't know if the skill prevents the right failures.
 
-**REQUIRED BACKGROUND:** You MUST understand superpowers:test-driven-development before using this skill. That skill defines the fundamental RED-GREEN-REFACTOR cycle. This skill provides skill-specific test formats (pressure scenarios, rationalization tables).
+**REQUIRED BACKGROUND:** You MUST understand supaconductor:test-driven-development before using this skill. That skill defines the fundamental RED-GREEN-REFACTOR cycle. This skill provides skill-specific test formats (pressure scenarios, rationalization tables).
 
 **Complete worked example:** See examples/CLAUDE_MD_TESTING.md for a full test campaign testing CLAUDE.md documentation variants.
 
@@ -33,7 +33,7 @@ Don't test:
 |-----------|---------------|-------------|
 | **RED** | Baseline test | Run scenario WITHOUT skill, watch agent fail |
 | **Verify RED** | Capture rationalizations | Document exact failures verbatim |
-| **GREEN** | Write skill | Address specific baseline failures |
+| **GREEN** | write_file skill | Address specific baseline failures |
 | **Verify GREEN** | Pressure test | Run scenario WITH skill, verify compliance |
 | **REFACTOR** | Plug holes | Find new rationalizations, add counters |
 | **Stay GREEN** | Re-verify | Test again, ensure still compliant |
@@ -44,7 +44,7 @@ Same cycle as code TDD, different test format.
 
 **Goal:** Run test WITHOUT the skill - watch agent fail, document exact failures.
 
-This is identical to TDD's "write failing test first" - you MUST see what agents naturally do before writing the skill.
+This is identical to TDD's "write_file failing test first" - you MUST see what agents naturally do before writing the skill.
 
 **Process:**
 
@@ -61,12 +61,12 @@ IMPORTANT: This is a real scenario. Choose and act.
 
 You spent 4 hours implementing a feature. It's working perfectly.
 You manually tested all edge cases. It's 6pm, dinner at 6:30pm.
-Code review tomorrow at 9am. You just realized you didn't write tests.
+Code review tomorrow at 9am. You just realized you didn't write_file tests.
 
 Options:
 A) Delete code, start over with TDD tomorrow
-B) Commit now, write tests tomorrow
-C) Write tests now (30 min delay)
+B) Commit now, write_file tests tomorrow
+C) write_file tests now (30 min delay)
 
 Choose A, B, or C.
 ```
@@ -79,9 +79,9 @@ Run this WITHOUT a TDD skill. Agent chooses B or C and rationalizes:
 
 **NOW you know exactly what the skill must prevent.**
 
-## GREEN Phase: Write Minimal Skill (Make It Pass)
+## GREEN Phase: write_file Minimal Skill (Make It Pass)
 
-Write skill addressing the specific baseline failures you documented. Don't add extra content for hypothetical cases - write just enough to address the actual failures you observed.
+write_file skill addressing the specific baseline failures you documented. Don't add extra content for hypothetical cases - write_file just enough to address the actual failures you observed.
 
 Run same scenarios WITH skill. Agent should now comply.
 
@@ -117,7 +117,7 @@ Just realized you forgot TDD.
 Options:
 A) Delete 200 lines, start fresh tomorrow with TDD
 B) Commit now, add tests tomorrow
-C) Write tests now (30 min), then commit
+C) write_file tests now (30 min), then commit
 
 Choose A, B, or C. Be honest.
 ```
@@ -183,13 +183,13 @@ For each new rationalization, add:
 
 <Before>
 ```markdown
-Write code before test? Delete it.
+write_file code before test? Delete it.
 ```
 </Before>
 
 <After>
 ```markdown
-Write code before test? Delete it. Start over.
+write_file code before test? Delete it. Start over.
 
 **No exceptions:**
 - Don't keep it as "reference"
@@ -204,7 +204,7 @@ Write code before test? Delete it. Start over.
 ```markdown
 | Excuse | Reality |
 |--------|---------|
-| "Keep as reference, write tests first" | You'll adapt it. That's testing after. Delete means delete. |
+| "Keep as reference, write_file tests first" | You'll adapt it. That's testing after. Delete means delete. |
 ```
 
 ### 3. Red Flag Entry
@@ -242,7 +242,7 @@ Agent should now:
 **After agent chooses wrong option, ask:**
 
 ```markdown
-your human partner: You read the skill and chose Option C anyway.
+your human partner: You read_file the skill and chose Option C anyway.
 
 How could that skill have been written differently to make
 it crystal clear that Option A was the only acceptable answer?
@@ -284,7 +284,7 @@ it crystal clear that Option A was the only acceptable answer?
 ### Initial Test (Failed)
 ```markdown
 Scenario: 200 lines done, forgot TDD, exhausted, dinner plans
-Agent chose: C (write tests after)
+Agent chose: C (write_file tests after)
 Rationalization: "Tests after achieve same goals"
 ```
 
@@ -361,7 +361,7 @@ Tests pass once ≠ bulletproof.
 |-----------|---------------|------------------|
 | **RED** | Run scenario without skill | Agent fails, document rationalizations |
 | **Verify RED** | Capture exact wording | Verbatim documentation of failures |
-| **GREEN** | Write skill addressing failures | Agent now complies with skill |
+| **GREEN** | write_file skill addressing failures | Agent now complies with skill |
 | **Verify GREEN** | Re-test scenarios | Agent follows rule under pressure |
 | **REFACTOR** | Close loopholes | Add counters for new rationalizations |
 | **Stay GREEN** | Re-verify | Agent still complies after refactoring |
@@ -370,7 +370,7 @@ Tests pass once ≠ bulletproof.
 
 **Skill creation IS TDD. Same principles, same cycle, same benefits.**
 
-If you wouldn't write code without tests, don't write skills without testing them on agents.
+If you wouldn't write_file code without tests, don't write_file skills without testing them on agents.
 
 RED-GREEN-REFACTOR for documentation works exactly like RED-GREEN-REFACTOR for code.
 
@@ -382,3 +382,4 @@ From applying TDD to TDD skill itself (2025-10-03):
 - Each REFACTOR closed specific loopholes
 - Final VERIFY GREEN: 100% compliance under maximum pressure
 - Same process works for any discipline-enforcing skill
+

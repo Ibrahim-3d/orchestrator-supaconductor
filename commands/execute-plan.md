@@ -1,4 +1,5 @@
 ---
+user_invocable: true
 description: Execute plan in batches with review checkpoints
 disable-model-invocation: true
 ---

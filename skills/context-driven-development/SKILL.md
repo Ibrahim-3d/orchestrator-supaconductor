@@ -170,7 +170,7 @@ After completing a feature track:
 
 Before starting any track:
 
-1. Read all context artifacts
+1. read_file all context artifacts
 2. Flag any outdated information
 3. Propose updates before proceeding
 4. Confirm context accuracy with stakeholders
@@ -181,7 +181,7 @@ Before starting any track:
 
 For new projects:
 
-1. Run `/conductor:setup` to create all artifacts interactively
+1. Run `/supaconductor:setup` to create all artifacts interactively
 2. Answer questions about product vision, tech preferences, and workflow
 3. Generate initial style guides for chosen languages
 4. Create empty tracks registry
@@ -196,7 +196,7 @@ Characteristics:
 
 For existing codebases:
 
-1. Run `/conductor:setup` with existing codebase detection
+1. Run `/supaconductor:setup` with existing codebase detection
 2. System analyzes existing code, configs, and documentation
 3. Pre-populate artifacts based on discovered patterns
 4. Review and refine generated context
@@ -259,7 +259,7 @@ conductor/
 
 ## Context Lifecycle
 
-1. **Creation**: Initial setup via `/conductor:setup`
+1. **Creation**: Initial setup via `/supaconductor:setup`
 2. **Validation**: Verify before each track
 3. **Evolution**: Update as project grows
 4. **Synchronization**: Keep artifacts aligned
@@ -357,7 +357,7 @@ Conductor supports multi-session development through context persistence:
 
 ### Starting a New Session
 
-1. Read index.md to orient yourself
+1. read_file index.md to orient yourself
 2. Check tracks.md for active work
 3. Review relevant track's plan.md for current task
 4. Verify context artifacts are current
@@ -379,7 +379,7 @@ If interrupted mid-task:
 
 ## Best Practices
 
-1. **Read context first**: Always read relevant artifacts before starting work
+1. **read_file context first**: Always read_file relevant artifacts before starting work
 2. **Small updates**: Make incremental context changes, not massive rewrites
 3. **Link decisions**: Reference context when making implementation choices
 4. **Version context**: Commit context changes alongside code changes
@@ -389,3 +389,4 @@ If interrupted mid-task:
 8. **Preserve history**: Use git to track context evolution over time
 9. **Question staleness**: If context feels wrong, investigate and update
 10. **Keep it actionable**: Every context item should inform a decision or behavior
+

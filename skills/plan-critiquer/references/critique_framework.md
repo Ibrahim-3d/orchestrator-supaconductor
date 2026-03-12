@@ -42,7 +42,7 @@ This framework provides a **systematic, harsh approach** to critiquing strategic
 - **Red flags:** "Easy to implement," "No real competition," "Guaranteed success," "Conservative estimates" that aren't
 
 ### Gut Check Output
-Write 3-5 sentences capturing your immediate reaction:
+write_file 3-5 sentences capturing your immediate reaction:
 - Overall impression (excited, concerned, skeptical?)
 - Biggest strength
 - Biggest weakness
@@ -56,7 +56,7 @@ Write 3-5 sentences capturing your immediate reaction:
 
 ### Step 1: Extract Assumptions
 
-Read through the document and identify statements that are:
+read_file through the document and identify statements that are:
 - Presented as fact but lack evidence
 - Projections about future behavior (users will..., competitors won't...)
 - Dependencies (if X then Y)
@@ -133,7 +133,7 @@ Create a table:
 - Investors/stakeholders are angry
 - Competitors are thriving
 
-**Write the headline:** "[Your Project] Shuts Down After 6 Months - Here's What Went Wrong"
+**write_file the headline:** "[Your Project] Shuts Down After 6 Months - Here's What Went Wrong"
 
 ### Step 2: Brainstorm Failure Reasons
 
@@ -416,3 +416,4 @@ Before finalizing critique, verify:
 - Unconstructive criticism ("This is bad")
 - Analysis paralysis (100 risks, no prioritization)
 - False positivity (ignoring real problems to be nice)
+

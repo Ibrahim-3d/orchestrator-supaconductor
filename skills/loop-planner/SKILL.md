@@ -17,7 +17,7 @@ Creates detailed, scoped execution plans for tracks. This is Step 1 of the Evalu
 
 ### 1. Load Context
 
-Read in order:
+read_file in order:
 1. `conductor/tracks.md` — completed tracks and their deliverables
 2. Track's `spec.md` — requirements for this track
 3. Track's `plan.md` (if exists) — check what's already `[x]` done
@@ -34,7 +34,7 @@ Before writing any plan:
 
 ### 3. Create Phased Plan with DAG
 
-Write `plan.md` with this structure (now includes dependency DAG for parallel execution):
+write_file `plan.md` with this structure (now includes dependency DAG for parallel execution):
 
 ```markdown
 # [Track Name] — Execution Plan
@@ -271,13 +271,14 @@ The planner MUST update the track's `metadata.json` at key points:
 ```
 
 ### Update Protocol
-1. Read current `metadata.json`
+1. read_file current `metadata.json`
 2. Update `loop_state.checkpoints.PLAN` fields
 3. Advance `current_step` to `EVALUATE_PLAN`
-4. Write back to `metadata.json`
+4. write_file back to `metadata.json`
 
 If `metadata.json` doesn't exist or is v1 format, create v2 structure with default values.
 
 ## Handoff
 
 After creating the plan, the **Conductor** should dispatch the **loop-plan-evaluator** agent to verify the plan before execution begins.
+

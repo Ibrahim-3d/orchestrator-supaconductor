@@ -1,5 +1,5 @@
 ---
-name: conductor:new-track
+name: conductor-new-track
 description: "Create a new development track with spec, plan, and metadata - interactive workflow"
 arguments:
   - name: description
@@ -131,4 +131,4 @@ Show the user:
 
 - `/conductor:implement` — Run the evaluate-loop on this track
 - `/conductor:status` — Check track status
-- `/go` — Shorthand that creates track + starts implement automatically
+- `/supaconductor:go` — Shorthand that creates track + starts implement automatically

@@ -9,13 +9,13 @@ description: Use when creating new skills, editing existing skills, or verifying
 
 **Writing skills IS Test-Driven Development applied to process documentation.**
 
-**Personal skills live in agent-specific directories (`~/.claude/skills` for Claude Code, `~/.agents/skills/` for Codex)** 
+**Personal skills live in agent-specific directories (`~/${CLAUDE_PLUGIN_ROOT}/skills` for Claude Code, `~/.agents/skills/` for Codex)** 
 
-You write test cases (pressure scenarios with subagents), watch them fail (baseline behavior), write the skill (documentation), watch tests pass (agents comply), and refactor (close loopholes).
+You write_file test cases (pressure scenarios with subagents), watch them fail (baseline behavior), write_file the skill (documentation), watch tests pass (agents comply), and refactor (close loopholes).
 
 **Core principle:** If you didn't watch an agent fail without the skill, you don't know if the skill teaches the right thing.
 
-**REQUIRED BACKGROUND:** You MUST understand superpowers:test-driven-development before using this skill. That skill defines the fundamental RED-GREEN-REFACTOR cycle. This skill adapts TDD to documentation.
+**REQUIRED BACKGROUND:** You MUST understand supaconductor:test-driven-development before using this skill. That skill defines the fundamental RED-GREEN-REFACTOR cycle. This skill adapts TDD to documentation.
 
 **Official guidance:** For Anthropic's official skill authoring best practices, see anthropic-best-practices.md. This document provides additional patterns and guidelines that complement the TDD-focused approach in this skill.
 
@@ -36,9 +36,9 @@ A **skill** is a reference guide for proven techniques, patterns, or tools. Skil
 | **Test fails (RED)** | Agent violates rule without skill (baseline) |
 | **Test passes (GREEN)** | Agent complies with skill present |
 | **Refactor** | Close loopholes while maintaining compliance |
-| **Write test first** | Run baseline scenario BEFORE writing skill |
+| **write_file test first** | Run baseline scenario BEFORE writing skill |
 | **Watch it fail** | Document exact rationalizations agent uses |
-| **Minimal code** | Write skill addressing those specific violations |
+| **Minimal code** | write_file skill addressing those specific violations |
 | **Watch it pass** | Verify agent now complies |
 | **Refactor cycle** | Find new rationalizations → plug → re-verify |
 
@@ -143,7 +143,7 @@ Concrete results
 
 ### 1. Rich Description Field
 
-**Purpose:** Claude reads description to decide which skills to load for a given task. Make it answer: "Should I read this skill right now?"
+**Purpose:** Claude reads description to decide which skills to load for a given task. Make it answer: "Should I read_file this skill right now?"
 
 **Format:** Start with "Use when..." to focus on triggering conditions
 
@@ -153,7 +153,7 @@ The description should ONLY describe triggering conditions. Do NOT summarize the
 
 **Why this matters:** Testing revealed that when a description summarizes the skill's workflow, Claude may follow the description instead of reading the full skill content. A description saying "code review between tasks" caused Claude to do ONE review, even though the skill's flowchart clearly showed TWO reviews (spec compliance then code quality).
 
-When the description was changed to just "Use when executing implementation plans with independent tasks" (no workflow summary), Claude correctly read the flowchart and followed the two-stage review process.
+When the description was changed to just "Use when executing implementation plans with independent tasks" (no workflow summary), Claude correctly read_file the flowchart and followed the two-stage review process.
 
 **The trap:** Descriptions that summarize workflow create a shortcut Claude will take. The skill body becomes documentation Claude skips.
 
@@ -162,7 +162,7 @@ When the description was changed to just "Use when executing implementation plan
 description: Use when executing plans - dispatches subagent per task with code review between tasks
 
 # ❌ BAD: Too much process detail
-description: Use for TDD - write test first, watch it fail, write minimal code, refactor
+description: Use for TDD - write_file test first, watch it fail, write_file minimal code, refactor
 
 # ✅ GOOD: Just triggering conditions, no workflow summary
 description: Use when executing implementation plans with independent tasks in the current session
@@ -176,7 +176,7 @@ description: Use when implementing any feature or bugfix, before writing impleme
 - Describe the *problem* (race conditions, inconsistent behavior) not *language-specific symptoms* (setTimeout, sleep)
 - Keep triggers technology-agnostic unless the skill itself is technology-specific
 - If skill is technology-specific, make that explicit in the trigger
-- Write in third person (injected into system prompt)
+- write_file in third person (injected into system prompt)
 - **NEVER summarize the skill's process or workflow**
 
 ```yaml
@@ -280,8 +280,8 @@ wc -w skills/path/SKILL.md
 **When writing documentation that references other skills:**
 
 Use skill name only, with explicit requirement markers:
-- ✅ Good: `**REQUIRED SUB-SKILL:** Use superpowers:test-driven-development`
-- ✅ Good: `**REQUIRED BACKGROUND:** You MUST understand superpowers:systematic-debugging`
+- ✅ Good: `**REQUIRED SUB-SKILL:** Use supaconductor:test-driven-development`
+- ✅ Good: `**REQUIRED BACKGROUND:** You MUST understand supaconductor:systematic-debugging`
 - ❌ Bad: `See skills/testing/test-driven-development` (unclear if required)
 - ❌ Bad: `@skills/testing/test-driven-development/SKILL.md` (force-loads, burns context)
 
@@ -340,7 +340,7 @@ Choose most relevant language:
 **Don't:**
 - Implement in 5+ languages
 - Create fill-in-the-blank templates
-- Write contrived examples
+- write_file contrived examples
 
 You're good at porting - one great example is enough.
 
@@ -379,8 +379,8 @@ NO SKILL WITHOUT A FAILING TEST FIRST
 
 This applies to NEW skills AND EDITS to existing skills.
 
-Write skill before testing? Delete it. Start over.
-Edit skill without testing? Same violation.
+write_file skill before testing? Delete it. Start over.
+replace skill without testing? Same violation.
 
 **No exceptions:**
 - Not for "simple additions"
@@ -390,7 +390,7 @@ Edit skill without testing? Same violation.
 - Don't "adapt" while running tests
 - Delete means delete
 
-**REQUIRED BACKGROUND:** The superpowers:test-driven-development skill explains why this matters. Same principles apply to documentation.
+**REQUIRED BACKGROUND:** The supaconductor:test-driven-development skill explains why this matters. Same principles apply to documentation.
 
 ## Testing All Skill Types
 
@@ -468,13 +468,13 @@ Don't just state the rule - forbid specific workarounds:
 
 <Bad>
 ```markdown
-Write code before test? Delete it.
+write_file code before test? Delete it.
 ```
 </Bad>
 
 <Good>
 ```markdown
-Write code before test? Delete it. Start over.
+write_file code before test? Delete it. Start over.
 
 **No exceptions:**
 - Don't keep it as "reference"
@@ -534,7 +534,7 @@ description: use when implementing any feature or bugfix, before writing impleme
 
 Follow the TDD cycle:
 
-### RED: Write Failing Test (Baseline)
+### RED: write_file Failing Test (Baseline)
 
 Run pressure scenario with subagent WITHOUT the skill. Document exact behavior:
 - What choices did they make?
@@ -543,9 +543,9 @@ Run pressure scenario with subagent WITHOUT the skill. Document exact behavior:
 
 This is "watch the test fail" - you must see what agents naturally do before writing the skill.
 
-### GREEN: Write Minimal Skill
+### GREEN: write_file Minimal Skill
 
-Write skill that addresses those specific rationalizations. Don't add extra content for hypothetical cases.
+write_file skill that addresses those specific rationalizations. Don't add extra content for hypothetical cases.
 
 Run same scenarios WITH skill. Agent should now comply.
 
@@ -554,7 +554,7 @@ Run same scenarios WITH skill. Agent should now comply.
 Agent found new rationalization? Add explicit counter. Re-test until bulletproof.
 
 **Testing methodology:** See @testing-skills-with-subagents.md for the complete testing methodology:
-- How to write pressure scenarios
+- How to write_file pressure scenarios
 - Pressure types (time, sunk cost, authority, exhaustion)
 - Plugging holes systematically
 - Meta-testing techniques
@@ -572,9 +572,9 @@ example-js.js, example-py.py, example-go.go
 ### ❌ Code in Flowcharts
 ```dot
 step1 [label="import fs"];
-step2 [label="read file"];
+step2 [label="read_file file"];
 ```
-**Why bad:** Can't copy-paste, hard to read
+**Why bad:** Can't copy-paste, hard to read_file
 
 ### ❌ Generic Labels
 helper1, helper2, step3, pattern4
@@ -597,12 +597,12 @@ Deploying untested skills = deploying untested code. It's a violation of quality
 
 **IMPORTANT: Use TodoWrite to create todos for EACH checklist item below.**
 
-**RED Phase - Write Failing Test:**
+**RED Phase - write_file Failing Test:**
 - [ ] Create pressure scenarios (3+ combined pressures for discipline skills)
 - [ ] Run scenarios WITHOUT skill - document baseline behavior verbatim
 - [ ] Identify patterns in rationalizations/failures
 
-**GREEN Phase - Write Minimal Skill:**
+**GREEN Phase - write_file Minimal Skill:**
 - [ ] Name uses only letters, numbers, hyphens (no parentheses/special chars)
 - [ ] YAML frontmatter with only name and description (max 1024 chars)
 - [ ] Description starts with "Use when..." and includes specific triggers/symptoms
@@ -649,7 +649,8 @@ How future Claude finds your skill:
 **Creating skills IS TDD for process documentation.**
 
 Same Iron Law: No skill without failing test first.
-Same cycle: RED (baseline) → GREEN (write skill) → REFACTOR (close loopholes).
+Same cycle: RED (baseline) → GREEN (write_file skill) → REFACTOR (close loopholes).
 Same benefits: Better quality, fewer surprises, bulletproof results.
 
 If you follow TDD for code, follow it for skills. It's the same discipline applied to documentation.
+

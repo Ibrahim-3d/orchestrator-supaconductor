@@ -183,3 +183,4 @@ const toggleLock = async (id) => {
 
 - **PASS** → Return to `loop-execution-evaluator` → Conductor marks complete
 - **FAIL** → Return to `loop-execution-evaluator` → Conductor dispatches `loop-fixer`
+

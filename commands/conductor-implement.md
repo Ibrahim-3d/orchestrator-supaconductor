@@ -1,5 +1,5 @@
 ---
-name: conductor:implement
+name: conductor-implement
 description: "Run the full Evaluate-Loop automatically from current track state to completion"
 arguments:
   - name: track_id
@@ -108,5 +108,5 @@ When execution evaluation returns PASS:
 
 - `/conductor:status` — Check current track progress
 - `/conductor:new-track` — Create track manually
-- `/go` — Single entry point (creates track + runs implement)
+- `/supaconductor:go` — Single entry point (creates track + runs implement)
 - `conductor/workflow.md` — Full evaluate-loop documentation

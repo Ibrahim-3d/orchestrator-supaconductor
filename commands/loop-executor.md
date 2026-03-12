@@ -8,14 +8,14 @@ arguments:
 user_invocable: true
 ---
 
-# /loop-executor — Execute Plan Tasks
+# /supaconductor:loop-executor — Execute Plan Tasks
 
 Evaluate-Loop Step 3: Implement the tasks defined in the plan.
 
 ## Usage
 
 ```bash
-/loop-executor <track-id>
+/supaconductor:loop-executor <track-id>
 ```
 
 ## Your Task
@@ -71,4 +71,4 @@ echo "PASS" > .message-bus/events/EXECUTE_COMPLETE_{track_id}.event
 
 ## Reference
 
-Full agent instructions: `.claude/agents/loop-executor.md`
+Full agent instructions: `.claude/agents/supaconductor:loop-executor.md`

@@ -29,14 +29,14 @@ Task tool (general-purpose):
     - Accept their interpretation of requirements
 
     **DO:**
-    - Read the actual code they wrote
+    - read_file the actual code they wrote
     - Compare actual implementation to requirements line by line
     - Check for missing pieces they claimed to implement
     - Look for extra features they didn't mention
 
     ## Your Job
 
-    Read the implementation code and verify:
+    read_file the implementation code and verify:
 
     **Missing requirements:**
     - Did they implement everything that was requested?
@@ -59,3 +59,4 @@ Task tool (general-purpose):
     - ✅ Spec compliant (if everything matches after code inspection)
     - ❌ Issues found: [list specifically what's missing or extra, with file:line references]
 ```
+

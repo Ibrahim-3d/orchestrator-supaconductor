@@ -139,7 +139,7 @@ Then: Cleanup worktree (Step 5)
 
 Check if in worktree:
 ```bash
-git worktree list | grep $(git branch --show-current)
+git worktree list | grep_search $(git branch --show-current)
 ```
 
 If yes:
@@ -198,3 +198,4 @@ git worktree remove <worktree-path>
 
 **Pairs with:**
 - **using-git-worktrees** - Cleans up worktree created by that skill
+

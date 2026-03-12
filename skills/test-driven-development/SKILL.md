@@ -7,7 +7,7 @@ description: Use when implementing any feature or bugfix, before writing impleme
 
 ## Overview
 
-Write the test first. Watch it fail. Write minimal code to pass.
+write_file the test first. Watch it fail. write_file minimal code to pass.
 
 **Core principle:** If you didn't watch the test fail, you don't know if it tests the right thing.
 
@@ -34,7 +34,7 @@ Thinking "skip TDD just this once"? Stop. That's rationalization.
 NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST
 ```
 
-Write code before the test? Delete it. Start over.
+write_file code before the test? Delete it. Start over.
 
 **No exceptions:**
 - Don't keep it as "reference"
@@ -68,9 +68,9 @@ digraph tdd_cycle {
 }
 ```
 
-### RED - Write Failing Test
+### RED - write_file Failing Test
 
-Write one minimal test showing what should happen.
+write_file one minimal test showing what should happen.
 
 <Good>
 ```typescript
@@ -129,7 +129,7 @@ Confirm:
 
 ### GREEN - Minimal Code
 
-Write simplest code to pass the test.
+write_file simplest code to pass the test.
 
 <Good>
 ```typescript
@@ -205,7 +205,7 @@ Next failing test for next feature.
 
 ## Why Order Matters
 
-**"I'll write tests after to verify it works"**
+**"I'll write_file tests after to verify it works"**
 
 Tests written after code pass immediately. Passing immediately proves nothing:
 - Might test wrong thing
@@ -262,7 +262,7 @@ Tests-first force edge case discovery before implementing. Tests-after verify yo
 | "Tests after achieve same goals" | Tests-after = "what does this do?" Tests-first = "what should this do?" |
 | "Already manually tested" | Ad-hoc ≠ systematic. No record, can't re-run. |
 | "Deleting X hours is wasteful" | Sunk cost fallacy. Keeping unverified code is technical debt. |
-| "Keep as reference, write tests first" | You'll adapt it. That's testing after. Delete means delete. |
+| "Keep as reference, write_file tests first" | You'll adapt it. That's testing after. Delete means delete. |
 | "Need to explore first" | Fine. Throw away exploration, start with TDD. |
 | "Test hard = design unclear" | Listen to test. Hard to test = hard to use. |
 | "TDD will slow me down" | TDD faster than debugging. Pragmatic = test-first. |
@@ -343,20 +343,20 @@ Can't check all boxes? You skipped TDD. Start over.
 
 | Problem | Solution |
 |---------|----------|
-| Don't know how to test | Write wished-for API. Write assertion first. Ask your human partner. |
+| Don't know how to test | write_file wished-for API. write_file assertion first. Ask your human partner. |
 | Test too complicated | Design too complicated. Simplify interface. |
 | Must mock everything | Code too coupled. Use dependency injection. |
 | Test setup huge | Extract helpers. Still complex? Simplify design. |
 
 ## Debugging Integration
 
-Bug found? Write failing test reproducing it. Follow TDD cycle. Test proves fix and prevents regression.
+Bug found? write_file failing test reproducing it. Follow TDD cycle. Test proves fix and prevents regression.
 
 Never fix bugs without a test.
 
 ## Testing Anti-Patterns
 
-When adding mocks or test utilities, read @testing-anti-patterns.md to avoid common pitfalls:
+When adding mocks or test utilities, read_file @testing-anti-patterns.md to avoid common pitfalls:
 - Testing mock behavior instead of real behavior
 - Adding test-only methods to production classes
 - Mocking without understanding dependencies
@@ -369,3 +369,4 @@ Otherwise → not TDD
 ```
 
 No exceptions without your human partner's permission.
+

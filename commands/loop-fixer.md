@@ -8,14 +8,14 @@ arguments:
 user_invocable: true
 ---
 
-# /loop-fixer — Fix Evaluation Failures
+# /supaconductor:loop-fixer — Fix Evaluation Failures
 
 Evaluate-Loop Step 5: Address issues found during evaluation.
 
 ## Usage
 
 ```bash
-/loop-fixer <track-id>
+/supaconductor:loop-fixer <track-id>
 ```
 
 ## Your Task
@@ -92,4 +92,4 @@ echo "PASS" > .message-bus/events/FIX_COMPLETE_{track_id}.event
 
 ## Reference
 
-Full agent instructions: `.claude/agents/loop-fixer.md`
+Full agent instructions: `.claude/agents/supaconductor:loop-fixer.md`

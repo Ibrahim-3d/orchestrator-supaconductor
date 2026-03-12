@@ -29,10 +29,10 @@ You are a code-focused worker with TDD emphasis. Follow test-driven development 
 
 For business logic tasks, follow Red-Green-Refactor:
 
-### 1. Red — Write Failing Test First
+### 1. Red — write_file Failing Test First
 
 ```typescript
-// Write test that describes expected behavior
+// write_file test that describes expected behavior
 describe('{task_name}', () => {
   it('should {expected_behavior}', () => {
     // Arrange
@@ -92,3 +92,4 @@ Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"
 Inherits from base worker template. Post progress updates and coordinate via message bus at `{message_bus_path}`.
 
 {base_worker_protocol}
+

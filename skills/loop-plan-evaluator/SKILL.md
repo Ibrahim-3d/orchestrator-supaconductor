@@ -349,13 +349,14 @@ The plan evaluator MUST update the track's `metadata.json` at key points:
 ```
 
 ### Update Protocol
-1. Read current `metadata.json`
+1. read_file current `metadata.json`
 2. Update `loop_state.checkpoints.EVALUATE_PLAN` with verdict and checks
 3. If PASS: Advance `current_step` to `EXECUTE`
 4. If FAIL: Reset `current_step` to `PLAN`, increment `plan_version`
-5. Write back to `metadata.json`
+5. write_file back to `metadata.json`
 
 ## Handoff
 
 - **PASS** → Conductor dispatches **loop-executor** (Step 3)
 - **FAIL** → Conductor dispatches **loop-planner** to revise plan, then re-evaluates
+

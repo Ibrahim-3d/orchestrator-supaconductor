@@ -53,9 +53,9 @@ def create_worker_agent(task: dict, track_id: str, message_bus_path: str) -> dic
         'test': 'test-worker.template.md',
     }
     template_name = template_map.get(task_type, 'task-worker.template.md')
-    template_path = f".claude/skills/worker-templates/{template_name}"
+    template_path = f"${CLAUDE_PLUGIN_ROOT}/skills/worker-templates/{template_name}"
 
-    # 3. Read template
+    # 3. read_file template
     template = read_file(template_path)
 
     # 4. Prepare substitution values
@@ -91,12 +91,12 @@ def create_worker_agent(task: dict, track_id: str, message_bus_path: str) -> dic
         )
 
     # 7. Add base protocol
-    base_protocol = read_file(".claude/skills/worker-templates/task-worker.template.md")
+    base_protocol = read_file("${CLAUDE_PLUGIN_ROOT}/skills/worker-templates/task-worker.template.md")
     base_protocol_section = extract_section(base_protocol, "## Execution Protocol")
     worker_skill = worker_skill.replace('{base_worker_protocol}', base_protocol_section)
 
     # 8. Create worker skill directory (ephemeral)
-    worker_skill_path = f".claude/skills/workers/{worker_id}/SKILL.md"
+    worker_skill_path = f"${CLAUDE_PLUGIN_ROOT}/skills/workers/{worker_id}/SKILL.md"
     os.makedirs(os.path.dirname(worker_skill_path), exist_ok=True)
     write_file(worker_skill_path, worker_skill)
 
@@ -213,7 +213,7 @@ def cleanup_worker(worker_id: str):
     Called by orchestrator after worker reports completion.
     """
 
-    worker_skill_path = f".claude/skills/workers/{worker_id}"
+    worker_skill_path = f"${CLAUDE_PLUGIN_ROOT}/skills/workers/{worker_id}"
 
     if os.path.exists(worker_skill_path):
         shutil.rmtree(worker_skill_path)
@@ -236,7 +236,7 @@ def cleanup_parallel_group_workers(parallel_group_id: str, workers: list):
         cleanup_worker(worker['worker_id'])
 
     # Remove workers directory if empty
-    workers_dir = ".claude/skills/workers"
+    workers_dir = "${CLAUDE_PLUGIN_ROOT}/skills/workers"
     if os.path.exists(workers_dir) and not os.listdir(workers_dir):
         os.rmdir(workers_dir)
 ```
@@ -360,3 +360,4 @@ def handle_worker_failure(worker: dict, error: str, message_bus_path: str):
     # Cleanup worker
     cleanup_worker(worker['worker_id'])
 ```
+

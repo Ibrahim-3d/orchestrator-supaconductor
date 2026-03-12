@@ -11,7 +11,7 @@ Implements the tasks defined in a verified `plan.md`. This agent writes code, cr
 
 Before writing any code:
 
-1. Read `plan.md` — find first `[ ]` task (skip all `[x]` tasks)
+1. read_file `plan.md` — find first `[ ]` task (skip all `[x]` tasks)
 2. Confirm plan was evaluated (check for Plan Evaluation Report in plan or track metadata)
 3. If no evaluation found → STOP → request Conductor run loop-plan-evaluator first
 
@@ -21,7 +21,7 @@ Before writing any code:
 
 ```
 1. Mark task [~] in plan.md (in progress)
-2. Read acceptance criteria
+2. read_file acceptance criteria
 3. Implement the task
 4. Verify acceptance criteria met
 5. Update plan.md immediately:
@@ -47,8 +47,8 @@ Before writing any code:
 For tasks involving business logic, follow TDD from the `tdd-implementation` skill:
 
 ```
-RED   → Write failing test for the task's acceptance criteria
-GREEN → Write minimal code to pass
+RED   → write_file failing test for the task's acceptance criteria
+GREEN → write_file minimal code to pass
 REFACTOR → Clean up while tests stay green
 ```
 
@@ -101,7 +101,7 @@ Add a note in the execution summary:
 **Affected Docs**: [list from business-docs-sync skill registry]
 ```
 
-See `.claude/skills/business-docs-sync/SKILL.md` for the full sync registry and protocol.
+See `${CLAUDE_PLUGIN_ROOT}/skills/business-docs-sync/SKILL.md` for the full sync registry and protocol.
 
 ### Error Handling During Execution
 
@@ -197,14 +197,14 @@ The executor MUST update the track's `metadata.json` at key points:
 ```
 
 ### Update Protocol
-1. Read current `metadata.json` at start
+1. read_file current `metadata.json` at start
 2. Update `tasks_completed`, `last_task`, `last_commit` after EACH task
 3. On completion: Advance `current_step` to `EVALUATE_EXECUTION`
-4. Write back to `metadata.json`
+4. write_file back to `metadata.json`
 
 ### Resumption Support
 If executor is restarted mid-execution:
-1. Read `metadata.json.checkpoints.EXECUTE.last_task`
+1. read_file `metadata.json.checkpoints.EXECUTE.last_task`
 2. Find that task in `plan.md`
 3. Continue from the NEXT `[ ]` task after the last completed one
 4. Do NOT re-execute `[x]` tasks
@@ -212,3 +212,4 @@ If executor is restarted mid-execution:
 ## Handoff
 
 After execution completes, the **Conductor** dispatches the **loop-execution-evaluator** to verify everything was built correctly.
+

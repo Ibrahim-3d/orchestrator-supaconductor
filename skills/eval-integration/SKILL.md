@@ -68,7 +68,7 @@ Dispatched by `loop-execution-evaluator` when the track involves:
 | Check | What to Look For |
 |-------|-----------------|
 | Create | Data saved correctly to database/storage |
-| Read | Data retrieved and rendered correctly |
+| read_file | Data retrieved and rendered correctly |
 | Update | Changes persisted on save |
 | Delete | Records removed, UI reflects deletion |
 | Relationships | Foreign keys / joins working correctly |
@@ -206,3 +206,4 @@ Walk through the complete user journey that involves this integration:
 
 - **PASS** → Return to `loop-execution-evaluator` → Conductor marks complete
 - **FAIL** → Return to `loop-execution-evaluator` → Conductor dispatches `loop-fixer`
+

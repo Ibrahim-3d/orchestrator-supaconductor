@@ -4,7 +4,7 @@ Reference example of extracting, structuring, and bulletproofing a critical skil
 
 ## Source Material
 
-Extracted debugging framework from `/Users/jesse/.claude/CLAUDE.md`:
+Extracted debugging framework from `/Users/jesse/${CLAUDE_PLUGIN_ROOT}/CLAUDE.md`:
 - 4-phase systematic process (Investigation → Pattern Analysis → Hypothesis → Implementation)
 - Core mandate: ALWAYS find root cause, NEVER fix symptoms
 - Rules designed to resist time pressure and rationalization
@@ -105,7 +105,7 @@ Bulletproof skill that:
 
 When encountering a bug:
 1. Load skill: skills/debugging/systematic-debugging
-2. Read overview (10 sec) - reminded of mandate
+2. read_file overview (10 sec) - reminded of mandate
 3. Follow Phase 1 checklist - forced investigation
 4. If tempted to skip - see anti-pattern, stop
 5. Complete all phases - root cause found
@@ -117,3 +117,4 @@ When encountering a bug:
 
 *Created: 2025-10-03*
 *Purpose: Reference example for skill extraction and bulletproofing*
+

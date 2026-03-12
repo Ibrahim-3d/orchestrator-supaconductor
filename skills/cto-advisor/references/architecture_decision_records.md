@@ -223,9 +223,9 @@ With multiple microservices, we need a unified entry point for external clients 
 4. **Include all options**: Even obviously bad ones
 5. **Be honest about drawbacks**: Every decision has trade-offs
 
-### When to Write ADRs
+### When to write_file ADRs
 
-Write an ADR when:
+write_file an ADR when:
 - The decision has significant impact
 - Multiple options were seriously considered
 - The decision is hard to reverse
@@ -292,3 +292,4 @@ Before finalizing an ADR, ensure:
 - [ ] Mitigation strategies are defined
 - [ ] Success metrics are established
 - [ ] Review date is set (if applicable)
+

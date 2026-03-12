@@ -9,14 +9,14 @@ arguments:
 user_invocable: true
 ---
 
-# /board-review — Quick Expert Assessment
+# /supaconductor:board-review — Quick Expert Assessment
 
 Run a quick assessment from the 5-member Board of Directors. Each director provides their expert opinion in parallel, without the discussion phase.
 
 ## Usage
 
 ```
-/board-review [proposal or leave blank to review current track]
+/supaconductor:board-review [proposal or leave blank to review current track]
 ```
 
 ## Workflow

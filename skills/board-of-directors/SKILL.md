@@ -106,9 +106,9 @@ Aggregate votes and produce board decision:
 
 After reaching resolution, you MUST persist the decision to files:
 
-1. Create directory: Use Bash `mkdir -p conductor/tracks/{trackId}/.message-bus/board/`
-2. Write `resolution.md` with the Board Output Format (below)
-3. Write `session-{timestamp}.json`:
+1. Create directory: Use run_shell_command `mkdir -p conductor/tracks/{trackId}/.message-bus/board/`
+2. write_file `resolution.md` with the Board Output Format (below)
+3. write_file `session-{timestamp}.json`:
    ```json
    {"session_id": "...", "verdict": "...", "vote_summary": {...}, "conditions": [...], "timestamp": "..."}
    ```
@@ -243,3 +243,4 @@ The board can be invoked at key checkpoints:
 ├── votes.json                  # Phase 3 final votes
 └── resolution.md               # Phase 4 board decision
 ```
+

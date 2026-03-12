@@ -7,7 +7,7 @@ Use this template when dispatching a code quality reviewer subagent.
 **Only dispatch after spec compliance review passes.**
 
 ```
-Task tool (superpowers:code-reviewer):
+Task tool (supaconductor:code-reviewer):
   Use template at requesting-code-review/code-reviewer.md
 
   WHAT_WAS_IMPLEMENTED: [from implementer's report]
@@ -18,3 +18,4 @@ Task tool (superpowers:code-reviewer):
 ```
 
 **Code reviewer returns:** Strengths, Issues (Critical/Important/Minor), Assessment
+

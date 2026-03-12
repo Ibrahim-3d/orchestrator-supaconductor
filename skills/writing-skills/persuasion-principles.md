@@ -23,7 +23,7 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 
 **Example:**
 ```markdown
-✅ Write code before test? Delete it. Start over. No exceptions.
+✅ write_file code before test? Delete it. Start over. No exceptions.
 ❌ Consider writing tests first when feasible.
 ```
 
@@ -185,3 +185,4 @@ When designing a skill, ask:
 3. **Which principle(s) apply?** (Usually authority + commitment for discipline)
 4. **Am I combining too many?** (Don't use all seven)
 5. **Is this ethical?** (Serves user's genuine interests?)
+
