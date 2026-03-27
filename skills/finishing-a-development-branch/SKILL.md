@@ -7,9 +7,11 @@ description: Use when implementation is complete, all tests pass, and you need t
 
 ## Overview
 
-Guide completion of development work by presenting clear options and handling chosen workflow.
+Guide completion of development work by verifying quality and completing the branch workflow.
 
-**Core principle:** Verify tests → Present options → Execute choice → Clean up.
+**Core principle:** Behavior depends on `conductor/config.json` → `"mode"`:
+- **`"agentic"`**: Auto-push branch and create PR — no user input needed.
+- **`"human-in-the-loop"`**: Present 4 structured options and execute the user's choice.
 
 **Announce at start:** "I'm using the finishing-a-development-branch skill to complete this work."
 
@@ -46,7 +48,9 @@ git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null
 
 Or ask: "This branch split from main - is that correct?"
 
-### Step 3: Auto-Complete Branch
+### Step 3: Complete Branch (Mode-Dependent)
+
+#### `"agentic"` mode — Auto-Complete
 
 **Do NOT ask the user which option to choose.** Proceed automatically:
 
@@ -54,11 +58,26 @@ Or ask: "This branch split from main - is that correct?"
 2. **Create a Pull Request** using the track's spec and plan as PR description
 3. **Report** the PR URL to the user
 
-This is the default autonomous completion path. No user input needed.
+Then go to Step 5 (Cleanup Worktree).
+
+#### `"human-in-the-loop"` mode — Present Options
+
+Present exactly these 4 options:
+
+```
+Implementation complete. What would you like to do?
+
+1. Merge back to <base-branch> locally
+2. Push and create a Pull Request
+3. Keep the branch as-is (I'll handle it later)
+4. Discard this work
+
+Which option?
+```
 
 **Don't add explanation** - keep options concise.
 
-### Step 4: Execute Choice
+### Step 4: Execute Choice (Human-in-the-loop mode only)
 
 #### Option 1: Merge Locally
 
@@ -146,6 +165,13 @@ git worktree remove <worktree-path>
 
 ## Quick Reference
 
+| Mode | Behavior |
+|------|----------|
+| `"agentic"` | Auto-push + create PR, no user input |
+| `"human-in-the-loop"` | Present 4 options, execute user's choice |
+
+### Human-in-the-loop Option Summary
+
 | Option | Merge | Push | Keep Worktree | Cleanup Branch |
 |--------|-------|------|---------------|----------------|
 | 1. Merge locally | ✓ | - | - | ✓ |
@@ -157,11 +183,15 @@ git worktree remove <worktree-path>
 
 **Skipping test verification**
 - **Problem:** Merge broken code, create failing PR
-- **Fix:** Always verify tests before offering options
+- **Fix:** Always verify tests before proceeding
 
-**Open-ended questions**
+**Open-ended questions (human-in-the-loop mode)**
 - **Problem:** "What should I do next?" → ambiguous
 - **Fix:** Present exactly 4 structured options
+
+**Auto-completing without checking mode**
+- **Problem:** Pushing/creating PRs when user expects to choose
+- **Fix:** Read `conductor/config.json` → `"mode"` before Step 3
 
 **Automatic worktree cleanup**
 - **Problem:** Remove worktree when might need it (Option 2, 3)
@@ -180,10 +210,10 @@ git worktree remove <worktree-path>
 - Force-push without explicit request
 
 **Always:**
-- Verify tests before offering options
-- Present exactly 4 options
-- Get typed confirmation for Option 4
-- Clean up worktree for Options 1 & 4 only
+- Verify tests before completing
+- In `"human-in-the-loop"` mode: present exactly 4 options and get typed confirmation for Option 4
+- In `"agentic"` mode: auto-push and create PR, report URL to user
+- Clean up worktree for Options 1 & 4 only (human-in-the-loop) or after auto-push (agentic)
 
 ## Integration
 
