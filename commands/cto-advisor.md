@@ -1,6 +1,7 @@
 ---
 name: cto-advisor
 description: "Run CTO-level technical review of the current execution plan - architecture, tech debt, engineering excellence"
+model: opus
 arguments:
   - name: track_id
     description: "Optional track ID to review (defaults to active track)"
