@@ -1,4 +1,5 @@
 ---
+name: systematic-debugging
 user_invocable: true
 description: "Root-cause analysis and fix implementation for evaluation failures"
 model: sonnet

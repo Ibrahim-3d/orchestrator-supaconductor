@@ -1,4 +1,5 @@
 ---
+name: executing-plans
 user_invocable: true
 description: Execute plan tasks autonomously to completion
 model: sonnet
