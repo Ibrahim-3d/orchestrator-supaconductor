@@ -74,9 +74,9 @@ Task({
 })
 ```
 
-## Autonomous Resolution
+## Decision Resolution (Mode-Dependent)
 
-**The loop NEVER pauses for user input.** All blockers are resolved autonomously:
+Behavior depends on `conductor/config.json` → `"mode"`. In `"agentic"` mode (default), the loop never pauses. In `"human-in-the-loop"` mode, the loop pauses at decision points.
 
 1. **Fix Cycle Limit** — Extends to 5 attempts with alternative approaches, then completes with warnings
 2. **Scope Change Needed** — Lead agents (Product, Architecture) autonomously adjust scope within spec intent

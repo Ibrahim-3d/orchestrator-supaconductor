@@ -24,7 +24,9 @@ The Tech Lead makes autonomous decisions about implementation approach, dependen
 | **Refactoring for clarity** | Rename, extract, simplify | No behavior change |
 | **Code style within patterns** | Formatting, naming | Match codebase |
 
-### Must Escalate to Board of Directors (Autonomous — NEVER to User)
+### Must Escalate (Mode-Dependent)
+
+**`"agentic"` mode**: Escalate to Board. **`"human-in-the-loop"` mode**: Escalate to user.
 
 | Decision Type | Reason |
 |---------------|--------|

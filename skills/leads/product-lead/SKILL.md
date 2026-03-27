@@ -23,7 +23,10 @@ The Product Lead makes autonomous decisions about scope interpretation, requirem
 | **Implementation order** | Build A before B when spec doesn't specify | Logical dependencies |
 | **Microcopy decisions** | Button labels, tooltips | Clear, match existing patterns |
 
-### Must Escalate to Board of Directors (Autonomous — NEVER to User)
+### Must Escalate (Mode-Dependent)
+
+**If `conductor/config.json` → `mode` = `"agentic"`**: Escalate to Board of Directors (autonomous).
+**If `conductor/config.json` → `mode` = `"human-in-the-loop"`**: Escalate to user.
 
 | Decision Type | Board Resolution Approach |
 |---------------|--------------------------|

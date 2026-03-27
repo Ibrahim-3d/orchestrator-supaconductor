@@ -9,7 +9,9 @@ description: Use when you have a written implementation plan to execute in a sep
 
 Load plan, review critically, execute all tasks autonomously to completion.
 
-**Core principle:** Autonomous execution — never stop for human feedback. Resolve all issues by consulting lead agents or making best-judgment calls.
+**Core principle:** Execution behavior depends on `conductor/config.json` → `"mode"`:
+- **`"agentic"`**: Autonomous execution — never stop for human feedback. Resolve all issues by consulting lead agents or best-judgment.
+- **`"human-in-the-loop"`**: Stop at blockers and report to user. Wait for feedback between batches of 3 tasks.
 
 **Announce at start:** "I'm using the executing-plans skill to implement this plan."
 
@@ -45,9 +47,12 @@ After all tasks complete and verified:
 - **REQUIRED SUB-SKILL:** Use supaconductor:finishing-a-development-branch
 - Follow that skill to verify tests, present options, execute choice
 
-## Autonomous Blocker Resolution
+## Blocker Resolution (Mode-Dependent)
 
-**NEVER stop to ask the user for help.** Resolve all blockers autonomously:
+**If mode = `"agentic"`**: Resolve all blockers autonomously. NEVER stop.
+**If mode = `"human-in-the-loop"`**: STOP and ask the user for help on any blocker.
+
+### Agentic Mode Resolutions:
 
 - **Missing dependency** → Install it if safe (<50KB), or skip the task and log the blocker
 - **Test fails** → Attempt fix (max 3 retries), then log failure and continue with remaining tasks

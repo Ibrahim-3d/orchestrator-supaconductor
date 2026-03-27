@@ -87,16 +87,29 @@ The orchestrator will:
 - Monitor progress and handle failures
 - Complete the track or escalate if blocked
 
-## Autonomous Resolution
+## Decision Resolution
 
-**This command NEVER stops to ask the user questions.** All decisions are resolved autonomously:
+Behavior depends on `conductor/config.json` → `"mode"`:
 
-- **Goal is ambiguous** → Pick the most likely interpretation based on codebase context and proceed
-- **Multiple interpretations possible** → Spawn a Plan subagent to analyze and choose the best interpretation
-- **Scope conflicts with existing tracks** → Merge into the most relevant existing track or create a new non-overlapping track
+### Mode: `"agentic"` (default)
+Fully autonomous — NEVER stops to ask the user:
+- **Goal is ambiguous** → Pick the most likely interpretation based on codebase context
+- **Multiple interpretations** → Spawn a Plan subagent to analyze and choose the best one
+- **Scope conflicts** → Merge into relevant existing track or create non-overlapping track
 - **Board rejects the plan** → Re-plan incorporating board feedback automatically
-- **Fix cycle exceeds 3 iterations** → Increase max to 5, try alternative approaches via systematic-debugging, then mark track as needs-review and move on
-- **Missing dependencies or blockers** → Log the blocker in metadata.json, skip blocked tasks, continue with unblocked work
+- **Fix cycle exceeds limit** → Try alternative approaches, then mark track as needs-review
+- **Blockers** → Log in metadata, skip blocked tasks, continue with unblocked work
+
+### Mode: `"human-in-the-loop"`
+Pauses at key decision points to ask the user:
+- **Goal is ambiguous** → Present interpretations, ask user to pick
+- **Multiple tracks match** → Present options, ask user which to resume
+- **Scope conflicts** → Ask user how to proceed
+- **Board rejects the plan** → Present board feedback, ask user for direction
+- **Fix cycle exceeds 3** → Present recurring issues, ask user what to do
+- **Blockers** → Report blocker, ask user for resolution
+
+**To switch modes**: Edit `conductor/config.json` → `"mode": "agentic"` or `"human-in-the-loop"`
 
 ## Resume Existing Work
 
