@@ -143,7 +143,7 @@ Every track follows a rigorous, automated cycle:
 | **Evaluate Plan** | Checks scope, overlap with existing tracks, feasibility |
 | **Execute** | Implements code, runs tests, updates progress |
 | **Evaluate Execution** | Dispatches specialized evaluators (UI/UX, code quality, integration, business logic) |
-| **Fix** | Addresses failures, loops back to evaluation (max 3 cycles) |
+| **Fix** | Addresses failures, loops back to evaluation (max 5 cycles, then completes with warnings) |
 | **Complete** | All evaluators pass — track marked done |
 | **Retrospective** | Extracts reusable patterns and error fixes to knowledge layer |
 

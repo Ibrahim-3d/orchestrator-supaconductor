@@ -1,6 +1,6 @@
 ---
 name: qa-lead
-description: "Quality assurance consultation for Conductor orchestrator. Sets test coverage requirements, validates quality gates, determines testing strategy. Can adjust coverage thresholds within ranges. Escalates skipping critical tests to user."
+description: "Quality assurance consultation for Conductor orchestrator. Sets test coverage requirements, validates quality gates, determines testing strategy. Can adjust coverage thresholds within ranges. Escalates skipping critical tests to Board of Directors."
 authority_level: QUALITY
 ---
 
@@ -23,7 +23,9 @@ The QA Lead makes autonomous decisions about testing strategy, coverage requirem
 | **Non-critical code paths** | Lower coverage for utilities | Must document rationale |
 | **Evaluation checklist order** | Which checks to run first | All checks still run |
 
-### Must Escalate to User
+### Must Escalate (Mode-Dependent)
+
+**`"agentic"` mode**: Escalate to Board. **`"human-in-the-loop"` mode**: Escalate to user.
 
 | Decision Type | Reason |
 |---------------|--------|
@@ -117,7 +119,7 @@ When consulted, the QA Lead follows this process:
   "decision": null,
   "reasoning": "Cannot skip tests for business-critical code",
   "coverage_impact": "Business logic coverage would drop to 85% (below 90% minimum)",
-  "escalate_to": "user",
+  "escalate_to": "board",
   "escalation_reason": "This is business-critical code requiring 90% coverage. Skipping tests would drop coverage to 85%. Please confirm if this risk is acceptable."
 }
 ```
@@ -190,7 +192,7 @@ When making decisions, consult:
   "decision": null,
   "reasoning": "Dependency resolver is business-critical code",
   "coverage_impact": "Business logic coverage would drop significantly",
-  "escalate_to": "user",
+  "escalate_to": "board",
   "escalation_reason": "Dependency resolution is business-critical logic. This requires 90% minimum coverage. Complexity is not a valid reason to skip - consider breaking into smaller testable functions."
 }
 ```
@@ -256,7 +258,7 @@ When making decisions, consult:
   "decision": null,
   "reasoning": "65% is below 70% minimum threshold",
   "coverage_impact": "Would create quality debt",
-  "escalate_to": "user",
+  "escalate_to": "board",
   "escalation_reason": "Overall coverage minimum is 70% per workflow.md. Dropping to 65% would create quality debt and risk regressions. Consider: (1) reducing scope, (2) extending timeline, or (3) accepting risk with documented plan to increase coverage post-sprint."
 }
 ```
@@ -281,8 +283,8 @@ if (response.decision_made) {
   metadata.lead_consultations.push(response);
   proceed(response.decision);
 } else {
-  // Escalate to user
-  escalate("user", response.escalation_reason);
+  // Escalate to board
+  escalateToBoard(response.escalation_reason);
 }
 ```
 

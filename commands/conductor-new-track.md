@@ -1,6 +1,7 @@
 ---
 name: conductor-new-track
-description: "Create a new development track with spec, plan, and metadata - interactive workflow"
+description: "Create a new development track with spec, plan, and metadata"
+model: sonnet
 arguments:
   - name: description
     description: "Brief description of what you want to build"

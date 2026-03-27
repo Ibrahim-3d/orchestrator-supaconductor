@@ -1,6 +1,7 @@
 ---
 name: loop-execution-evaluator
 description: "Verify implementation quality. Evaluate-Loop Step 4."
+model: sonnet
 arguments:
   - name: track_id
     description: "The track ID to evaluate"
@@ -89,7 +90,7 @@ Update `metadata.json`:
 
 ## Fix Cycle Limit
 
-If `fix_cycle_count >= 3`, escalate to user instead of continuing.
+If `fix_cycle_count >= 5`, mark track as `completed-with-warnings` instead of continuing. Log unresolved issues in metadata.
 
 ## Message Bus
 

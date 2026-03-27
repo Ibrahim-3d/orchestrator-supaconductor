@@ -90,7 +90,7 @@ The orchestrator manages the loop state in `conductor/tracks/{trackId}/metadata.
     "current_step": "EXECUTE",
     "step_status": "IN_PROGRESS",
     "fix_cycle_count": 0,
-    "max_fix_cycles": 3,
+    "max_fix_cycles": 5,
     "superpower_enhanced": true
   }
 }
@@ -98,15 +98,39 @@ The orchestrator manages the loop state in `conductor/tracks/{trackId}/metadata.
 
 - **`current_step`**: The active phase of the loop.
 - **`step_status`**: `NOT_STARTED`, `IN_PROGRESS`, `PASSED`, `FAILED`, `BLOCKED`.
-- **`fix_cycle_count`**: Increments after each failed evaluation. Max 3 cycles before escalating to user.
+- **`fix_cycle_count`**: Increments after each failed evaluation. Max 5 cycles before completing with warnings.
 
-## Escalation Protocol
+## Resolution Protocol (Mode-Dependent)
 
-The orchestrator pauses and requests user input when:
-1. `fix_cycle_count` exceeds the maximum allowed (default: 3).
-2. An agent returns a `BLOCKED` status (e.g., missing API keys, major architectural conflict).
-3. The board deliberations reach a deadlock.
-4. The track's duration exceeds the safety limit (50 loop iterations).
+The orchestrator's behavior at decision points depends on `conductor/config.json` → `"mode"`:
+
+### Mode: `"agentic"` (default)
+
+Fully autonomous — never pauses for user input:
+
+1. **`fix_cycle_count` exceeds `max_fix_cycles`** → Mark track as `completed-with-warnings`. Log unresolved issues in metadata.
+2. **Agent returns `BLOCKED` status** → Log blocker. Skip blocked tasks. Continue with unblocked tasks.
+3. **Board deliberations reach a tie** → Chief Architect (CA) casts the tiebreaking vote.
+4. **Track duration exceeds safety limit (50 iterations)** → Complete track with warnings.
+
+### Mode: `"human-in-the-loop"`
+
+Pauses and requests user input at decision points:
+
+1. **`fix_cycle_count` exceeds 3** → Pause. Present recurring issues. Ask user for direction.
+2. **Agent returns `BLOCKED` status** → Pause. Report blocker. Ask user for resolution.
+3. **Board deliberations reach a deadlock** → Pause. Present board feedback. Ask user to decide.
+4. **Track duration exceeds safety limit** → Pause. Report progress. Ask user to continue or abort.
+5. **Goal is ambiguous** → Pause. Present interpretations. Ask user to pick.
+6. **HIGH_IMPACT decision needed** → Pause. Present options. Ask user to decide.
+
+### Switching Modes
+
+Edit `conductor/config.json`:
+```json
+{ "mode": "agentic" }        // fully autonomous (default)
+{ "mode": "human-in-the-loop" }  // pauses at decision points
+```
 
 ## Resumption Protocol
 

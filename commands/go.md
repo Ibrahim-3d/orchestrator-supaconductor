@@ -6,6 +6,7 @@ arguments:
     description: "Your goal — what you want to build, fix, or change"
     required: false
 user_invocable: true
+model: sonnet
 ---
 
 # /supaconductor:go — Goal-Driven Entry Point
@@ -40,7 +41,7 @@ Parse the user's goal from `$ARGUMENTS`:
 - Estimate complexity
 - Extract key requirements
 
-If no arguments provided, check for an active track in `conductor/tracks.md` and resume it. If no active track exists, ask the user what they want to work on.
+If no arguments provided, check for an active track in `conductor/tracks.md` and resume it. If no active track exists, analyze the codebase and recent git history to infer the next logical task, then proceed autonomously.
 
 ### 2. Track Detection
 
@@ -81,19 +82,34 @@ Use the conductor-orchestrator agent to run the evaluate-loop for this track.
 The orchestrator will:
 - Detect current step from metadata
 - Check `superpower_enhanced` flag to determine which agents to use:
-  - **If true (new tracks):** Dispatch superpowers (superpowers:writing-plans, superpowers:executing-plans, superpowers:systematic-debugging)
+  - **If true (new tracks):** Dispatch superpowers (supaconductor:writing-plans, supaconductor:executing-plans, supaconductor:systematic-debugging)
   - **If false/missing (legacy):** Dispatch legacy loop agents (loop-planner, loop-executor, loop-fixer)
 - Monitor progress and handle failures
 - Complete the track or escalate if blocked
 
-## Escalation Points
+## Decision Resolution
 
-Stop and ask user when:
-- Goal is ambiguous
-- Multiple interpretations possible
-- Scope conflicts with existing tracks
-- Board rejects the plan
-- Fix cycle exceeds 3 iterations
+Behavior depends on `conductor/config.json` → `"mode"`:
+
+### Mode: `"agentic"` (default)
+Fully autonomous — NEVER stops to ask the user:
+- **Goal is ambiguous** → Pick the most likely interpretation based on codebase context
+- **Multiple interpretations** → Spawn a Plan subagent to analyze and choose the best one
+- **Scope conflicts** → Merge into relevant existing track or create non-overlapping track
+- **Board rejects the plan** → Re-plan incorporating board feedback automatically
+- **Fix cycle exceeds limit** → Try alternative approaches, then mark track as needs-review
+- **Blockers** → Log in metadata, skip blocked tasks, continue with unblocked work
+
+### Mode: `"human-in-the-loop"`
+Pauses at key decision points to ask the user:
+- **Goal is ambiguous** → Present interpretations, ask user to pick
+- **Multiple tracks match** → Present options, ask user which to resume
+- **Scope conflicts** → Ask user how to proceed
+- **Board rejects the plan** → Present board feedback, ask user for direction
+- **Fix cycle exceeds 3** → Present recurring issues, ask user what to do
+- **Blockers** → Report blocker, ask user for resolution
+
+**To switch modes**: Edit `conductor/config.json` → `"mode": "agentic"` or `"human-in-the-loop"`
 
 ## Resume Existing Work
 

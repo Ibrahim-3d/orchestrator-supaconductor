@@ -478,7 +478,7 @@ async def step_parallel_execute(track_id: str, metadata: dict):
     if result["success"]:
         return "EVALUATE_EXECUTION"
     elif result.get("escalate"):
-        return "ESCALATE_TO_USER"
+        return "COMPLETE_WITH_WARNINGS"
     else:
         return "FIX"
 ```

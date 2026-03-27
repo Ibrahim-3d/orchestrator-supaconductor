@@ -66,7 +66,7 @@ Initialize `metadata.json` with v2 structure:
     "current_step": "PLAN",
     "step_status": "NOT_STARTED",
     "fix_cycle_count": 0,
-    "max_fix_cycles": 3,
+    "max_fix_cycles": 5,
     "checkpoints": {
       "PLAN": { "status": "NOT_STARTED" },
       "EVALUATE_PLAN": { "status": "NOT_STARTED" },

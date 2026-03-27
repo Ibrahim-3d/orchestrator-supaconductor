@@ -79,14 +79,14 @@ The orchestrator will:
 - Monitor progress and handle failures
 - Complete the track or escalate if blocked
 
-## Escalation Points
+## Decision Resolution
 
-Stop and ask user when:
-- Goal is ambiguous
-- Multiple interpretations possible
-- Scope conflicts with existing tracks
-- Board rejects the plan
-- Fix cycle exceeds 3 iterations
+Behavior depends on `conductor/config.json` → `"mode"`:
+
+- **`"agentic"` (default)** — Fully autonomous. Never stops to ask the user. All decisions resolved by agents, leads, and board.
+- **`"human-in-the-loop"`** — Pauses at decision points (ambiguity, blockers, fix limits, high-impact decisions) to ask the user.
+
+See `conductor/config.json` for current mode. Edit to switch.
 
 ## Resume Existing Work
 

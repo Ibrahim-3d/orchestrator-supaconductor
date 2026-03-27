@@ -1,6 +1,6 @@
 ---
 name: tech-lead
-description: "Technical implementation consultation for Conductor orchestrator. Advises on implementation approach, dependency choices, and coding patterns. Can approve dependencies under size threshold. Escalates large dependencies or breaking tooling changes to user."
+description: "Technical implementation consultation for Conductor orchestrator. Advises on implementation approach, dependency choices, and coding patterns. Can approve dependencies under size threshold. Escalates large dependencies or breaking tooling changes to Board of Directors."
 authority_level: TECHNICAL
 ---
 
@@ -24,7 +24,9 @@ The Tech Lead makes autonomous decisions about implementation approach, dependen
 | **Refactoring for clarity** | Rename, extract, simplify | No behavior change |
 | **Code style within patterns** | Formatting, naming | Match codebase |
 
-### Must Escalate to User
+### Must Escalate (Mode-Dependent)
+
+**`"agentic"` mode**: Escalate to Board. **`"human-in-the-loop"` mode**: Escalate to user.
 
 | Decision Type | Reason |
 |---------------|--------|
@@ -105,7 +107,7 @@ When consulted, the Tech Lead follows this process:
   "reasoning": "Dependency exceeds 50KB threshold",
   "dependency_size": "67KB gzipped",
   "alternatives_considered": ["date-fns (8KB)", "dayjs (2KB)", "native Intl API"],
-  "escalate_to": "user",
+  "escalate_to": "board",
   "escalation_reason": "moment.js is 67KB gzipped, exceeding 50KB threshold. Recommend date-fns (8KB) as alternative. Please confirm if moment is required for specific features."
 }
 ```
@@ -173,7 +175,7 @@ Check your project's `tech-stack.md` for the established technology decisions. C
   "reasoning": "Chart.js exceeds 50KB threshold",
   "dependency_size": "65KB gzipped",
   "alternatives_considered": ["recharts (45KB)", "lightweight-charts (35KB)", "CSS-only charts"],
-  "escalate_to": "user",
+  "escalate_to": "board",
   "escalation_reason": "Chart.js is 65KB gzipped. Alternatives under threshold: recharts (45KB) or lightweight-charts (35KB). If full Chart.js features needed, please confirm."
 }
 ```
@@ -237,7 +239,7 @@ Check your project's `tech-stack.md` for the established technology decisions. C
   "decision_made": false,
   "decision": null,
   "reasoning": "Major version upgrades can have breaking changes",
-  "escalate_to": "user",
+  "escalate_to": "board",
   "escalation_reason": "Next.js 15 is a major version upgrade from 14. This may involve breaking changes to routing, middleware, or APIs. Recommend reviewing Next.js 15 migration guide before proceeding. Please confirm if upgrade should proceed."
 }
 ```
@@ -262,8 +264,8 @@ if (response.decision_made) {
   metadata.lead_consultations.push(response);
   proceed(response.decision);
 } else {
-  // Escalate to user with alternatives
-  escalate("user", response.escalation_reason);
+  // Escalate to board with alternatives
+  escalateToBoard(response.escalation_reason);
 }
 ```
 

@@ -9,6 +9,25 @@ The master coordinator that runs the Evaluate-Loop for any track. Version 3 adds
 
 ---
 
+## Mode Configuration Protocol
+
+**FIRST ACTION: Read `conductor/config.json` to determine operating mode.**
+
+```typescript
+const config = await readJSON('conductor/config.json').catch(() => ({ mode: 'agentic' }));
+const MODE = config.mode; // "agentic" | "human-in-the-loop"
+const MAX_FIX_CYCLES = config.max_fix_cycles || 5;
+```
+
+| Mode | Behavior |
+|------|----------|
+| `"agentic"` | Fully autonomous. Resolve all decisions via leads, board, or best-judgment. Never ask user. |
+| `"human-in-the-loop"` | Pause at key decision points. Ask user for ambiguity, blockers, fix limits, HIGH_IMPACT decisions. |
+
+**All decision points below check `MODE` before acting.** If config.json doesn't exist, default to `"agentic"`.
+
+---
+
 ## Goal-Driven Entry (`/go`)
 
 The simplest entry point. User states their goal, the system handles everything.
@@ -165,37 +184,65 @@ async function generateSpecFromGoal(goal: string, analysis: GoalAnalysis): strin
 }
 ```
 
-### Escalation During Goal Processing
+### Goal Resolution (Mode-Dependent)
 
 ```typescript
-// If goal is ambiguous, ask for clarification
+// If goal is ambiguous, check mode
 if (analysis.ambiguous) {
-  return ask_user({
-    questions: [{
-      question: "I need clarification on your goal. Which do you mean?",
-      header: "Clarify",
-      options: analysis.interpretations.map(i => ({
-        label: i.summary,
-        description: i.detail
-      })),
-      multiSelect: false
-    }]
+  if (MODE === 'human-in-the-loop') {
+    // HUMAN MODE: Ask user to pick interpretation
+    return ask_user({
+      questions: [{
+        question: "I need clarification on your goal. Which do you mean?",
+        header: "Clarify",
+        options: analysis.interpretations.map(i => ({
+          label: i.summary, description: i.detail
+        })),
+        multiSelect: false
+      }]
+    });
+  }
+  // AGENTIC MODE: Resolve autonomously — NEVER ask the user
+  // Spawn a Plan subagent to pick the best interpretation
+  const resolution = await Task({
+    subagent_type: "Plan",
+    description: "Resolve ambiguous goal",
+    prompt: `The user's goal "${userGoal}" has multiple interpretations:
+      ${analysis.interpretations.map(i => `- ${i.summary}: ${i.detail}`).join('\n')}
+
+      Analyze the codebase context and pick the BEST interpretation.
+      Consider: existing code patterns, project structure, recent git history.
+      Return JSON: {"chosen": "<interpretation summary>", "reasoning": "<why>"}`
   });
+  // Use the resolved interpretation and continue
+  analysis = { ...analysis, ambiguous: false, resolvedGoal: resolution.chosen };
 }
 
-// If multiple tracks match, ask which one
+// If multiple tracks match, check mode
 if (matchingTracks.length > 1) {
-  return ask_user({
-    questions: [{
-      question: "This goal matches multiple existing tracks. Which one?",
-      header: "Track",
-      options: matchingTracks.map(t => ({
-        label: t.name,
-        description: `Status: ${t.status}`
-      })),
-      multiSelect: false
-    }]
-  });
+  if (MODE === 'human-in-the-loop') {
+    // HUMAN MODE: Ask user which track
+    return ask_user({
+      questions: [{
+        question: "This goal matches multiple existing tracks. Which one?",
+        header: "Track",
+        options: matchingTracks.map(t => ({
+          label: t.name, description: `Status: ${t.status}`
+        })),
+        multiSelect: false
+      }]
+    });
+  }
+  // AGENTIC MODE: Pick the most relevant one — NEVER ask the user
+  // Pick the track with the highest keyword overlap and most recent activity
+  const bestMatch = matchingTracks.sort((a, b) => {
+    const aOverlap = keywords.filter(k => a.name.toLowerCase().includes(k)).length;
+    const bOverlap = keywords.filter(k => b.name.toLowerCase().includes(k)).length;
+    if (bOverlap !== aOverlap) return bOverlap - aOverlap;
+    return new Date(b.updated_at) - new Date(a.updated_at); // Most recent
+  })[0];
+  console.log(`Auto-selected track: ${bestMatch.id} (best keyword match)`);
+  return resumeOrchestration(bestMatch.id);
 }
 ```
 
@@ -265,8 +312,8 @@ async function detectCurrentStep(trackId: string) {
 | `BUSINESS_SYNC` | `NOT_STARTED` | Dispatch `business-docs-sync` |
 | `BUSINESS_SYNC` | `PASSED` | Advance to `COMPLETE` |
 | `COMPLETE` | — | Run retrospective, cleanup workers, report success |
-| Any | `BLOCKED` | Check blockers, escalate to user |
-| Any | `ESCALATE` | Board or lead escalated → user intervention |
+| Any | `BLOCKED` | Log blockers, skip blocked tasks, continue with unblocked work |
+| Any | `ESCALATE` | Route to Board of Directors for autonomous resolution |
 
 ---
 
@@ -290,9 +337,12 @@ async function handleDecision(question: Question) {
   // 1. Check Authority Matrix
   const authority = lookupAuthority(question.category);
 
-  // 2. USER_ONLY decisions go straight to user
-  if (authority === 'USER_ONLY') {
-    return escalateToUser(question);
+  // 2. HIGH_IMPACT decisions: check mode
+  if (authority === 'HIGH_IMPACT') {
+    if (MODE === 'human-in-the-loop') {
+      return escalateToUser(question); // HUMAN MODE: ask user
+    }
+    return escalateToBoard(question); // AGENTIC MODE: board decides
   }
 
   // 3. LEAD_CONSULT decisions go to appropriate lead
@@ -317,7 +367,7 @@ async function handleDecision(question: Question) {
           "decision": "...",
           "reasoning": "...",
           "authority_used": "...",
-          "escalate_to": null | "user" | "cto-advisor",
+          "escalate_to": null | "board" | "cto-advisor",
           "escalation_reason": "..."
         }`
     });
@@ -331,8 +381,8 @@ async function handleDecision(question: Question) {
       return result.decision;
     }
 
-    // Lead escalated - follow their recommendation
-    return escalateTo(result.escalate_to, result.escalation_reason);
+    // Lead escalated - route to Board of Directors for autonomous resolution (NEVER to user)
+    return escalateToBoard({ question: question.text, context: result.escalation_reason });
   }
 
   // 4. ORCHESTRATOR decisions are made autonomously
@@ -344,13 +394,13 @@ async function handleDecision(question: Question) {
 
 See `conductor/authority-matrix.md` for the complete decision matrix.
 
-**Quick Reference — Always Escalate to User:**
-- Budget changes >$50/month
-- Add/remove features from spec
-- Breaking API changes
-- Dependencies >50KB
-- Coverage below 70%
-- Security/production data changes
+**Quick Reference — High-Impact (Board Decides Autonomously):**
+- Budget changes >$50/month → Board evaluates cost/benefit
+- Add/remove features from spec → Board assesses scope impact
+- Breaking API changes → Board reviews migration path
+- Dependencies >50KB → Board evaluates alternatives
+- Coverage below 70% → Board decides acceptable threshold
+- Security/production data changes → Board reviews risk
 
 **Quick Reference — Lead Can Decide:**
 - Architecture: Patterns (existing), component org, schema (additive)
@@ -396,19 +446,21 @@ Task({
 })
 ```
 
-### Agent Roster (v3)
+### Agent Roster (v3) — with Model Allocation
 
-| Step | Agent | Skill | Dispatch Prompt Key Points |
-|------|-------|-------|---------------------------|
-| PRE-PLAN | Knowledge Manager | `knowledge-manager` | Load patterns + errors for this track type |
-| PLAN | Planner | `loop-planner` | Create plan.md WITH DAG, update metadata |
-| EVALUATE_PLAN | Plan Evaluator | `loop-plan-evaluator` | Run 6 checks (+ DAG + Board), write_file verdict |
-| EVALUATE_PLAN | **Board** | `board-of-directors` | **NEW**: Full deliberation for major tracks |
-| PARALLEL_EXECUTE | **Workers** | `worker-templates/*` | **NEW**: Parallel Task calls via agent-factory |
-| EVALUATE_EXECUTION | Exec Evaluator | `loop-execution-evaluator` | Dispatch evaluators + quick board review |
-| FIX | Fixer | `loop-fixer` | Check fix_cycle_count, implement fixes |
-| BUSINESS_SYNC | Biz Doc Sync | `business-docs-sync` | Update Tier 1-3 docs if needed |
-| POST-COMPLETE | Retrospective | `retrospective-agent` | Extract learnings, cleanup workers |
+**Use Opus for planning/strategy, Sonnet for execution/implementation.** This saves tokens while maintaining quality.
+
+| Step | Agent | Skill | Model | Rationale |
+|------|-------|-------|-------|-----------|
+| PRE-PLAN | Knowledge Manager | `knowledge-manager` | **sonnet** | Data retrieval |
+| PLAN | Planner | `loop-planner` | **opus** | Strategic planning requires deep thinking |
+| EVALUATE_PLAN | Plan Evaluator | `loop-plan-evaluator` | **opus** | Architectural judgment |
+| EVALUATE_PLAN | **Board** | `board-of-directors` | **opus** | Nuanced deliberation |
+| PARALLEL_EXECUTE | **Workers** | `worker-templates/*` | **sonnet** | Procedural code execution |
+| EVALUATE_EXECUTION | Exec Evaluator | `loop-execution-evaluator` | **sonnet** | Checklist-based evaluation |
+| FIX | Fixer | `loop-fixer` | **sonnet** | Follows evaluation report |
+| BUSINESS_SYNC | Biz Doc Sync | `business-docs-sync` | **sonnet** | Document updates |
+| POST-COMPLETE | Retrospective | `retrospective-agent` | **sonnet** | Pattern extraction |
 
 ---
 
@@ -751,8 +803,10 @@ async function resumeOrchestration(trackId: string) {
       }
       if (current_step === 'EVALUATE_EXECUTION') {
         // Check fix cycle limit
-        if (metadata.loop_state.fix_cycle_count >= 3) {
-          return escalateToUser('Fix cycle limit exceeded after 3 attempts');
+        if (metadata.loop_state.fix_cycle_count >= 5) {
+          // NEVER escalate to user — complete with warnings
+          await logAutonomousDecision(trackId, 'fix_limit_reached', 'Completed with unresolved issues after 5 fix cycles');
+          return completeWithWarnings(trackId);
         }
         await updateMetadata(trackId, {
           current_step: 'FIX',
@@ -766,7 +820,9 @@ async function resumeOrchestration(trackId: string) {
       // Check if blocker is resolved
       const activeBlockers = metadata.blockers.filter(b => b.status === 'ACTIVE');
       if (activeBlockers.length > 0) {
-        return escalateToUser(`Track blocked: ${activeBlockers[0].description}`);
+        // NEVER escalate to user — log blocker and skip blocked tasks
+        await logAutonomousDecision(trackId, 'blocker_skipped', `Skipped blocked tasks: ${activeBlockers[0].description}`);
+        await skipBlockedTasks(trackId, activeBlockers);
       }
       // Blocker resolved, continue
       await updateMetadata(trackId, { step_status: 'NOT_STARTED' });
@@ -811,35 +867,77 @@ PLAN ──► EVALUATE_PLAN ──► EXECUTE ──► EVALUATE_EXECUTION
 
 ---
 
-## Escalation Triggers
+## Resolution Triggers (Mode-Dependent)
 
-Escalate to user (stop the loop) when:
+**Behavior depends on `conductor/config.json` → `mode`:**
+- **`"agentic"`**: All situations resolved autonomously. Never stops.
+- **`"human-in-the-loop"`**: Pauses at each trigger below and asks the user.
 
-1. **Fix cycle limit** — 3 failed EVALUATE → FIX cycles
-2. **USER_ONLY decision** — From authority matrix
-3. **Lead escalated** — Lead returned `escalate_to: "user"`
-4. **Blocker detected** — External dependency blocking progress
-5. **Max iterations** — Safety limit of 50 loop iterations reached
+1. **Fix cycle limit (5 cycles)** → Complete track with warnings, log unresolved issues
+2. **HIGH_IMPACT decision** → Route to Board of Directors for autonomous deliberation
+3. **Lead escalated** → Lead returned `escalate_to: "board"` → route to Board of Directors
+4. **Blocker detected** → Log blocker, skip blocked tasks, continue with unblocked work
+5. **Max iterations (50)** → Complete track with warnings, log all progress
 
-### Escalation Format
+### Progress Logging Format
 
-```markdown
-## Orchestrator Paused — User Input Required
-
-**Track**: [track-id]
-**Current Step**: [step]
-**Reason**: [escalation reason]
-
-**Context**:
-[What was happening when escalation triggered]
-
-**Options**:
-1. [Option 1]
-2. [Option 2]
-3. [Option 3 if applicable]
-
-What would you like to do?
+```json
+{
+  "autonomous_decisions": [
+    {
+      "timestamp": "...",
+      "type": "fix_limit_reached|blocker_skipped|board_decided|ambiguity_resolved",
+      "context": "What was happening",
+      "decision": "What was decided",
+      "reasoning": "Why this was chosen"
+    }
+  ]
+}
 ```
+
+---
+
+## Autonomous Resolution Utility Functions
+
+These utility functions implement the autonomous resolution patterns. They operate on metadata.json:
+
+### `logAutonomousDecision(trackId, type, reasoning)`
+
+Append a decision record to the `autonomous_decisions` array in metadata.json:
+```json
+{
+  "timestamp": "{ISO timestamp}",
+  "type": "ambiguity_resolved|blocker_skipped|board_decided|fix_limit_reached|completed_with_warnings",
+  "context": "{current_step at time of decision}",
+  "decision": "{what was decided}",
+  "reasoning": "{why this was chosen}"
+}
+```
+
+### `escalateToBoard(question)`
+
+Dispatch a board meeting for autonomous resolution:
+1. Spawn: `claude --print --model opus "/supaconductor:board-meeting {question}"`
+2. Parse board verdict (APPROVED / REJECTED)
+3. If APPROVED → continue with board conditions as constraints
+4. If REJECTED → re-plan incorporating all board feedback
+5. Log board decision via `logAutonomousDecision()`
+
+### `skipBlockedTasks(trackId, activeBlockers)`
+
+Skip blocked tasks and continue with unblocked work:
+1. Read plan.md and mark blocked tasks as `[~] SKIPPED`
+2. Add each blocker to metadata.json `"blockers"` array with description and timestamp
+3. Continue executing the next unblocked task in DAG order
+
+### `completeWithWarnings(trackId)`
+
+Complete the track with warnings instead of blocking:
+1. Update metadata.json: `current_step = "COMPLETE"`, `step_status = "PASSED_WITH_WARNINGS"`
+2. Add `"warnings"` array to metadata with unresolved issues
+3. Update tracks.md — mark track as "Done (with warnings)"
+4. Log via `logAutonomousDecision("completed_with_warnings", ...)`
+5. Output summary report listing all warnings
 
 ---
 

@@ -6,11 +6,12 @@ arguments:
     description: "Optional track ID (defaults to active track)"
     required: false
 user_invocable: true
+model: sonnet
 ---
 
 # /supaconductor:implement — Automated Evaluate-Loop
 
-Fully automates the Evaluate-Loop workflow. Detects current step, dispatches the correct agent, reads the result, and continues until the track is complete or requires user intervention.
+Fully automates the Evaluate-Loop workflow. Detects current step, dispatches the correct agent, reads the result, and continues until the track is complete. **Runs fully autonomously — never stops to ask the user questions.**
 
 ## Usage
 
@@ -69,14 +70,15 @@ Uses the run_shell_command to spawn specialized agents:
 run_shell_command(claude --print "/supaconductor:...")
 ```
 
-## Automatic Stops
+## Decision Resolution (Mode-Dependent)
 
-The loop pauses and asks for user input when:
-1. **Fix Cycle Limit** — 3 fix iterations without passing
-2. **Scope Change Needed** — Discovered work requires spec revision
-3. **Blocker** — Task cannot complete due to external dependency
-4. **Ambiguous Requirement** — Spec unclear, needs clarification
-5. **Critical Decision** — Architecture or business decision required
+Behavior depends on `conductor/config.json` → `"mode"`. In `"agentic"` mode (default), the loop never pauses. In `"human-in-the-loop"` mode, the loop pauses at decision points.
+
+1. **Fix Cycle Limit** — Extends to 5 attempts with alternative approaches, then completes with warnings
+2. **Scope Change Needed** — Lead agents (Product, Architecture) autonomously adjust scope within spec intent
+3. **Blocker** — Logs blocker, skips blocked tasks, continues with unblocked work
+4. **Ambiguous Requirement** — Product Lead interprets based on spec and codebase context
+5. **Critical Decision** — Board of Directors deliberates and decides autonomously
 
 ## Track Completion Protocol
 

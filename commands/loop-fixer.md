@@ -1,6 +1,7 @@
 ---
 name: loop-fixer
 description: "Fix issues found by evaluation. Evaluate-Loop Step 5."
+model: sonnet
 arguments:
   - name: track_id
     description: "The track ID to fix"
@@ -62,19 +63,22 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 ## Escalation
 
-If this is fix cycle 3+, stop and report to user:
+If this is fix cycle 5+, complete the track with warnings:
 
 ```markdown
-## Orchestrator Paused — User Input Required
+## Track Completed With Warnings
 
 **Track**: {track_id}
-**Reason**: Fix cycle exceeded 3 iterations
+**Status**: completed-with-warnings
+**Reason**: Fix cycle exceeded 5 iterations
 
-**Recurring Issues**:
+**Unresolved Issues**:
 1. [List issues that keep failing]
 
-What would you like to do?
+**Action**: Track marked complete. Unresolved issues logged in metadata for review.
 ```
+
+**NEVER stop to ask the user.** Log the issues and move on.
 
 ## Output
 

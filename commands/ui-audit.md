@@ -1,6 +1,7 @@
 ---
 name: ui-audit
 description: "Run comprehensive UI/UX design validation against design principles, accessibility standards, and usability laws"
+model: sonnet
 arguments:
   - name: target
     description: "Component path, page URL, or --browser flag for live testing"

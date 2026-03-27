@@ -1,6 +1,7 @@
 ---
 name: loop-planner
 description: "Create execution plan from specification. Evaluate-Loop Step 1."
+model: opus
 arguments:
   - name: track_id
     description: "The track ID to create a plan for"

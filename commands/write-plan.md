@@ -1,7 +1,8 @@
 ---
+name: write-plan
 user_invocable: true
 description: Create detailed implementation plan with bite-sized tasks
-disable-model-invocation: true
+model: opus
 ---
 
-Invoke the superpowers:writing-plans skill and follow it exactly as presented to you
+Invoke the supaconductor:writing-plans skill and follow it exactly as presented to you

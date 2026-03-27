@@ -1,6 +1,7 @@
 ---
 name: board-review
 description: "Quick board review - get expert opinions from 5 directors without full deliberation"
+model: opus
 arguments:
   - name: proposal
     type: string
