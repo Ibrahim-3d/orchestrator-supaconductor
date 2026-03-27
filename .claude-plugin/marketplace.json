@@ -1,10 +1,10 @@
 {
   "name": "ibrahim-plugins",
-  "description": "Conductor v3 — Multi-agent orchestration with Evaluate-Loop, parallel execution, Board of Directors, and bundled SupaConductor skills for Claude Code",
-  "version": "3.3.1",
+  "description": "Official Claude Code plugins by Ibrahim — AI image generation, multi-agent orchestration, and more",
+  "version": "3.4.0",
   "owner": {
     "name": "Ibrahim",
-    "email": ""
+    "url": "https://github.com/Ibrahim-3d"
   },
   "plugins": [
     {
@@ -14,7 +14,7 @@
         "repo": "Ibrahim-3d/conductor-orchestrator-supaconductor"
       },
       "description": "Conductor v3 — Multi-agent orchestration with Evaluate-Loop, parallel execution, Board of Directors, and bundled SupaConductor skills for Claude Code",
-      "version": "3.3.1",
+      "version": "3.4.0",
       "author": {
         "name": "Ibrahim",
         "url": "https://github.com/Ibrahim-3d"
@@ -35,6 +35,36 @@
         "multi-agent"
       ],
       "category": "productivity"
+    },
+    {
+      "name": "nano-banana",
+      "source": {
+        "source": "github",
+        "repo": "Ibrahim-3d/nano-banana-claude-plugin"
+      },
+      "description": "AI image generation & editing for Claude Code powered by Google Gemini 3.1 API. Text-to-image, inpainting, style transfer, 4K upscaling, search grounding, and multi-reference composition.",
+      "version": "2.1.0",
+      "author": {
+        "name": "Ibrahim",
+        "url": "https://github.com/Ibrahim-3d"
+      },
+      "homepage": "https://github.com/Ibrahim-3d/nano-banana-claude-plugin",
+      "repository": "https://github.com/Ibrahim-3d/nano-banana-claude-plugin",
+      "license": "MIT",
+      "keywords": [
+        "image-generation",
+        "gemini",
+        "gemini-3.1",
+        "ai-art",
+        "text-to-image",
+        "image-editing",
+        "style-transfer",
+        "4k-generation",
+        "multi-reference",
+        "nano-banana",
+        "claude-code-plugin"
+      ],
+      "category": "creative"
     }
   ]
 }

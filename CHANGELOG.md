@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.0] - 2026-03-27
+
+### Features
+
+- **Rewrite /setup as full interactive project initialization** — /setup now analyzes the project, generates a PRD, and populates a full development sprint automatically
+- **Configurable mode — agentic vs human-in-the-loop** — Users can switch between fully autonomous operation and step-by-step collaboration
+- **Fully agentic plugin** — All commands now run autonomously without prompting the user for questions mid-execution
+- **Explicit model declarations on all 32 commands** — Opus for planning, Sonnet for execution to optimize token usage and cost
+- **Version detection on session start** — Claude now detects the running SupaConductor version and checks for available updates via GitHub
+
+### Bug Fixes
+
+- **Mode-aware executing-plans and finishing-a-development-branch** — These skills now respect the configured agentic/human-in-the-loop mode
+- **Add missing name: fields and create 2 missing command wrappers** — Fixed registration gaps found during testing
+- **Resolve 6 dead endpoints found during pressure testing** — Eliminated broken references across the plugin
+
+### Documentation
+
+- Rewrite README for non-tech users with clearer onboarding
+- Add changelog automation via release-please and GitHub Actions config
+
 ## [3.3.1] - 2026-03-12
 
 ### Features

@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-  <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor"><img alt="Version" src="https://img.shields.io/badge/version-3.3.1-green.svg"/></a>
+  <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor"><img alt="Version" src="https://img.shields.io/badge/version-3.4.0-green.svg"/></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img alt="Claude Code" src="https://img.shields.io/badge/Claude_Code-Plugin-blueviolet.svg"/></a>
   <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor/discussions"><img alt="Community" src="https://img.shields.io/badge/community-discussions-orange.svg"/></a>
 </p>

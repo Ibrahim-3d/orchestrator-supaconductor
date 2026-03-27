@@ -1,6 +1,6 @@
 {
   "name": "supaconductor",
-  "version": "3.3.1",
+  "version": "3.4.0",
   "description": "Conductor v3 — Multi-agent orchestration with Evaluate-Loop, parallel execution, Board of Directors, and bundled SupaConductor skills for Claude Code",
   "author": {
     "name": "Ibrahim"
