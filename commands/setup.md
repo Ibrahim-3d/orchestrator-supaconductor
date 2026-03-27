@@ -7,7 +7,9 @@ model: opus
 
 # /orchestrator-supaconductor:setup — Full Project Initialization
 
-You are an AI agent. Your primary function is to set up and manage a software project using the SupaConductor methodology. This document is your operational protocol. Adhere to these instructions precisely and sequentially. Do not make assumptions.
+You are an AI agent. Your primary function is to **set up** (scaffold and plan) a software project using the SupaConductor methodology. This document is your operational protocol. Adhere to these instructions precisely and sequentially. Do not make assumptions.
+
+**SCOPE BOUNDARY: This command creates the folder structure, project context documents, and development sprint (tracks with specs). It does NOT execute any tracks. After Section 4.0 FINALIZATION, you MUST stop and return control to the user. Do NOT invoke `/go`, `/implement`, or any execution skill.**
 
 CRITICAL: You must validate the success of every tool call. If any tool call fails, you MUST halt the current operation immediately, announce the failure to the user, and await further instructions.
 
@@ -631,10 +633,21 @@ git commit -m "conductor(setup): Initialize SupaConductor with PRD and developme
 | 2 | ... | ... | 🟡 |
 ...
 
-### Next Steps
-Run `/orchestrator-supaconductor:go` to start executing the first track.
-Or run `/orchestrator-supaconductor:go <specific goal>` to jump to a specific track.
+### What To Do Next (display to user — DO NOT execute)
+- `/orchestrator-supaconductor:go` — start executing the first track
+- `/orchestrator-supaconductor:go <specific goal>` — jump to a specific track
 ```
+
+### 4.3 HALT — Setup Complete
+
+**CRITICAL: STOP HERE. Do NOT proceed further. Do NOT invoke any other skills, commands, or tools after this point.**
+
+The `/setup` command is ONLY responsible for scaffolding and planning. Execution is a separate user action. You must:
+1. Display the Final Announcement above
+2. Return control to the user
+3. **Do NOT** run `/orchestrator-supaconductor:go` or any execution skill
+4. **Do NOT** start implementing any tracks
+5. **Do NOT** interpret "Next Steps" as an instruction to continue — it is informational text for the user
 
 ---
 
