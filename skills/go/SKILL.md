@@ -79,16 +79,14 @@ The orchestrator will:
 - Monitor progress and handle failures
 - Complete the track or escalate if blocked
 
-## Autonomous Resolution
+## Decision Resolution
 
-**This entry point NEVER stops to ask the user questions.** All decisions are resolved autonomously:
+Behavior depends on `conductor/config.json` → `"mode"`:
 
-- **Goal is ambiguous** → Pick the most likely interpretation based on codebase context and proceed
-- **Multiple interpretations possible** → Spawn a Plan subagent to analyze and choose the best interpretation
-- **Scope conflicts with existing tracks** → Merge into the most relevant existing track or create a new non-overlapping track
-- **Board rejects the plan** → Re-plan incorporating board feedback automatically
-- **Fix cycle exceeds 3 iterations** → Increase max to 5, try alternative approaches via systematic-debugging, then mark track as needs-review and move on
-- **Missing dependencies or blockers** → Log the blocker in metadata.json, skip blocked tasks, continue with unblocked work
+- **`"agentic"` (default)** — Fully autonomous. Never stops to ask the user. All decisions resolved by agents, leads, and board.
+- **`"human-in-the-loop"`** — Pauses at decision points (ambiguity, blockers, fix limits, high-impact decisions) to ask the user.
+
+See `conductor/config.json` for current mode. Edit to switch.
 
 ## Resume Existing Work
 

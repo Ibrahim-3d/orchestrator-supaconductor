@@ -9,6 +9,25 @@ The master coordinator that runs the Evaluate-Loop for any track. Version 3 adds
 
 ---
 
+## Mode Configuration Protocol
+
+**FIRST ACTION: Read `conductor/config.json` to determine operating mode.**
+
+```typescript
+const config = await readJSON('conductor/config.json').catch(() => ({ mode: 'agentic' }));
+const MODE = config.mode; // "agentic" | "human-in-the-loop"
+const MAX_FIX_CYCLES = config.max_fix_cycles || 5;
+```
+
+| Mode | Behavior |
+|------|----------|
+| `"agentic"` | Fully autonomous. Resolve all decisions via leads, board, or best-judgment. Never ask user. |
+| `"human-in-the-loop"` | Pause at key decision points. Ask user for ambiguity, blockers, fix limits, HIGH_IMPACT decisions. |
+
+**All decision points below check `MODE` before acting.** If config.json doesn't exist, default to `"agentic"`.
+
+---
+
 ## Goal-Driven Entry (`/go`)
 
 The simplest entry point. User states their goal, the system handles everything.
@@ -165,11 +184,25 @@ async function generateSpecFromGoal(goal: string, analysis: GoalAnalysis): strin
 }
 ```
 
-### Autonomous Goal Resolution
+### Goal Resolution (Mode-Dependent)
 
 ```typescript
-// If goal is ambiguous, resolve autonomously — NEVER ask the user
+// If goal is ambiguous, check mode
 if (analysis.ambiguous) {
+  if (MODE === 'human-in-the-loop') {
+    // HUMAN MODE: Ask user to pick interpretation
+    return ask_user({
+      questions: [{
+        question: "I need clarification on your goal. Which do you mean?",
+        header: "Clarify",
+        options: analysis.interpretations.map(i => ({
+          label: i.summary, description: i.detail
+        })),
+        multiSelect: false
+      }]
+    });
+  }
+  // AGENTIC MODE: Resolve autonomously — NEVER ask the user
   // Spawn a Plan subagent to pick the best interpretation
   const resolution = await Task({
     subagent_type: "Plan",
@@ -185,8 +218,22 @@ if (analysis.ambiguous) {
   analysis = { ...analysis, ambiguous: false, resolvedGoal: resolution.chosen };
 }
 
-// If multiple tracks match, pick the most relevant one — NEVER ask the user
+// If multiple tracks match, check mode
 if (matchingTracks.length > 1) {
+  if (MODE === 'human-in-the-loop') {
+    // HUMAN MODE: Ask user which track
+    return ask_user({
+      questions: [{
+        question: "This goal matches multiple existing tracks. Which one?",
+        header: "Track",
+        options: matchingTracks.map(t => ({
+          label: t.name, description: `Status: ${t.status}`
+        })),
+        multiSelect: false
+      }]
+    });
+  }
+  // AGENTIC MODE: Pick the most relevant one — NEVER ask the user
   // Pick the track with the highest keyword overlap and most recent activity
   const bestMatch = matchingTracks.sort((a, b) => {
     const aOverlap = keywords.filter(k => a.name.toLowerCase().includes(k)).length;
@@ -290,9 +337,12 @@ async function handleDecision(question: Question) {
   // 1. Check Authority Matrix
   const authority = lookupAuthority(question.category);
 
-  // 2. HIGH_IMPACT decisions go to Board of Directors for autonomous resolution
+  // 2. HIGH_IMPACT decisions: check mode
   if (authority === 'HIGH_IMPACT') {
-    return escalateToBoard(question);
+    if (MODE === 'human-in-the-loop') {
+      return escalateToUser(question); // HUMAN MODE: ask user
+    }
+    return escalateToBoard(question); // AGENTIC MODE: board decides
   }
 
   // 3. LEAD_CONSULT decisions go to appropriate lead
@@ -817,9 +867,11 @@ PLAN ──► EVALUATE_PLAN ──► EXECUTE ──► EVALUATE_EXECUTION
 
 ---
 
-## Autonomous Resolution Triggers
+## Resolution Triggers (Mode-Dependent)
 
-**The orchestrator NEVER stops to ask the user.** All situations are resolved autonomously:
+**Behavior depends on `conductor/config.json` → `mode`:**
+- **`"agentic"`**: All situations resolved autonomously. Never stops.
+- **`"human-in-the-loop"`**: Pauses at each trigger below and asks the user.
 
 1. **Fix cycle limit (5 cycles)** → Complete track with warnings, log unresolved issues
 2. **HIGH_IMPACT decision** → Route to Board of Directors for autonomous deliberation

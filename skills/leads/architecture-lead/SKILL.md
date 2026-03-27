@@ -23,7 +23,9 @@ The Architecture Lead makes autonomous decisions about system design, patterns, 
 | **Caching strategy** | React Query patterns, SWR config | Within existing setup |
 | **Schema changes (additive)** | New columns, new tables | Must use Supabase MCP, no breaking changes |
 
-### Must Escalate to Board of Directors (Autonomous — NEVER to User)
+### Must Escalate (Mode-Dependent)
+
+**`"agentic"` mode**: Escalate to Board. **`"human-in-the-loop"` mode**: Escalate to user.
 
 | Decision Type | Reason |
 |---------------|--------|

@@ -19,6 +19,7 @@ Set up the Conductor workflow system in a new project. Creates the directory str
 
 ```
 conductor/
+├── config.json         # Project-level SupaConductor configuration
 ├── tracks.md           # Track registry (list of all tracks)
 ├── index.md            # Current project status overview
 ├── workflow.md         # Evaluate-Loop process documentation
@@ -42,7 +43,22 @@ mkdir -p conductor/tracks
 mkdir -p conductor/knowledge
 ```
 
-### 3. Create tracks.md
+### 3. Create config.json
+
+```json
+{
+  "mode": "agentic",
+  "max_fix_cycles": 5,
+  "planning_model": "opus",
+  "execution_model": "sonnet"
+}
+```
+
+**Mode Options:**
+- `"agentic"` (default) — Fully autonomous. Never stops for user input. All decisions resolved by agents, leads, and board.
+- `"human-in-the-loop"` — Stops at key decision points to ask the user. Pauses on ambiguity, blockers, fix limits, and high-impact decisions.
+
+### 4. Create tracks.md
 
 ```markdown
 # Conductor Track Registry
@@ -62,7 +78,7 @@ Active and completed development tracks.
 | (none yet) | | | |
 ```
 
-### 4. Create index.md
+### 5. Create index.md
 
 ```markdown
 # Project Status
@@ -80,7 +96,7 @@ Active and completed development tracks.
 - Superpowers: enabled
 ```
 
-### 5. Create decision-log.md
+### 6. Create decision-log.md
 
 ```markdown
 # Decision Log
@@ -98,7 +114,7 @@ Technical and business decisions made during development.
 - **Impact**: Effects on architecture/product/business
 ```
 
-### 6. Create knowledge/patterns.md
+### 7. Create knowledge/patterns.md
 
 ```markdown
 # Code Patterns & Conventions
@@ -115,7 +131,7 @@ Discovered patterns from the codebase.
 (add as discovered)
 ```
 
-### 7. Create knowledge/errors.json
+### 8. Create knowledge/errors.json
 
 ```json
 {
@@ -124,7 +140,7 @@ Discovered patterns from the codebase.
 }
 ```
 
-### 8. Create workflow.md Link/Copy
+### 9. Create workflow.md Link/Copy
 
 Copy or reference the Conductor workflow documentation from the plugin's `docs/workflow.md`.
 
@@ -134,7 +150,9 @@ Copy or reference the Conductor workflow documentation from the plugin's `docs/w
 ## Conductor Initialized
 
 **Location**: conductor/
-**Files Created**: 6 files, 2 directories
+**Files Created**: 7 files, 2 directories
+**Mode**: agentic (fully autonomous)
+**To switch modes**: Edit `conductor/config.json` → set `"mode": "human-in-the-loop"`
 
 **Next Steps**:
 1. Run `/conductor:new-track` to create your first development track

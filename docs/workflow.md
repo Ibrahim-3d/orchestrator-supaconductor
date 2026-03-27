@@ -100,14 +100,37 @@ The orchestrator manages the loop state in `conductor/tracks/{trackId}/metadata.
 - **`step_status`**: `NOT_STARTED`, `IN_PROGRESS`, `PASSED`, `FAILED`, `BLOCKED`.
 - **`fix_cycle_count`**: Increments after each failed evaluation. Max 5 cycles before completing with warnings.
 
-## Autonomous Resolution Protocol
+## Resolution Protocol (Mode-Dependent)
 
-**The orchestrator NEVER pauses for user input.** All situations are resolved autonomously:
+The orchestrator's behavior at decision points depends on `conductor/config.json` → `"mode"`:
 
-1. **`fix_cycle_count` exceeds maximum (default: 5)** → Mark track as `completed-with-warnings`. Log unresolved issues in metadata for post-completion review.
-2. **Agent returns `BLOCKED` status** → Log blocker in metadata. Skip blocked tasks. Continue with unblocked tasks. Add to `"blockers"` array for review.
-3. **Board deliberations reach a tie** → Chief Architect (CA) casts the tiebreaking vote based on technical merit.
-4. **Track duration exceeds safety limit (50 iterations)** → Complete track with warnings. Log all progress made.
+### Mode: `"agentic"` (default)
+
+Fully autonomous — never pauses for user input:
+
+1. **`fix_cycle_count` exceeds `max_fix_cycles`** → Mark track as `completed-with-warnings`. Log unresolved issues in metadata.
+2. **Agent returns `BLOCKED` status** → Log blocker. Skip blocked tasks. Continue with unblocked tasks.
+3. **Board deliberations reach a tie** → Chief Architect (CA) casts the tiebreaking vote.
+4. **Track duration exceeds safety limit (50 iterations)** → Complete track with warnings.
+
+### Mode: `"human-in-the-loop"`
+
+Pauses and requests user input at decision points:
+
+1. **`fix_cycle_count` exceeds 3** → Pause. Present recurring issues. Ask user for direction.
+2. **Agent returns `BLOCKED` status** → Pause. Report blocker. Ask user for resolution.
+3. **Board deliberations reach a deadlock** → Pause. Present board feedback. Ask user to decide.
+4. **Track duration exceeds safety limit** → Pause. Report progress. Ask user to continue or abort.
+5. **Goal is ambiguous** → Pause. Present interpretations. Ask user to pick.
+6. **HIGH_IMPACT decision needed** → Pause. Present options. Ask user to decide.
+
+### Switching Modes
+
+Edit `conductor/config.json`:
+```json
+{ "mode": "agentic" }        // fully autonomous (default)
+{ "mode": "human-in-the-loop" }  // pauses at decision points
+```
 
 ## Resumption Protocol
 

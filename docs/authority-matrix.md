@@ -10,7 +10,7 @@ This document defines the decision authority levels for the Conductor orchestrat
 | **LEAD_CONSULT** | Decisions within lead's domain expertise and guardrails | Lead Engineer Agent (autonomous) |
 | **ORCHESTRATOR** | Routine decisions following established conventions | Orchestrator (autonomous) |
 
-> **IMPORTANT:** No decision level requires user input. The system is fully autonomous. All decisions are logged in metadata.json for post-completion review.
+> **Mode-dependent behavior**: In `"agentic"` mode (default), HIGH_IMPACT decisions are resolved by the Board of Directors autonomously. In `"human-in-the-loop"` mode, HIGH_IMPACT decisions pause and ask the user. Configure in `conductor/config.json` → `"mode"`. All decisions are logged in metadata.json for review.
 
 ## Decision Matrix
 

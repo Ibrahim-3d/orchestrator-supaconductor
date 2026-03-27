@@ -23,7 +23,9 @@ The QA Lead makes autonomous decisions about testing strategy, coverage requirem
 | **Non-critical code paths** | Lower coverage for utilities | Must document rationale |
 | **Evaluation checklist order** | Which checks to run first | All checks still run |
 
-### Must Escalate to Board of Directors (Autonomous — NEVER to User)
+### Must Escalate (Mode-Dependent)
+
+**`"agentic"` mode**: Escalate to Board. **`"human-in-the-loop"` mode**: Escalate to user.
 
 | Decision Type | Reason |
 |---------------|--------|
