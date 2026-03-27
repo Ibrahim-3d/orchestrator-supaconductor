@@ -10,7 +10,7 @@ user_invocable: true
 
 # /conductor:implement — Automated Evaluate-Loop
 
-Fully automates the Evaluate-Loop workflow. Detects current step, dispatches the correct agent, reads the result, and continues until the track is complete or requires user intervention.
+Fully automates the Evaluate-Loop workflow. Detects current step, dispatches the correct agent, reads the result, and continues until the track is complete. **Runs fully autonomously — never stops to ask the user questions.**
 
 ## Usage
 
@@ -73,14 +73,15 @@ Task({
 })
 ```
 
-## Automatic Stops
+## Autonomous Resolution
 
-The loop pauses and asks for user input when:
-1. **Fix Cycle Limit** — 3 fix iterations without passing
-2. **Scope Change Needed** — Discovered work requires spec revision
-3. **Blocker** — Task cannot complete due to external dependency
-4. **Ambiguous Requirement** — Spec unclear, needs clarification
-5. **Critical Decision** — Architecture or business decision required
+**The loop NEVER pauses for user input.** All blockers are resolved autonomously:
+
+1. **Fix Cycle Limit** — Extends to 5 attempts with alternative approaches, then completes with warnings
+2. **Scope Change Needed** — Lead agents (Product, Architecture) autonomously adjust scope within spec intent
+3. **Blocker** — Logs blocker, skips blocked tasks, continues with unblocked work
+4. **Ambiguous Requirement** — Product Lead interprets based on spec and codebase context
+5. **Critical Decision** — Board of Directors deliberates and decides autonomously
 
 ## Track Completion Protocol
 

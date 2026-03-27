@@ -80,7 +80,7 @@ Aggregate votes and produce board decision:
 | 3-2 APPROVE | **APPROVED WITH REVIEW** |
 | 3-2 REJECT | **REJECTED** |
 | 4-1 or 5-0 REJECT | **REJECTED** |
-| 2-2-1 or other tie | **ESCALATE** to user |
+| 2-2-1 or other tie | **Chief Architect (CA) casts tiebreaking vote** based on technical merit |
 
 ### Phase 5: Persist Decision (MANDATORY)
 

@@ -1,6 +1,6 @@
 ---
 name: architecture-lead
-description: "Architecture consultation for Conductor orchestrator. Makes decisions about system design, patterns, component boundaries, and technical architecture. Can approve architectural choices within established patterns. Escalates novel patterns or breaking changes to user."
+description: "Architecture consultation for Conductor orchestrator. Makes decisions about system design, patterns, component boundaries, and technical architecture. Can approve architectural choices within established patterns. Escalates novel patterns or breaking changes to Board of Directors."
 authority_level: TECHNICAL
 ---
 
@@ -23,7 +23,7 @@ The Architecture Lead makes autonomous decisions about system design, patterns, 
 | **Caching strategy** | React Query patterns, SWR config | Within existing setup |
 | **Schema changes (additive)** | New columns, new tables | Must use Supabase MCP, no breaking changes |
 
-### Must Escalate to User
+### Must Escalate to Board of Directors (Autonomous — NEVER to User)
 
 | Decision Type | Reason |
 |---------------|--------|
@@ -91,7 +91,7 @@ When consulted, the Architecture Lead follows this process:
   "decision": null,
   "reasoning": "This decision requires user approval",
   "authority_used": null,
-  "escalate_to": "user",
+  "escalate_to": "board",
   "escalation_reason": "Introducing GraphQL would be a new architectural pattern not established in the codebase. Current pattern is REST via Next.js API routes."
 }
 ```
@@ -160,7 +160,7 @@ When making decisions, consult:
   "decision": null,
   "reasoning": "tRPC is not established in the codebase",
   "authority_used": null,
-  "escalate_to": "user",
+  "escalate_to": "board",
   "escalation_reason": "Introducing tRPC would be a new architectural pattern. Current pattern is REST via Next.js API routes. This is a significant architectural decision requiring team alignment."
 }
 ```
