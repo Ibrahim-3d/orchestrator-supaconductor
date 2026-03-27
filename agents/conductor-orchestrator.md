@@ -152,9 +152,16 @@ invoke_superpower() {
         mkdir -p "${track_dir}/brainstorm/"
     fi
 
-    # Invoke superpower with parameters
-    echo "→ Invoking supaconductor:$superpower for track $track_id"
-    claude --print "/supaconductor:$superpower $params"
+    # Determine model: opus for planning/brainstorming, sonnet for execution/debugging
+    local model="sonnet"
+    case "$superpower" in
+        "writing-plans"|"brainstorming") model="opus" ;;
+        "executing-plans"|"systematic-debugging") model="sonnet" ;;
+    esac
+
+    # Invoke superpower with parameters and model
+    echo "→ Invoking supaconductor:$superpower for track $track_id (model: $model)"
+    claude --print --model "$model" "/supaconductor:$superpower $params"
     local exit_code=$?
 
     # Parse response for success/failure
@@ -336,7 +343,35 @@ Based on the state detected, dispatch the correct agent.
 - ✅ Brainstorming added as optional pre-step for architectural/creative decisions
 - ✅ Evaluators remain unchanged (loop-plan-evaluator, loop-execution-evaluator, specialized evaluators)
 
-### 2.2 How to Dispatch an Agent
+### 2.2 Model Allocation Strategy
+
+**Use Opus for planning and strategic thinking. Use Sonnet for execution and implementation.** This saves tokens while preserving quality where it matters.
+
+| Agent / Step | Model | Rationale |
+|-------------|-------|-----------|
+| `supaconductor:writing-plans` | **opus** | Planning requires deep strategic thinking |
+| `loop-plan-evaluator` | **opus** | Evaluating plans requires architectural judgment |
+| `supaconductor:brainstorming` | **opus** | Creative/strategic ideation |
+| `board-meeting` | **opus** | Board deliberation requires nuanced reasoning |
+| `supaconductor:executing-plans` | **sonnet** | Code execution is procedural, follows plan |
+| `loop-execution-evaluator` | **sonnet** | Checklist-based evaluation |
+| `supaconductor:systematic-debugging` | **sonnet** | Fix implementation follows evaluation report |
+| `task-worker` | **sonnet** | Individual task execution |
+| `conductor-orchestrator` | **sonnet** | State machine orchestration |
+
+When dispatching via `claude --print`, use `--model` flag to enforce:
+
+```bash
+# Planning (opus) — deep thinking
+claude --print --model opus "/supaconductor:writing-plans ..."
+claude --print --model opus "/loop-plan-evaluator ..."
+
+# Execution (sonnet) — fast implementation
+claude --print --model sonnet "/supaconductor:executing-plans ..."
+claude --print --model sonnet "/supaconductor:systematic-debugging ..."
+```
+
+### 2.3 How to Dispatch an Agent
 
 **MANDATORY: You MUST use run_shell_command to spawn a new Claude CLI process. Do NOT do the work yourself.**
 
@@ -349,44 +384,46 @@ claude --print "/<agent-command> <track-id>"
 
 ### 2.3 Dispatch Commands (SUPERPOWER-ENHANCED)
 
-#### Dispatch supaconductor:brainstorming (optional pre-step):
+#### Dispatch supaconductor:brainstorming (optional pre-step — OPUS):
 
 ```bash
-# For architectural tracks, invoke brainstorming before planning
-claude --print "/supaconductor:brainstorming --context='Architectural decision for {trackId}' --output-dir='conductor/tracks/{trackId}/brainstorm/'"
+# Strategic ideation uses opus for deeper thinking
+claude --print --model opus "/supaconductor:brainstorming --context='Architectural decision for {trackId}' --output-dir='conductor/tracks/{trackId}/brainstorm/'"
 ```
 
-#### Dispatch supaconductor:writing-plans (replaces loop-planner):
+#### Dispatch supaconductor:writing-plans (replaces loop-planner — OPUS):
 
 ```bash
-# Pass track directory and project context to superpowers
-claude --print "/supaconductor:writing-plans --spec='conductor/tracks/{trackId}/spec.md' --output-dir='conductor/tracks/{trackId}/' --context-files='conductor/tech-stack.md,conductor/workflow.md,conductor/product.md'"
+# Planning uses opus for strategic plan quality
+claude --print --model opus "/supaconductor:writing-plans --spec='conductor/tracks/{trackId}/spec.md' --output-dir='conductor/tracks/{trackId}/' --context-files='conductor/tech-stack.md,conductor/workflow.md,conductor/product.md'"
 ```
 
-#### Dispatch loop-plan-evaluator (keep existing):
+#### Dispatch loop-plan-evaluator (keep existing — OPUS):
 
 ```bash
-claude --print "/loop-plan-evaluator {trackId}"
+# Plan evaluation uses opus for architectural judgment
+claude --print --model opus "/loop-plan-evaluator {trackId}"
 ```
 
-#### Dispatch supaconductor:executing-plans (replaces loop-executor):
+#### Dispatch supaconductor:executing-plans (replaces loop-executor — SONNET):
 
 ```bash
-# Pass plan.md path and track context to superpowers
-claude --print "/supaconductor:executing-plans --plan='conductor/tracks/{trackId}/plan.md' --track-dir='conductor/tracks/{trackId}/' --metadata='conductor/tracks/{trackId}/metadata.json'"
+# Execution uses sonnet — follows the plan, saves tokens
+claude --print --model sonnet "/supaconductor:executing-plans --plan='conductor/tracks/{trackId}/plan.md' --track-dir='conductor/tracks/{trackId}/' --metadata='conductor/tracks/{trackId}/metadata.json'"
 ```
 
-#### Dispatch loop-execution-evaluator (keep existing):
+#### Dispatch loop-execution-evaluator (keep existing — SONNET):
 
 ```bash
-claude --print "/loop-execution-evaluator {trackId}"
+# Execution evaluation uses sonnet — checklist-based
+claude --print --model sonnet "/loop-execution-evaluator {trackId}"
 ```
 
-#### Dispatch supaconductor:systematic-debugging (replaces loop-fixer):
+#### Dispatch supaconductor:systematic-debugging (replaces loop-fixer — SONNET):
 
 ```bash
-# Pass evaluation report and track context to superpowers
-claude --print "/supaconductor:systematic-debugging --failures='conductor/tracks/{trackId}/evaluation-report.md' --track-dir='conductor/tracks/{trackId}/'"
+# Debugging/fixing uses sonnet — follows evaluation report
+claude --print --model sonnet "/supaconductor:systematic-debugging --failures='conductor/tracks/{trackId}/evaluation-report.md' --track-dir='conductor/tracks/{trackId}/'"
 ```
 
 **Parameter Explanation:**

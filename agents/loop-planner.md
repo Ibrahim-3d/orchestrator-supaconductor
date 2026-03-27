@@ -1,7 +1,7 @@
 ---
 name: loop-planner
 description: Creates execution plan with DAG from specification. Evaluate-Loop Step 1.
-model: sonnet
+model: opus
 tools:
   - read_file
   - write_file
