@@ -1,4 +1,5 @@
 ---
+name: write-plan
 user_invocable: true
 description: Create detailed implementation plan with bite-sized tasks
 model: opus
