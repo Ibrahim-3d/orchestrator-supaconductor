@@ -2,6 +2,7 @@
 name: conductor-setup
 description: "Initialize the Conductor environment in a new project - creates conductor/ directory structure"
 user_invocable: true
+model: sonnet
 ---
 
 # /conductor:setup — Initialize Conductor Environment

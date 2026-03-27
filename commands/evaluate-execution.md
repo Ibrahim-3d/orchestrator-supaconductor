@@ -1,6 +1,7 @@
 ---
 name: evaluate-execution
 description: "Verify implementation quality. Evaluate-Loop Step 4."
+model: sonnet
 arguments:
   - name: evaluate-execution
     description: "The track ID to evaluate"

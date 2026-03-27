@@ -6,6 +6,7 @@ arguments:
     description: "Your goal — what you want to build, fix, or change"
     required: false
 user_invocable: true
+model: sonnet
 ---
 
 # /supaconductor:go — Goal-Driven Entry Point

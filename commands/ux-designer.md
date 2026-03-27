@@ -1,6 +1,7 @@
 ---
 name: ux-designer
 description: Get UX strategy and design guidance from an expert UX Designer with 30 years of user experience and product design experience
+model: opus
 arguments:
   - name: question
     description: Your design question or topic to discuss

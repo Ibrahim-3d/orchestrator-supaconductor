@@ -1,6 +1,7 @@
 ---
 name: task-worker
 description: "Execute a single task from the plan. Used for parallel execution."
+model: sonnet
 arguments:
   - name: track_id
     description: "The track ID"
