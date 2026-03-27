@@ -10,10 +10,10 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-  <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor"><img alt="Version" src="https://img.shields.io/badge/version-3.4.0-green.svg"/></a>
+  <a href="https://github.com/Ibrahim-3d/orchestrator-supaconductor/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+  <a href="https://github.com/Ibrahim-3d/orchestrator-supaconductor"><img alt="Version" src="https://img.shields.io/badge/version-3.4.0-green.svg"/></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img alt="Claude Code" src="https://img.shields.io/badge/Claude_Code-Plugin-blueviolet.svg"/></a>
-  <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor/discussions"><img alt="Community" src="https://img.shields.io/badge/community-discussions-orange.svg"/></a>
+  <a href="https://github.com/Ibrahim-3d/orchestrator-supaconductor/discussions"><img alt="Community" src="https://img.shields.io/badge/community-discussions-orange.svg"/></a>
 </p>
 
 <p align="center">
@@ -37,7 +37,7 @@ You tell Claude Code what you want. SupaConductor figures out how to build it �
 **With SupaConductor**, you type one command:
 
 ```
-/supaconductor:go Add user authentication with Google OAuth
+/orchestrator-supaconductor:go Add user authentication with Google OAuth
 ```
 
 And it automatically:
@@ -74,22 +74,22 @@ Bundles [Superpowers](https://github.com/obra/superpowers) v4.3.0 (MIT) — ever
 Open Claude Code and run:
 
 ```
-/install Ibrahim-3d/conductor-orchestrator-supaconductor
+/install Ibrahim-3d/orchestrator-supaconductor
 ```
 
 ### Option 2: Clone from GitHub
 
 ```bash
-git clone https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor.git ~/.claude/plugins/conductor-orchestrator-supaconductor
+git clone https://github.com/Ibrahim-3d/orchestrator-supaconductor.git ~/.claude/plugins/orchestrator-supaconductor
 ```
 
 ### Option 3: Download manually
 
-Download the [latest release](https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor/releases) and extract it to `~/.claude/plugins/conductor-orchestrator-supaconductor/`.
+Download the [latest release](https://github.com/Ibrahim-3d/orchestrator-supaconductor/releases) and extract it to `~/.claude/plugins/orchestrator-supaconductor/`.
 
 ### Verify it works
 
-Start a new Claude Code session and type `/supaconductor:`. You should see a list of commands appear. If you see `/supaconductor:go`, you're all set.
+Start a new Claude Code session and type `/orchestrator-supaconductor:`. You should see a list of commands appear. If you see `/orchestrator-supaconductor:go`, you're all set.
 
 ---
 
@@ -100,7 +100,7 @@ Start a new Claude Code session and type `/supaconductor:`. You should see a lis
 Open Claude Code in your project folder and run:
 
 ```
-/supaconductor:setup
+/orchestrator-supaconductor:setup
 ```
 
 This walks you through an interactive setup that:
@@ -116,19 +116,19 @@ You only need to do this once per project.
 Tell it what you want in plain English:
 
 ```
-/supaconductor:go Add Stripe payment integration with webhooks
+/orchestrator-supaconductor:go Add Stripe payment integration with webhooks
 ```
 
 ```
-/supaconductor:go Fix the login bug where users get logged out after refresh
+/orchestrator-supaconductor:go Fix the login bug where users get logged out after refresh
 ```
 
 ```
-/supaconductor:go Build a dashboard with real-time analytics charts
+/orchestrator-supaconductor:go Build a dashboard with real-time analytics charts
 ```
 
 ```
-/supaconductor:go Refactor the database layer to use connection pooling
+/orchestrator-supaconductor:go Refactor the database layer to use connection pooling
 ```
 
 That's it. SupaConductor takes over from here — planning, coding, testing, and evaluating the work automatically.
@@ -136,7 +136,7 @@ That's it. SupaConductor takes over from here — planning, coding, testing, and
 ### Step 3: Check on progress
 
 ```
-/supaconductor:status
+/orchestrator-supaconductor:status
 ```
 
 Shows all your active tracks, what step each one is on, and what's completed.
@@ -146,7 +146,7 @@ Shows all your active tracks, what step each one is on, and what's completed.
 If a session ends before a track completes, just run:
 
 ```
-/supaconductor:go
+/orchestrator-supaconductor:go
 ```
 
 It picks up exactly where it left off.
@@ -221,11 +221,11 @@ For major decisions (architecture choices, technology migrations, design tradeof
 Each director independently assesses your question, then they discuss and vote with written rationale.
 
 ```
-/supaconductor:board-meeting Should we migrate from REST to GraphQL?
+/orchestrator-supaconductor:board-meeting Should we migrate from REST to GraphQL?
 ```
 
 ```
-/supaconductor:board-review Add real-time notifications via WebSocket
+/orchestrator-supaconductor:board-review Add real-time notifications via WebSocket
 ```
 
 Use `board-meeting` for full deliberation (detailed, takes longer) or `board-review` for quick assessments.
@@ -238,21 +238,21 @@ Use `board-meeting` for full deliberation (detailed, takes longer) or `board-rev
 
 | Command | What It Does |
 |---------|-------------|
-| `/supaconductor:go <goal>` | Describe what you want — everything else is automatic |
-| `/supaconductor:setup` | Set up SupaConductor in your project (run once) |
-| `/supaconductor:status` | See all your tracks and their progress |
-| `/supaconductor:implement` | Continue the Evaluate-Loop on the current track |
-| `/supaconductor:new-track` | Create a new track with more manual control |
+| `/orchestrator-supaconductor:go <goal>` | Describe what you want — everything else is automatic |
+| `/orchestrator-supaconductor:setup` | Set up SupaConductor in your project (run once) |
+| `/orchestrator-supaconductor:status` | See all your tracks and their progress |
+| `/orchestrator-supaconductor:implement` | Continue the Evaluate-Loop on the current track |
+| `/orchestrator-supaconductor:new-track` | Create a new track with more manual control |
 
 ### Quality and Review
 
 | Command | What It Does |
 |---------|-------------|
-| `/supaconductor:phase-review` | Run a quality gate on completed work |
-| `/supaconductor:cto-advisor` | Get a CTO-level architecture review |
-| `/supaconductor:board-meeting <topic>` | Full board deliberation with voting |
-| `/supaconductor:board-review <topic>` | Quick board assessment |
-| `/supaconductor:ui-audit` | Accessibility and UI/UX review |
+| `/orchestrator-supaconductor:phase-review` | Run a quality gate on completed work |
+| `/orchestrator-supaconductor:cto-advisor` | Get a CTO-level architecture review |
+| `/orchestrator-supaconductor:board-meeting <topic>` | Full board deliberation with voting |
+| `/orchestrator-supaconductor:board-review <topic>` | Quick board assessment |
+| `/orchestrator-supaconductor:ui-audit` | Accessibility and UI/UX review |
 
 ### Expert Advisors
 
@@ -260,21 +260,21 @@ Ask for advice from virtual executives — they analyze your project and give gu
 
 | Command | Advisor |
 |---------|---------|
-| `/supaconductor:ceo` | Business strategy and product direction |
-| `/supaconductor:cmo` | Marketing strategy and positioning |
-| `/supaconductor:cto` | Technical architecture and engineering |
-| `/supaconductor:ux-designer` | User experience and design |
+| `/orchestrator-supaconductor:ceo` | Business strategy and product direction |
+| `/orchestrator-supaconductor:cmo` | Marketing strategy and positioning |
+| `/orchestrator-supaconductor:cto` | Technical architecture and engineering |
+| `/orchestrator-supaconductor:ux-designer` | User experience and design |
 
 ### Planning and Execution
 
 | Command | What It Does |
 |---------|-------------|
-| `/supaconductor:writing-plans` | Create a structured implementation plan |
-| `/supaconductor:executing-plans` | Execute an existing plan step by step |
-| `/supaconductor:brainstorming` | Creative exploration before building |
-| `/supaconductor:systematic-debugging` | Structured approach to finding and fixing bugs |
-| `/supaconductor:using-git-worktrees` | Isolate feature work in separate git worktrees |
-| `/supaconductor:finishing-a-development-branch` | Wrap up a branch — merge, PR, or cleanup |
+| `/orchestrator-supaconductor:writing-plans` | Create a structured implementation plan |
+| `/orchestrator-supaconductor:executing-plans` | Execute an existing plan step by step |
+| `/orchestrator-supaconductor:brainstorming` | Creative exploration before building |
+| `/orchestrator-supaconductor:systematic-debugging` | Structured approach to finding and fixing bugs |
+| `/orchestrator-supaconductor:using-git-worktrees` | Isolate feature work in separate git worktrees |
+| `/orchestrator-supaconductor:finishing-a-development-branch` | Wrap up a branch — merge, PR, or cleanup |
 
 ### Loop Control (Advanced)
 
@@ -282,13 +282,13 @@ These give you fine-grained control over individual loop steps:
 
 | Command | Step |
 |---------|------|
-| `/supaconductor:loop-planner` | Run just the planning step |
-| `/supaconductor:loop-plan-evaluator` | Evaluate just the plan |
-| `/supaconductor:loop-executor` | Run just the execution step |
-| `/supaconductor:loop-execution-evaluator` | Evaluate just the execution |
-| `/supaconductor:loop-fixer` | Run just the fix step |
-| `/supaconductor:parallel-dispatcher` | Dispatch parallel workers manually |
-| `/supaconductor:task-worker` | Run a single task from the plan |
+| `/orchestrator-supaconductor:loop-planner` | Run just the planning step |
+| `/orchestrator-supaconductor:loop-plan-evaluator` | Evaluate just the plan |
+| `/orchestrator-supaconductor:loop-executor` | Run just the execution step |
+| `/orchestrator-supaconductor:loop-execution-evaluator` | Evaluate just the execution |
+| `/orchestrator-supaconductor:loop-fixer` | Run just the fix step |
+| `/orchestrator-supaconductor:parallel-dispatcher` | Dispatch parallel workers manually |
+| `/orchestrator-supaconductor:task-worker` | Run a single task from the plan |
 
 ---
 
@@ -325,7 +325,7 @@ These give you fine-grained control over individual loop steps:
 
 ### What gets created in your project
 
-When you run `/supaconductor:setup`, it creates a `conductor/` folder:
+When you run `/orchestrator-supaconductor:setup`, it creates a `conductor/` folder:
 
 ```
 your-project/
@@ -364,7 +364,7 @@ SupaConductor uses the same Claude API as normal Claude Code — it just structu
 SupaConductor optimizes costs automatically: it uses **Opus** (the most capable model) for planning and evaluation, and **Sonnet** (faster, cheaper) for execution tasks.
 
 Ways to reduce cost:
-- Use `/supaconductor:implement` if you write specs yourself
+- Use `/orchestrator-supaconductor:implement` if you write specs yourself
 - Skip board meetings for small features (they're opt-in)
 - Use human-in-the-loop mode to stay in control of scope
 
@@ -399,25 +399,25 @@ For a quick one-file fix — yes, just use Claude Code directly. Use SupaConduct
 You can also use individual commands without the full loop:
 
 ```
-/supaconductor:board-review Should we use Redis or PostgreSQL for sessions?
-/supaconductor:cto-advisor
-/supaconductor:writing-plans
+/orchestrator-supaconductor:board-review Should we use Redis or PostgreSQL for sessions?
+/orchestrator-supaconductor:cto-advisor
+/orchestrator-supaconductor:writing-plans
 ```
 
 ### Can I use this alongside other Claude Code plugins?
 
-Yes. SupaConductor uses the `/supaconductor:` namespace and doesn't conflict with any other plugins, built-in commands, or MCP servers.
+Yes. SupaConductor uses the `/orchestrator-supaconductor:` namespace and doesn't conflict with any other plugins, built-in commands, or MCP servers.
 
 ### How do I update to a newer version?
 
 If you installed via marketplace:
 ```
-/install Ibrahim-3d/conductor-orchestrator-supaconductor
+/install Ibrahim-3d/orchestrator-supaconductor
 ```
 
 If you cloned via git:
 ```bash
-cd ~/.claude/plugins/conductor-orchestrator-supaconductor && git pull
+cd ~/.claude/plugins/orchestrator-supaconductor && git pull
 ```
 
 ### How do I uninstall?
@@ -427,7 +427,7 @@ cd ~/.claude/plugins/conductor-orchestrator-supaconductor && git pull
 /plugin    # Toggle it off in the plugin menu
 
 # Full removal
-rm -rf ~/.claude/plugins/conductor-orchestrator-supaconductor
+rm -rf ~/.claude/plugins/orchestrator-supaconductor
 ```
 
 The `conductor/` directory in your project stays — it's just documentation files.
@@ -441,16 +441,16 @@ If you previously installed `conductor-orchestrator-superpowers` (the old name):
 1. Disable the old plugin: run `/plugin` in Claude Code and toggle it off
 2. Delete the old folder: `rm -rf ~/.claude/plugins/conductor-orchestrator-superpowers`
 3. Install SupaConductor using the [instructions above](#installation)
-4. Run `/supaconductor:setup` in your existing projects to update references
+4. Run `/orchestrator-supaconductor:setup` in your existing projects to update references
 
-Your existing tracks and data are safe — only the command prefix changed from `/conductor:` to `/supaconductor:`.
+Your existing tracks and data are safe — only the command prefix changed from `/conductor:` to `/orchestrator-supaconductor:`.
 
 ---
 
 ## Community
 
-- [Discussions](https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor/discussions) — Ask questions, share ideas, show what you've built
-- [Issues](https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor/issues) — Report bugs or request features
+- [Discussions](https://github.com/Ibrahim-3d/orchestrator-supaconductor/discussions) — Ask questions, share ideas, show what you've built
+- [Issues](https://github.com/Ibrahim-3d/orchestrator-supaconductor/issues) — Report bugs or request features
 - [Changelog](CHANGELOG.md) — See what's new in each release
 
 ---

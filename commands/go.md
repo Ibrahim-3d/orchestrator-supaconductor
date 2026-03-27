@@ -9,7 +9,7 @@ user_invocable: true
 model: sonnet
 ---
 
-# /supaconductor:go — Goal-Driven Entry Point
+# /orchestrator-supaconductor:go — Goal-Driven Entry Point
 
 **The single entry point to the entire Conductor system.**
 
@@ -18,21 +18,21 @@ Just state your goal. The system handles everything else.
 ## Usage
 
 ```
-/supaconductor:go <your goal>
+/orchestrator-supaconductor:go <your goal>
 ```
 
 ## Examples
 
 ```
-/supaconductor:go Add Stripe payment integration
-/supaconductor:go Fix the login bug where users get logged out
-/supaconductor:go Build a dashboard with analytics
-/supaconductor:go Refactor the API layer to use caching
+/orchestrator-supaconductor:go Add Stripe payment integration
+/orchestrator-supaconductor:go Fix the login bug where users get logged out
+/orchestrator-supaconductor:go Build a dashboard with analytics
+/orchestrator-supaconductor:go Refactor the API layer to use caching
 ```
 
 ## Your Task
 
-You ARE the `/supaconductor:go` entry point. When invoked, follow this process:
+You ARE the `/orchestrator-supaconductor:go` entry point. When invoked, follow this process:
 
 ### 1. Goal Analysis
 
@@ -82,7 +82,7 @@ Use the conductor-orchestrator agent to run the evaluate-loop for this track.
 The orchestrator will:
 - Detect current step from metadata
 - Check `superpower_enhanced` flag to determine which agents to use:
-  - **If true (new tracks):** Dispatch superpowers (supaconductor:writing-plans, supaconductor:executing-plans, supaconductor:systematic-debugging)
+  - **If true (new tracks):** Dispatch superpowers (orchestrator-supaconductor:writing-plans, orchestrator-supaconductor:executing-plans, orchestrator-supaconductor:systematic-debugging)
   - **If false/missing (legacy):** Dispatch legacy loop agents (loop-planner, loop-executor, loop-fixer)
 - Monitor progress and handle failures
 - Complete the track or escalate if blocked
@@ -114,14 +114,14 @@ Pauses at key decision points to ask the user:
 ## Resume Existing Work
 
 ```
-/supaconductor:go                    # Continues the active track
-/supaconductor:go continue           # Same as above
+/orchestrator-supaconductor:go                    # Continues the active track
+/orchestrator-supaconductor:go continue           # Same as above
 ```
 
 ## What Happens End-to-End
 
 ```
-User: /supaconductor:go Add a hello world API
+User: /orchestrator-supaconductor:go Add a hello world API
 
 1. Goal Analysis → type: feature, complexity: small
 2. Track Detection → no existing match
@@ -140,7 +140,7 @@ User: /supaconductor:go Add a hello world API
 
 ## Related
 
-- `/supaconductor:implement` — Run evaluate-loop on existing track
-- `/supaconductor:status` — Check current track progress
-- `/supaconductor:new-track` — Create track manually (more control)
+- `/orchestrator-supaconductor:implement` — Run evaluate-loop on existing track
+- `/orchestrator-supaconductor:status` — Check current track progress
+- `/orchestrator-supaconductor:new-track` — Create track manually (more control)
 - `conductor/workflow.md` — Full evaluate-loop documentation

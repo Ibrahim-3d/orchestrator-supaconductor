@@ -84,4 +84,4 @@ Run `/conductor:implement` to continue automatically
 
 - `/conductor:implement` — Continue the evaluate-loop
 - `/conductor:new-track` — Start a new track
-- `/supaconductor:go` — Quick start with goal statement
+- `/orchestrator-supaconductor:go` — Quick start with goal statement

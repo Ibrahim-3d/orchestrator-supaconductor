@@ -13,7 +13,7 @@ Use this skill when:
 
 - Starting work on a new track or feature
 - User mentions: "load context", "project context", "get context"
-- Beginning `/supaconductor:implement` workflow
+- Beginning `/orchestrator-supaconductor:implement` workflow
 - Need to understand project structure without reading all files
 
 ## Token Optimization Protocol

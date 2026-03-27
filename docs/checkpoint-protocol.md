@@ -25,7 +25,7 @@ Agents MUST update the `loop_state.checkpoints` object in the track's `metadata.
       "EXECUTE": {
         "status": "IN_PROGRESS",
         "started_at": "[ISO timestamp]",
-        "agent": "supaconductor:executing-plans",
+        "agent": "orchestrator-supaconductor:executing-plans",
         "tasks_completed": 0,
         "tasks_total": 10
       }
@@ -96,10 +96,10 @@ Agents MUST update the `loop_state.checkpoints` object in the track's `metadata.
 
 | Step | Agent | Mandatory Updates |
 |------|-------|-------------------|
-| `PLAN` | `supaconductor:writing-plans` | `status`, `completed_at`, `tasks_total` |
-| `EXECUTE` | `supaconductor:executing-plans` | `status`, `tasks_completed`, `last_task`, `last_commit`, `commits` |
-| `FIX` | `supaconductor:systematic-debugging` | `status`, `completed_at`, `fixes_applied` |
-| `BRAINSTORM` | `supaconductor:brainstorming` | `status`, `completed_at`, `options_generated` |
+| `PLAN` | `orchestrator-supaconductor:writing-plans` | `status`, `completed_at`, `tasks_total` |
+| `EXECUTE` | `orchestrator-supaconductor:executing-plans` | `status`, `tasks_completed`, `last_task`, `last_commit`, `commits` |
+| `FIX` | `orchestrator-supaconductor:systematic-debugging` | `status`, `completed_at`, `fixes_applied` |
+| `BRAINSTORM` | `orchestrator-supaconductor:brainstorming` | `status`, `completed_at`, `options_generated` |
 
 ## Update Protocol for Agents
 

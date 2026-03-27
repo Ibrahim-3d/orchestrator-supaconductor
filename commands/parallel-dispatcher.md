@@ -9,14 +9,14 @@ arguments:
 user_invocable: true
 ---
 
-# /supaconductor:parallel-dispatcher — Parallel Task Execution
+# /orchestrator-supaconductor:parallel-dispatcher — Parallel Task Execution
 
 Dispatch multiple task-workers simultaneously based on DAG dependencies.
 
 ## Usage
 
 ```bash
-/supaconductor:parallel-dispatcher <track-id>
+/orchestrator-supaconductor:parallel-dispatcher <track-id>
 ```
 
 ## Your Task
@@ -45,9 +45,9 @@ Spawn multiple Claude sessions for conflict-free tasks:
 
 ```bash
 # Spawn parallel workers (max 5 concurrent)
-claude --print "/supaconductor:task-worker {track_id} 1.1" &
-claude --print "/supaconductor:task-worker {track_id} 1.2" &
-claude --print "/supaconductor:task-worker {track_id} 2.1" &
+claude --print "/orchestrator-supaconductor:task-worker {track_id} 1.1" &
+claude --print "/orchestrator-supaconductor:task-worker {track_id} 1.2" &
+claude --print "/orchestrator-supaconductor:task-worker {track_id} 2.1" &
 
 # Wait for batch to complete
 wait
@@ -100,4 +100,4 @@ echo "PASS" > .message-bus/events/PARALLEL_COMPLETE_{track_id}.event
 
 ## Reference
 
-Full agent instructions: `.claude/agents/supaconductor:parallel-dispatcher.md`
+Full agent instructions: `.claude/agents/orchestrator-supaconductor:parallel-dispatcher.md`

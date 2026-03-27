@@ -1,6 +1,6 @@
 #!/bin/bash
 # Conductor SupaConductor — Project Initialization Script
-# Usage: bash ~/.claude/plugins/conductor-orchestrator-supaconductor/scripts/setup.sh [project-dir]
+# Usage: bash ~/.claude/plugins/orchestrator-supaconductor/scripts/setup.sh [project-dir]
 #
 # Creates the conductor/ directory structure in your project.
 

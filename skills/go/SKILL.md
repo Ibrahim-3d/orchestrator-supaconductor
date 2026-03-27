@@ -74,7 +74,7 @@ Use the conductor-orchestrator agent to run the evaluate-loop for this track.
 The orchestrator will:
 - Detect current step from metadata
 - Check `superpower_enhanced` flag to determine which agents to use:
-  - **If true (new tracks):** Dispatch superpowers (supaconductor:writing-plans, supaconductor:executing-plans, supaconductor:systematic-debugging)
+  - **If true (new tracks):** Dispatch superpowers (orchestrator-supaconductor:writing-plans, orchestrator-supaconductor:executing-plans, orchestrator-supaconductor:systematic-debugging)
   - **If false/missing (legacy):** Dispatch legacy loop agents (loop-planner, loop-executor, loop-fixer)
 - Monitor progress and handle failures
 - Complete the track or escalate if blocked

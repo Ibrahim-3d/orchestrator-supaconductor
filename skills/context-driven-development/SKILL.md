@@ -181,7 +181,7 @@ Before starting any track:
 
 For new projects:
 
-1. Run `/supaconductor:setup` to create all artifacts interactively
+1. Run `/orchestrator-supaconductor:setup` to create all artifacts interactively
 2. Answer questions about product vision, tech preferences, and workflow
 3. Generate initial style guides for chosen languages
 4. Create empty tracks registry
@@ -196,7 +196,7 @@ Characteristics:
 
 For existing codebases:
 
-1. Run `/supaconductor:setup` with existing codebase detection
+1. Run `/orchestrator-supaconductor:setup` with existing codebase detection
 2. System analyzes existing code, configs, and documentation
 3. Pre-populate artifacts based on discovered patterns
 4. Review and refine generated context
@@ -259,7 +259,7 @@ conductor/
 
 ## Context Lifecycle
 
-1. **Creation**: Initial setup via `/supaconductor:setup`
+1. **Creation**: Initial setup via `/orchestrator-supaconductor:setup`
 2. **Validation**: Verify before each track
 3. **Evolution**: Update as project grows
 4. **Synchronization**: Keep artifacts aligned

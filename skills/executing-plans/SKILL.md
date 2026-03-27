@@ -56,7 +56,7 @@ After tasks complete:
 
 After all tasks complete and verified:
 - Announce: "I'm using the finishing-a-development-branch skill to complete this work."
-- **REQUIRED SUB-SKILL:** Use supaconductor:finishing-a-development-branch
+- **REQUIRED SUB-SKILL:** Use orchestrator-supaconductor:finishing-a-development-branch
 - Follow that skill to verify tests, present options, execute choice
 
 ## Blocker Resolution (Mode-Dependent)
@@ -103,7 +103,7 @@ When these parameters are absent, fall back to the standalone mode-aware workflo
 ## Integration
 
 **Required workflow skills:**
-- **supaconductor:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
-- **supaconductor:writing-plans** - Creates the plan this skill executes
-- **supaconductor:finishing-a-development-branch** - Complete development after all tasks
+- **orchestrator-supaconductor:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+- **orchestrator-supaconductor:writing-plans** - Creates the plan this skill executes
+- **orchestrator-supaconductor:finishing-a-development-branch** - Complete development after all tasks
 

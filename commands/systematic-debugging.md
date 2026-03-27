@@ -5,4 +5,4 @@ description: "Root-cause analysis and fix implementation for evaluation failures
 model: sonnet
 ---
 
-Invoke the supaconductor:systematic-debugging skill and follow it exactly as presented to you
+Invoke the orchestrator-supaconductor:systematic-debugging skill and follow it exactly as presented to you

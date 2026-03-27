@@ -9,7 +9,7 @@ arguments:
 user_invocable: true
 ---
 
-# /supaconductor:ui-audit
+# /orchestrator-supaconductor:ui-audit
 
 Run comprehensive UI/UX design validation against established design principles, usability laws, accessibility standards, and cognitive psychology principles.
 
@@ -56,25 +56,25 @@ The command launches the **ui-design-tester** agent which:
 
 ### Basic Usage (Live Browser Testing)
 ```bash
-/supaconductor:ui-audit
+/orchestrator-supaconductor:ui-audit
 ```
 Launches agent-browser to test your live application for UI/UX issues.
 
 ### Specific Component
 ```bash
-/supaconductor:ui-audit src/components/feature/my-card.tsx
+/orchestrator-supaconductor:ui-audit src/components/feature/my-card.tsx
 ```
 Audits a specific component file.
 
 ### Automated Browser Testing
 ```bash
-/supaconductor:ui-audit --browser /create
+/orchestrator-supaconductor:ui-audit --browser /create
 ```
 Launches browser automation to test a specific page visually.
 
 ### Multiple Pages
 ```bash
-/supaconductor:ui-audit --browser / /create /dashboard
+/orchestrator-supaconductor:ui-audit --browser / /create /dashboard
 ```
 Tests multiple pages in sequence.
 
@@ -190,19 +190,19 @@ You can also run it manually during development.
 ### Example 1: Audit After Component Work
 ```bash
 # After finishing button component
-/supaconductor:ui-audit src/components/ui/button.tsx
+/orchestrator-supaconductor:ui-audit src/components/ui/button.tsx
 ```
 
 ### Example 2: Pre-Launch Check
 ```bash
 # Before shipping new feature
-/supaconductor:ui-audit --browser /create /results
+/orchestrator-supaconductor:ui-audit --browser /create /results
 ```
 
 ### Example 3: Full App Audit
 ```bash
 # Audit entire component library
-/supaconductor:ui-audit src/components/
+/orchestrator-supaconductor:ui-audit src/components/
 ```
 
 ## Related

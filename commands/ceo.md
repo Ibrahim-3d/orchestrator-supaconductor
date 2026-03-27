@@ -34,9 +34,9 @@ Task:
 ## Example Usage
 
 ```
-/supaconductor:ceo How should I price my SaaS product?
-/supaconductor:ceo Help me think through our go-to-market strategy
-/supaconductor:ceo
+/orchestrator-supaconductor:ceo How should I price my SaaS product?
+/orchestrator-supaconductor:ceo Help me think through our go-to-market strategy
+/orchestrator-supaconductor:ceo
 ```
 
 ## What to Pass to the Agent

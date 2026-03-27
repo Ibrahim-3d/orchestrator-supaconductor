@@ -9,7 +9,7 @@ arguments:
 user_invocable: true
 ---
 
-# /supaconductor:phase-review
+# /orchestrator-supaconductor:phase-review
 
 Run the **Evaluate Execution** step of the Evaluate-Loop workflow. This is the mandatory quality gate before marking any track or phase complete.
 
@@ -33,13 +33,13 @@ Run this command:
 ## Usage
 
 ```bash
-/supaconductor:phase-review
+/orchestrator-supaconductor:phase-review
 ```
 
 Or with a specific track:
 
 ```bash
-/supaconductor:phase-review TRACK-001-feature-implementation
+/orchestrator-supaconductor:phase-review TRACK-001-feature-implementation
 ```
 
 ## Evaluation Checklist
@@ -126,12 +126,12 @@ FAIL — Fix required before completion
 ### If FAIL
 1. Create fix tasks in `plan.md`
 2. Execute the fixes (Step 3 of the Evaluate-Loop)
-3. Re-run `/supaconductor:phase-review` (loop back to Step 4)
+3. Re-run `/orchestrator-supaconductor:phase-review` (loop back to Step 4)
 4. Repeat until PASS
 
 ## Related
 
 - `conductor/workflow.md` — Evaluate-Loop Process (primary reference)
 - `CLAUDE.md` — Mandatory Agent Rules
-- `/supaconductor:status` — See current track status
-- `/supaconductor:implement` — Execute track tasks
+- `/orchestrator-supaconductor:status` — See current track status
+- `/orchestrator-supaconductor:implement` — Execute track tasks

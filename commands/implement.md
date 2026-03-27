@@ -9,15 +9,15 @@ user_invocable: true
 model: sonnet
 ---
 
-# /supaconductor:implement — Automated Evaluate-Loop
+# /orchestrator-supaconductor:implement — Automated Evaluate-Loop
 
 Fully automates the Evaluate-Loop workflow. Detects current step, dispatches the correct agent, reads the result, and continues until the track is complete. **Runs fully autonomously — never stops to ask the user questions.**
 
 ## Usage
 
 ```bash
-/supaconductor:implement
-/supaconductor:implement my-track-id
+/orchestrator-supaconductor:implement
+/orchestrator-supaconductor:implement my-track-id
 ```
 
 ## Automated Flow
@@ -44,7 +44,7 @@ PLAN → EVALUATE PLAN → EXECUTE → EVALUATE EXECUTION
 ## Superpower vs Legacy Detection
 
 The orchestrator checks `metadata.json` for `superpower_enhanced: true`:
-- **If true (new tracks):** Uses `supaconductor:writing-plans`, `supaconductor:executing-plans`, `supaconductor:systematic-debugging`
+- **If true (new tracks):** Uses `orchestrator-supaconductor:writing-plans`, `orchestrator-supaconductor:executing-plans`, `orchestrator-supaconductor:systematic-debugging`
 - **If false/missing (legacy):** Uses `loop-planner`, `loop-executor`, `loop-fixer`
 
 Both systems use the same evaluators and quality gates.
@@ -67,7 +67,7 @@ Plan created → loop-plan-evaluator dispatches:
 Uses the run_shell_command to spawn specialized agents:
 
 ```typescript
-run_shell_command(claude --print "/supaconductor:...")
+run_shell_command(claude --print "/orchestrator-supaconductor:...")
 ```
 
 ## Decision Resolution (Mode-Dependent)
@@ -92,20 +92,20 @@ When execution evaluation returns PASS:
 
 ```bash
 # Start a new track and run to completion
-/supaconductor:new-track
+/orchestrator-supaconductor:new-track
 # ... track created ...
-/supaconductor:implement
+/orchestrator-supaconductor:implement
 # → PLAN → EVALUATE (with CTO review) → EXECUTE → EVALUATE → COMPLETE
 
 # Resume interrupted work
-/supaconductor:status  # See where we are
-/supaconductor:implement  # Continue automatically
+/orchestrator-supaconductor:status  # See where we are
+/orchestrator-supaconductor:implement  # Continue automatically
 ```
 
 ## Related
 
-- `/supaconductor:status` — Check current track progress
-- `/supaconductor:new-track` — Create track manually
-- `/supaconductor:go` — Single entry point (creates track + runs implement)
+- `/orchestrator-supaconductor:status` — Check current track progress
+- `/orchestrator-supaconductor:new-track` — Create track manually
+- `/orchestrator-supaconductor:go` — Single entry point (creates track + runs implement)
 - `conductor/workflow.md` — Full evaluate-loop documentation
 

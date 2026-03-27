@@ -17,17 +17,17 @@ SupaConductor is a structured workflow system that organizes development work in
 
 ### 1. Install the Plugin
 
-The plugin should be installed at `~/.claude/plugins/supaconductor/`.
+The plugin should be installed at `~/.claude/plugins/orchestrator-supaconductor/`.
 
 ### 2. Initialize a Project
 
 Run the setup script to create the `conductor/` directory in your project:
 
 ```bash
-bash ~/.claude/plugins/supaconductor/scripts/setup.sh
+bash ~/.claude/plugins/orchestrator-supaconductor/scripts/setup.sh
 ```
 
-Or use the `/supaconductor:setup` command in Claude Code.
+Or use the `/orchestrator-supaconductor:setup` command in Claude Code.
 
 ### 3. Start Working
 
@@ -61,10 +61,10 @@ Examples:
 | Command | Description |
 |---------|-------------|
 | `/go <goal>` | Main entry point — state your goal, SupaConductor handles the rest |
-| `/supaconductor:status` | View current progress across all tracks |
-| `/supaconductor:new-track` | Create a new development track |
-| `/supaconductor:implement` | Run the automated Evaluate-Loop |
-| `/supaconductor:setup` | Initialize SupaConductor in a new project |
+| `/orchestrator-supaconductor:status` | View current progress across all tracks |
+| `/orchestrator-supaconductor:new-track` | Create a new development track |
+| `/orchestrator-supaconductor:implement` | Run the automated Evaluate-Loop |
+| `/orchestrator-supaconductor:setup` | Initialize SupaConductor in a new project |
 | `/phase-review` | Run post-execution quality gate |
 | `/board-meeting [proposal]` | Full 4-phase board deliberation |
 | `/board-review [proposal]` | Quick board assessment |
@@ -77,8 +77,8 @@ These commands are provided by the bundled [superpowers](https://github.com/obra
 
 | Command | Description |
 |---------|-------------|
-| `/supaconductor:writing-plans` | Create an implementation plan using superpowers patterns |
-| `/supaconductor:executing-plans` | Execute a plan using superpowers patterns |
+| `/orchestrator-supaconductor:writing-plans` | Create an implementation plan using superpowers patterns |
+| `/orchestrator-supaconductor:executing-plans` | Execute a plan using superpowers patterns |
 | `/brainstorm` | Brainstorm approaches to a problem |
 
 ## Track Structure
@@ -162,7 +162,7 @@ This plugin bundles the following third-party software:
 - **Author:** Jesse Vincent (jesse@fsck.com)
 - **License:** MIT
 - **Repository:** https://github.com/obra/superpowers
-- **License file:** [LICENSES/supaconductor-MIT](../LICENSES/supaconductor-MIT)
+- **License file:** [LICENSES/orchestrator-supaconductor-MIT](../LICENSES/orchestrator-supaconductor-MIT)
 
 ## License
 

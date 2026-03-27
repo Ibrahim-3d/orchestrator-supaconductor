@@ -34,10 +34,10 @@ Task:
 ## Example Usage
 
 ```
-/supaconductor:cmo How should I position my product?
-/supaconductor:cmo What marketing channels should I prioritize?
-/supaconductor:cmo Help me plan our product launch
-/supaconductor:cmo
+/orchestrator-supaconductor:cmo How should I position my product?
+/orchestrator-supaconductor:cmo What marketing channels should I prioritize?
+/orchestrator-supaconductor:cmo Help me plan our product launch
+/orchestrator-supaconductor:cmo
 ```
 
 ## What to Pass to the Agent

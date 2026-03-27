@@ -34,10 +34,10 @@ Task:
 ## Example Usage
 
 ```
-/supaconductor:cto Should we migrate to microservices?
-/supaconductor:cto Help me evaluate database options for our scale
-/supaconductor:cto How should I structure my engineering team?
-/supaconductor:cto
+/orchestrator-supaconductor:cto Should we migrate to microservices?
+/orchestrator-supaconductor:cto Help me evaluate database options for our scale
+/orchestrator-supaconductor:cto How should I structure my engineering team?
+/orchestrator-supaconductor:cto
 ```
 
 ## What to Pass to the Agent

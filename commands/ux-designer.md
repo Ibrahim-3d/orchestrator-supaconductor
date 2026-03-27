@@ -34,10 +34,10 @@ Task:
 ## Example Usage
 
 ```
-/supaconductor:ux-designer How should I structure the navigation?
-/supaconductor:ux-designer Review this user flow for pain points
-/supaconductor:ux-designer What's the best pattern for this form?
-/supaconductor:ux-designer
+/orchestrator-supaconductor:ux-designer How should I structure the navigation?
+/orchestrator-supaconductor:ux-designer Review this user flow for pain points
+/orchestrator-supaconductor:ux-designer What's the best pattern for this form?
+/orchestrator-supaconductor:ux-designer
 ```
 
 ## What to Pass to the Agent

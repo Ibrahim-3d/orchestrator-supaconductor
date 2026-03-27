@@ -44,7 +44,7 @@ PLAN → EVALUATE PLAN → EXECUTE → EVALUATE EXECUTION
 ## Superpower vs Legacy Detection
 
 The orchestrator checks `metadata.json` for `superpower_enhanced: true`:
-- **If true (new tracks):** Uses `supaconductor:writing-plans`, `supaconductor:executing-plans`, `supaconductor:systematic-debugging`
+- **If true (new tracks):** Uses `orchestrator-supaconductor:writing-plans`, `orchestrator-supaconductor:executing-plans`, `orchestrator-supaconductor:systematic-debugging`
 - **If false/missing (legacy):** Uses `loop-planner`, `loop-executor`, `loop-fixer`
 
 Both systems use the same evaluators and quality gates.
@@ -110,5 +110,5 @@ When execution evaluation returns PASS:
 
 - `/conductor:status` — Check current track progress
 - `/conductor:new-track` — Create track manually
-- `/supaconductor:go` — Single entry point (creates track + runs implement)
+- `/orchestrator-supaconductor:go` — Single entry point (creates track + runs implement)
 - `conductor/workflow.md` — Full evaluate-loop documentation

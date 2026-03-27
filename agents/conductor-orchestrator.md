@@ -65,10 +65,10 @@ Use run_shell_command to launch a new Claude CLI process:
 
 ```bash
 # Spawn a subagent and wait for completion
-claude --print "/supaconductor:loop-planner $TRACK_ID"
+claude --print "/orchestrator-supaconductor:loop-planner $TRACK_ID"
 
 # Spawn in background for parallel execution
-claude --print "/supaconductor:loop-executor $TRACK_ID" &
+claude --print "/orchestrator-supaconductor:loop-executor $TRACK_ID" &
 ```
 
 The `--print` flag outputs results to stdout. For parallel workers, use `&` to run in background and coordinate via message bus.
@@ -182,8 +182,8 @@ invoke_superpower() {
     esac
 
     # Invoke superpower with parameters and model
-    echo "→ Invoking supaconductor:$superpower for track $track_id (model: $model)"
-    claude --print --model "$model" "/supaconductor:$superpower $params"
+    echo "→ Invoking orchestrator-supaconductor:$superpower for track $track_id (model: $model)"
+    claude --print --model "$model" "/orchestrator-supaconductor:$superpower $params"
     local exit_code=$?
 
     # Parse response for success/failure
@@ -341,27 +341,27 @@ Based on the state detected, dispatch the correct agent.
 
 | current_step | step_status | Action |
 |--------------|-------------|--------|
-| `BRAINSTORM` | `NOT_STARTED` | Dispatch `supaconductor:brainstorming` (for architectural tracks) |
-| `PLAN` | `NOT_STARTED` | Dispatch `supaconductor:writing-plans` 🆕 |
+| `BRAINSTORM` | `NOT_STARTED` | Dispatch `orchestrator-supaconductor:brainstorming` (for architectural tracks) |
+| `PLAN` | `NOT_STARTED` | Dispatch `orchestrator-supaconductor:writing-plans` 🆕 |
 | `PLAN` | `IN_PROGRESS` | Resume - check plan.md for progress |
 | `PLAN` | `PASSED` | Update to `EVALUATE_PLAN` + `NOT_STARTED` |
 | `EVALUATE_PLAN` | `NOT_STARTED` | Dispatch `loop-plan-evaluator` (keep existing) |
 | `EVALUATE_PLAN` | `PASSED` | Update to `EXECUTE` + `NOT_STARTED` |
 | `EVALUATE_PLAN` | `FAILED` | Update to `PLAN` + `NOT_STARTED` (re-plan) |
-| `EXECUTE` | `NOT_STARTED` | Dispatch `supaconductor:executing-plans` 🆕 |
-| `EXECUTE` | `IN_PROGRESS` | Resume `supaconductor:executing-plans` from last_task 🆕 |
+| `EXECUTE` | `NOT_STARTED` | Dispatch `orchestrator-supaconductor:executing-plans` 🆕 |
+| `EXECUTE` | `IN_PROGRESS` | Resume `orchestrator-supaconductor:executing-plans` from last_task 🆕 |
 | `EXECUTE` | `PASSED` | Update to `EVALUATE_EXECUTION` + `NOT_STARTED` |
 | `EVALUATE_EXECUTION` | `NOT_STARTED` | Dispatch `loop-execution-evaluator` (keep existing) |
 | `EVALUATE_EXECUTION` | `PASSED` | Check if business sync needed → `COMPLETE` |
 | `EVALUATE_EXECUTION` | `FAILED` | Check fix count → `FIX` or escalate |
-| `FIX` | `NOT_STARTED` | Dispatch `supaconductor:systematic-debugging` 🆕 |
+| `FIX` | `NOT_STARTED` | Dispatch `orchestrator-supaconductor:systematic-debugging` 🆕 |
 | `FIX` | `PASSED` | Update to `EVALUATE_EXECUTION` + `NOT_STARTED` |
 | `COMPLETE` | any | Run completion protocol |
 
 **Key Changes:**
-- ✅ Planning now uses `supaconductor:writing-plans` (superior planning patterns)
-- ✅ Execution now uses `supaconductor:executing-plans` (built-in evaluation, TDD, debugging)
-- ✅ Fixing now uses `supaconductor:systematic-debugging` (structured debugging approach)
+- ✅ Planning now uses `orchestrator-supaconductor:writing-plans` (superior planning patterns)
+- ✅ Execution now uses `orchestrator-supaconductor:executing-plans` (built-in evaluation, TDD, debugging)
+- ✅ Fixing now uses `orchestrator-supaconductor:systematic-debugging` (structured debugging approach)
 - ✅ Brainstorming added as optional pre-step for architectural/creative decisions
 - ✅ Evaluators remain unchanged (loop-plan-evaluator, loop-execution-evaluator, specialized evaluators)
 
@@ -371,13 +371,13 @@ Based on the state detected, dispatch the correct agent.
 
 | Agent / Step | Model | Rationale |
 |-------------|-------|-----------|
-| `supaconductor:writing-plans` | **opus** | Planning requires deep strategic thinking |
+| `orchestrator-supaconductor:writing-plans` | **opus** | Planning requires deep strategic thinking |
 | `loop-plan-evaluator` | **opus** | Evaluating plans requires architectural judgment |
-| `supaconductor:brainstorming` | **opus** | Creative/strategic ideation |
+| `orchestrator-supaconductor:brainstorming` | **opus** | Creative/strategic ideation |
 | `board-meeting` | **opus** | Board deliberation requires nuanced reasoning |
-| `supaconductor:executing-plans` | **sonnet** | Code execution is procedural, follows plan |
+| `orchestrator-supaconductor:executing-plans` | **sonnet** | Code execution is procedural, follows plan |
 | `loop-execution-evaluator` | **sonnet** | Checklist-based evaluation |
-| `supaconductor:systematic-debugging` | **sonnet** | Fix implementation follows evaluation report |
+| `orchestrator-supaconductor:systematic-debugging` | **sonnet** | Fix implementation follows evaluation report |
 | `task-worker` | **sonnet** | Individual task execution |
 | `conductor-orchestrator` | **sonnet** | State machine orchestration |
 
@@ -385,12 +385,12 @@ When dispatching via `claude --print`, use `--model` flag to enforce:
 
 ```bash
 # Planning (opus) — deep thinking
-claude --print --model opus "/supaconductor:writing-plans ..."
+claude --print --model opus "/orchestrator-supaconductor:writing-plans ..."
 claude --print --model opus "/loop-plan-evaluator ..."
 
 # Execution (sonnet) — fast implementation
-claude --print --model sonnet "/supaconductor:executing-plans ..."
-claude --print --model sonnet "/supaconductor:systematic-debugging ..."
+claude --print --model sonnet "/orchestrator-supaconductor:executing-plans ..."
+claude --print --model sonnet "/orchestrator-supaconductor:systematic-debugging ..."
 ```
 
 ### 2.3 How to Dispatch an Agent
@@ -406,18 +406,18 @@ claude --print "/<agent-command> <track-id>"
 
 ### 2.3 Dispatch Commands (SUPERPOWER-ENHANCED)
 
-#### Dispatch supaconductor:brainstorming (optional pre-step — OPUS):
+#### Dispatch orchestrator-supaconductor:brainstorming (optional pre-step — OPUS):
 
 ```bash
 # Strategic ideation uses opus for deeper thinking
-claude --print --model opus "/supaconductor:brainstorming --context='Architectural decision for {trackId}' --output-dir='conductor/tracks/{trackId}/brainstorm/'"
+claude --print --model opus "/orchestrator-supaconductor:brainstorming --context='Architectural decision for {trackId}' --output-dir='conductor/tracks/{trackId}/brainstorm/'"
 ```
 
-#### Dispatch supaconductor:writing-plans (replaces loop-planner — OPUS):
+#### Dispatch orchestrator-supaconductor:writing-plans (replaces loop-planner — OPUS):
 
 ```bash
 # Planning uses opus for strategic plan quality
-claude --print --model opus "/supaconductor:writing-plans --spec='conductor/tracks/{trackId}/spec.md' --output-dir='conductor/tracks/{trackId}/' --context-files='conductor/tech-stack.md,conductor/workflow.md,conductor/product.md'"
+claude --print --model opus "/orchestrator-supaconductor:writing-plans --spec='conductor/tracks/{trackId}/spec.md' --output-dir='conductor/tracks/{trackId}/' --context-files='conductor/tech-stack.md,conductor/workflow.md,conductor/product.md'"
 ```
 
 #### Dispatch loop-plan-evaluator (keep existing — OPUS):
@@ -427,11 +427,11 @@ claude --print --model opus "/supaconductor:writing-plans --spec='conductor/trac
 claude --print --model opus "/loop-plan-evaluator {trackId}"
 ```
 
-#### Dispatch supaconductor:executing-plans (replaces loop-executor — SONNET):
+#### Dispatch orchestrator-supaconductor:executing-plans (replaces loop-executor — SONNET):
 
 ```bash
 # Execution uses sonnet — follows the plan, saves tokens
-claude --print --model sonnet "/supaconductor:executing-plans --plan='conductor/tracks/{trackId}/plan.md' --track-dir='conductor/tracks/{trackId}/' --metadata='conductor/tracks/{trackId}/metadata.json'"
+claude --print --model sonnet "/orchestrator-supaconductor:executing-plans --plan='conductor/tracks/{trackId}/plan.md' --track-dir='conductor/tracks/{trackId}/' --metadata='conductor/tracks/{trackId}/metadata.json'"
 ```
 
 #### Dispatch loop-execution-evaluator (keep existing — SONNET):
@@ -441,11 +441,11 @@ claude --print --model sonnet "/supaconductor:executing-plans --plan='conductor/
 claude --print --model sonnet "/loop-execution-evaluator {trackId}"
 ```
 
-#### Dispatch supaconductor:systematic-debugging (replaces loop-fixer — SONNET):
+#### Dispatch orchestrator-supaconductor:systematic-debugging (replaces loop-fixer — SONNET):
 
 ```bash
 # Debugging/fixing uses sonnet — follows evaluation report
-claude --print --model sonnet "/supaconductor:systematic-debugging --failures='conductor/tracks/{trackId}/evaluation-report.md' --track-dir='conductor/tracks/{trackId}/'"
+claude --print --model sonnet "/orchestrator-supaconductor:systematic-debugging --failures='conductor/tracks/{trackId}/evaluation-report.md' --track-dir='conductor/tracks/{trackId}/'"
 ```
 
 **Parameter Explanation:**
@@ -534,13 +534,13 @@ Based on the verdict:
 | Current Step | Verdict | New current_step | New step_status | Notes |
 |--------------|---------|------------------|-----------------|-------|
 | BRAINSTORM | PASS | PLAN | NOT_STARTED | Optional pre-step for architectural tracks |
-| PLAN | PASS | EVALUATE_PLAN | NOT_STARTED | Uses supaconductor:writing-plans 🆕 |
+| PLAN | PASS | EVALUATE_PLAN | NOT_STARTED | Uses orchestrator-supaconductor:writing-plans 🆕 |
 | EVALUATE_PLAN | PASS | EXECUTE | NOT_STARTED | Keeps existing evaluator |
-| EVALUATE_PLAN | FAIL | PLAN | NOT_STARTED | Re-plan with supaconductor:writing-plans |
-| EXECUTE | PASS | EVALUATE_EXECUTION | NOT_STARTED | Uses supaconductor:executing-plans 🆕 |
+| EVALUATE_PLAN | FAIL | PLAN | NOT_STARTED | Re-plan with orchestrator-supaconductor:writing-plans |
+| EXECUTE | PASS | EVALUATE_EXECUTION | NOT_STARTED | Uses orchestrator-supaconductor:executing-plans 🆕 |
 | EVALUATE_EXECUTION | PASS | COMPLETE | PASSED | Keeps existing evaluator |
 | EVALUATE_EXECUTION | FAIL | FIX | NOT_STARTED | Increment fix_cycle_count |
-| FIX | PASS | EVALUATE_EXECUTION | NOT_STARTED | Uses supaconductor:systematic-debugging 🆕 |
+| FIX | PASS | EVALUATE_EXECUTION | NOT_STARTED | Uses orchestrator-supaconductor:systematic-debugging 🆕 |
 
 ### 4.3 write_file Updated Metadata
 
@@ -657,7 +657,7 @@ ACTION: write_file updated metadata.json
 #### `escalateToBoard(question)`
 ```
 ACTION: Dispatch board-meeting subagent via run_shell_command:
-  claude --print --model opus "/supaconductor:board-meeting {question}"
+  claude --print --model opus "/orchestrator-supaconductor:board-meeting {question}"
 PARSE: Board verdict (APPROVED / REJECTED)
 IF APPROVED: Continue with board conditions applied
 IF REJECTED: Re-plan with board feedback as constraints
@@ -805,12 +805,12 @@ WHILE track not complete AND iteration < 50:
 
         CASE "BRAINSTORM" + "NOT_STARTED":
             // Optional: For architectural/creative decisions
-            result = dispatch(supaconductor:brainstorming)
+            result = dispatch(orchestrator-supaconductor:brainstorming)
             IF result.success:
                 updateMetadata(PLAN, NOT_STARTED)
 
         CASE "PLAN" + "NOT_STARTED":
-            result = dispatch(supaconductor:writing-plans)  // 🆕 Superpower
+            result = dispatch(orchestrator-supaconductor:writing-plans)  // 🆕 Superpower
             IF result.success:
                 updateMetadata(EVALUATE_PLAN, NOT_STARTED)
 
@@ -822,12 +822,12 @@ WHILE track not complete AND iteration < 50:
                 updateMetadata(PLAN, NOT_STARTED)  // Re-plan
 
         CASE "EXECUTE" + "NOT_STARTED":
-            result = dispatch(supaconductor:executing-plans)  // 🆕 Superpower
+            result = dispatch(orchestrator-supaconductor:executing-plans)  // 🆕 Superpower
             IF result.all_tasks_done:
                 updateMetadata(EVALUATE_EXECUTION, NOT_STARTED)
 
         CASE "EXECUTE" + "IN_PROGRESS":
-            result = dispatch(supaconductor:executing-plans, resume=last_task)  // 🆕 Superpower
+            result = dispatch(orchestrator-supaconductor:executing-plans, resume=last_task)  // 🆕 Superpower
             // Continue from checkpoint
 
         CASE "EVALUATE_EXECUTION" + "NOT_STARTED":
@@ -844,7 +844,7 @@ WHILE track not complete AND iteration < 50:
                     fix_cycle_count++
 
         CASE "FIX" + "NOT_STARTED":
-            result = dispatch(supaconductor:systematic-debugging)  // 🆕 Superpower
+            result = dispatch(orchestrator-supaconductor:systematic-debugging)  // 🆕 Superpower
             updateMetadata(EVALUATE_EXECUTION, NOT_STARTED)
 
         CASE "COMPLETE" + "PASSED":
@@ -865,9 +865,9 @@ IF iteration >= 50:
 ```
 
 **Superpower Changes:**
-- PLAN step now uses `supaconductor:writing-plans` for superior planning patterns
-- EXECUTE step now uses `supaconductor:executing-plans` (includes built-in TDD, debugging, evaluation)
-- FIX step now uses `supaconductor:systematic-debugging` for structured problem-solving
+- PLAN step now uses `orchestrator-supaconductor:writing-plans` for superior planning patterns
+- EXECUTE step now uses `orchestrator-supaconductor:executing-plans` (includes built-in TDD, debugging, evaluation)
+- FIX step now uses `orchestrator-supaconductor:systematic-debugging` for structured problem-solving
 - BRAINSTORM step added as optional pre-step for architectural tracks
 - Evaluators remain unchanged (existing evaluation infrastructure preserved)
 

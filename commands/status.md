@@ -5,14 +5,14 @@ user_invocable: true
 model: sonnet
 ---
 
-# /supaconductor:status — Current Project Status
+# /orchestrator-supaconductor:status — Current Project Status
 
 Display the current progress across all tracks and the active evaluate-loop state.
 
 ## Usage
 
 ```bash
-/supaconductor:status
+/orchestrator-supaconductor:status
 ```
 
 ## What It Shows
@@ -50,7 +50,7 @@ read_file the following files to generate the status report:
 - [ ] Task 3.2: Final integration check
 
 ### Next Action
-Run `/supaconductor:implement` to continue automatically
+Run `/orchestrator-supaconductor:implement` to continue automatically
 
 ---
 **Other Tracks**:
@@ -82,7 +82,7 @@ Run `/supaconductor:implement` to continue automatically
 
 ## Related
 
-- `/supaconductor:implement` — Continue the evaluate-loop
-- `/supaconductor:new-track` — Start a new track
-- `/supaconductor:go` — Quick start with goal statement
+- `/orchestrator-supaconductor:implement` — Continue the evaluate-loop
+- `/orchestrator-supaconductor:new-track` — Start a new track
+- `/orchestrator-supaconductor:go` — Quick start with goal statement
 

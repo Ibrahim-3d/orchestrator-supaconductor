@@ -5,4 +5,4 @@ description: "You MUST use this before any creative work - creating features, bu
 model: opus
 ---
 
-Invoke the supaconductor:brainstorming skill and follow it exactly as presented to you
+Invoke the orchestrator-supaconductor:brainstorming skill and follow it exactly as presented to you

@@ -5,5 +5,5 @@ description: Execute plan tasks autonomously to completion
 model: sonnet
 ---
 
-Invoke the supaconductor:executing-plans skill and follow it exactly as presented to you
+Invoke the orchestrator-supaconductor:executing-plans skill and follow it exactly as presented to you
 

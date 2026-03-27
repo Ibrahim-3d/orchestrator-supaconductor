@@ -41,7 +41,7 @@ No cycles, unique IDs, parallel groups don't have file conflicts.
 ### Pass 6: Board Review (Major Tracks)
 If 5+ tasks or architectural changes, spawn board review:
 ```bash
-claude --print "/supaconductor:board-review"
+claude --print "/orchestrator-supaconductor:board-review"
 ```
 
 ## Output

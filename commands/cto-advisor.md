@@ -9,7 +9,7 @@ arguments:
 user_invocable: true
 ---
 
-# /supaconductor:cto-advisor
+# /orchestrator-supaconductor:cto-advisor
 
 Run CTO-level technical review of the current execution plan. Uses the `cto-advisor` skill to evaluate architecture decisions, tech debt implications, technology choices, and engineering excellence.
 
@@ -28,10 +28,10 @@ Run this command to get technical leadership guidance on:
 
 ```bash
 # Review current track's plan
-/supaconductor:cto-advisor
+/orchestrator-supaconductor:cto-advisor
 
 # Or manually specify track
-/supaconductor:cto-advisor TRACK-001-core-feature
+/orchestrator-supaconductor:cto-advisor TRACK-001-core-feature
 ```
 
 ## What It Does
@@ -189,10 +189,10 @@ The command invokes the `cto-plan-reviewer` skill, which:
 This command is automatically invoked by the conductor during plan evaluation for technical tracks:
 
 ```
-/supaconductor:implement
+/orchestrator-supaconductor:implement
   → detects technical track (keywords: architecture, API, database, etc.)
   → dispatches loop-plan-evaluator
-    → invokes /supaconductor:cto-advisor automatically
+    → invokes /orchestrator-supaconductor:cto-advisor automatically
   → aggregates standard checks + CTO review
   → PASS/FAIL verdict
 ```
@@ -215,20 +215,20 @@ The conductor automatically includes CTO review when the track's `spec.md` or `p
 
 ### Automatic (Recommended)
 ```bash
-/supaconductor:implement
+/orchestrator-supaconductor:implement
 # CTO review runs automatically for technical tracks during plan evaluation
 ```
 
 ### Manual (When Needed)
 ```bash
 # Get CTO review anytime
-/supaconductor:cto-advisor
+/orchestrator-supaconductor:cto-advisor
 
 # Review specific track
-/supaconductor:cto-advisor TRACK-002-integration
+/orchestrator-supaconductor:cto-advisor TRACK-002-integration
 
 # Get architecture guidance before planning
-/supaconductor:cto-advisor
+/orchestrator-supaconductor:cto-advisor
 ```
 
 ## CTO Advisor Frameworks Used
@@ -319,7 +319,7 @@ The command leverages these frameworks from the `cto-advisor` skill:
 
 ## Related
 
-- `.claude/skills/supaconductor:cto-plan-reviewer/SKILL.md` — Full CTO review agent documentation
-- `.claude/skills/supaconductor:cto-advisor/SKILL.md` — Core CTO advisor frameworks and tools
-- `/supaconductor:implement` — Automated loop that includes CTO review
+- `.claude/skills/orchestrator-supaconductor:cto-plan-reviewer/SKILL.md` — Full CTO review agent documentation
+- `.claude/skills/orchestrator-supaconductor:cto-advisor/SKILL.md` — Core CTO advisor frameworks and tools
+- `/orchestrator-supaconductor:implement` — Automated loop that includes CTO review
 - `conductor/workflow.md` — Evaluate-Loop process

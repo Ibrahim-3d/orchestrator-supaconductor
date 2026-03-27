@@ -33,7 +33,7 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use supaconductor:executing-plans to implement this plan task-by-task.
+> **For Claude:** REQUIRED SUB-SKILL: Use orchestrator-supaconductor:executing-plans to implement this plan task-by-task.
 
 **Goal:** [One sentence describing what this builds]
 
@@ -111,7 +111,7 @@ When these parameters are absent, fall back to the standalone workflow below.
 After saving the plan, proceed directly to execution — **do NOT ask the user which approach to use.**
 
 **Default: Subagent-Driven execution in this session:**
-- **REQUIRED SUB-SKILL:** Use supaconductor:subagent-driven-development
+- **REQUIRED SUB-SKILL:** Use orchestrator-supaconductor:subagent-driven-development
 - Stay in this session
 - Fresh subagent per task + code review
 - Execute ALL tasks autonomously to completion

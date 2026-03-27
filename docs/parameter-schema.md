@@ -12,7 +12,7 @@ All SupaConductor superpower skills accept these common parameters:
 
 | Parameter | Type | Required | Description | Example |
 |-----------|------|----------|-------------|---------|
-| `--track-id` | string | Yes | Track identifier | `supaconductor-track_20260213` |
+| `--track-id` | string | Yes | Track identifier | `orchestrator-supaconductor-track_20260213` |
 | `--metadata` | string | Yes | Path to `metadata.json` | `conductor/tracks/auth_2026/metadata.json` |
 
 ## Skill-Specific Schemas
@@ -22,7 +22,7 @@ All SupaConductor superpower skills accept these common parameters:
 Used by the Planner agent when `superpower_enhanced: true` is set in track metadata.
 
 ```bash
-claude --print "/supaconductor:writing-plans \
+claude --print "/orchestrator-supaconductor:writing-plans \
   --spec='conductor/tracks/{trackId}/spec.md' \
   --output-dir='conductor/tracks/{trackId}/' \
   --context-files='conductor/tech-stack.md,conductor/workflow.md,conductor/product.md' \
@@ -44,7 +44,7 @@ claude --print "/supaconductor:writing-plans \
 Used by the Executor agent when `superpower_enhanced: true` is set in track metadata.
 
 ```bash
-claude --print "/supaconductor:executing-plans \
+claude --print "/orchestrator-supaconductor:executing-plans \
   --plan='conductor/tracks/{trackId}/plan.md' \
   --track-dir='conductor/tracks/{trackId}/' \
   --metadata='conductor/tracks/{trackId}/metadata.json' \
@@ -64,7 +64,7 @@ claude --print "/supaconductor:executing-plans \
 Used by the Fixer agent when `superpower_enhanced: true` is set in track metadata.
 
 ```bash
-claude --print "/supaconductor:systematic-debugging \
+claude --print "/orchestrator-supaconductor:systematic-debugging \
   --failures='conductor/tracks/{trackId}/evaluation-report.md' \
   --track-dir='conductor/tracks/{trackId}/' \
   --metadata='conductor/tracks/{trackId}/metadata.json' \
@@ -83,7 +83,7 @@ claude --print "/supaconductor:systematic-debugging \
 Used for architectural and creative tracks.
 
 ```bash
-claude --print "/supaconductor:brainstorming \
+claude --print "/orchestrator-supaconductor:brainstorming \
   --context='Architectural decision for {trackId}' \
   --output-dir='conductor/tracks/{trackId}/brainstorm/' \
   --track-id='{trackId}' \

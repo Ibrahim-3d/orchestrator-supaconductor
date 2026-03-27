@@ -59,7 +59,7 @@ digraph process {
     "read_file plan, extract all tasks with full text, note context, create TodoWrite" [shape=box];
     "More tasks remain?" [shape=diamond];
     "Dispatch final code reviewer subagent for entire implementation" [shape=box];
-    "Use supaconductor:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
+    "Use orchestrator-supaconductor:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
 
     "read_file plan, extract all tasks with full text, note context, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
     "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
@@ -78,7 +78,7 @@ digraph process {
     "Mark task complete in TodoWrite" -> "More tasks remain?";
     "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
     "More tasks remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no"];
-    "Dispatch final code reviewer subagent for entire implementation" -> "Use supaconductor:finishing-a-development-branch";
+    "Dispatch final code reviewer subagent for entire implementation" -> "Use orchestrator-supaconductor:finishing-a-development-branch";
 }
 ```
 
@@ -230,14 +230,14 @@ Done!
 ## Integration
 
 **Required workflow skills:**
-- **supaconductor:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
-- **supaconductor:writing-plans** - Creates the plan this skill executes
-- **supaconductor:requesting-code-review** - Code review template for reviewer subagents
-- **supaconductor:finishing-a-development-branch** - Complete development after all tasks
+- **orchestrator-supaconductor:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+- **orchestrator-supaconductor:writing-plans** - Creates the plan this skill executes
+- **orchestrator-supaconductor:requesting-code-review** - Code review template for reviewer subagents
+- **orchestrator-supaconductor:finishing-a-development-branch** - Complete development after all tasks
 
 **Subagents should use:**
-- **supaconductor:test-driven-development** - Subagents follow TDD for each task
+- **orchestrator-supaconductor:test-driven-development** - Subagents follow TDD for each task
 
 **Alternative workflow:**
-- **supaconductor:executing-plans** - Use for parallel session instead of same-session execution
+- **orchestrator-supaconductor:executing-plans** - Use for parallel session instead of same-session execution
 

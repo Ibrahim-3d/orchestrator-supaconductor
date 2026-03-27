@@ -8,10 +8,10 @@
   },
   "plugins": [
     {
-      "name": "conductor-orchestrator-supaconductor",
+      "name": "orchestrator-supaconductor",
       "source": {
         "source": "github",
-        "repo": "Ibrahim-3d/conductor-orchestrator-supaconductor"
+        "repo": "Ibrahim-3d/orchestrator-supaconductor"
       },
       "description": "Conductor v3 — Multi-agent orchestration with Evaluate-Loop, parallel execution, Board of Directors, and bundled SupaConductor skills for Claude Code",
       "version": "3.4.0",
@@ -19,14 +19,14 @@
         "name": "Ibrahim",
         "url": "https://github.com/Ibrahim-3d"
       },
-      "homepage": "https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor",
-      "repository": "https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor",
+      "homepage": "https://github.com/Ibrahim-3d/orchestrator-supaconductor",
+      "repository": "https://github.com/Ibrahim-3d/orchestrator-supaconductor",
       "license": "MIT",
       "keywords": [
         "orchestration",
         "evaluate-loop",
         "conductor",
-        "supaconductor",
+        "orchestrator-supaconductor",
         "parallel-agents",
         "board-of-directors",
         "tdd",

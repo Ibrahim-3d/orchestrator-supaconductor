@@ -18,7 +18,7 @@ fi
 LOCAL_VERSION="${LOCAL_VERSION:-unknown}"
 
 # Check for latest release on GitHub (non-blocking, 3s timeout)
-REPO="Ibrahim-3d/conductor-orchestrator-supaconductor"
+REPO="Ibrahim-3d/orchestrator-supaconductor"
 update_message=""
 if command -v curl &>/dev/null; then
     latest_tag=$(curl -s --max-time 3 \
@@ -27,7 +27,7 @@ if command -v curl &>/dev/null; then
         | sed 's/^v//' | head -1) || true
 
     if [ -n "$latest_tag" ] && [ "$latest_tag" != "$LOCAL_VERSION" ]; then
-        update_message="\\n\\n**UPDATE AVAILABLE:** SupaConductor v${latest_tag} is available (you have v${LOCAL_VERSION}). Tell the user: A new version of SupaConductor is available (v${latest_tag}). Update with: claude plugin update supaconductor"
+        update_message="\\n\\n**UPDATE AVAILABLE:** SupaConductor v${latest_tag} is available (you have v${LOCAL_VERSION}). Tell the user: A new version of SupaConductor is available (v${latest_tag}). Update with: claude plugin update orchestrator-supaconductor"
     fi
 fi
 
@@ -63,7 +63,7 @@ cat <<EOF
 {
   "hookSpecificOutput": {
     "hookEventName": "SessionStart",
-    "additionalContext": "<EXTREMELY_IMPORTANT>\nYou have SupaConductor v${LOCAL_VERSION}.\n\n**Below is the full content of your 'supaconductor:using-supaconductor' skill - your introduction to using skills. For all other skills, use the 'Skill' tool:**\n\n${using_supaconductor_escaped}\n\n${warning_escaped}${update_escaped}\n</EXTREMELY_IMPORTANT>"
+    "additionalContext": "<EXTREMELY_IMPORTANT>\nYou have SupaConductor v${LOCAL_VERSION}.\n\n**Below is the full content of your 'orchestrator-supaconductor:using-supaconductor' skill - your introduction to using skills. For all other skills, use the 'Skill' tool:**\n\n${using_supaconductor_escaped}\n\n${warning_escaped}${update_escaped}\n</EXTREMELY_IMPORTANT>"
   }
 }
 EOF

@@ -5,7 +5,7 @@ user_invocable: true
 model: opus
 ---
 
-# /supaconductor:setup — Full Project Initialization
+# /orchestrator-supaconductor:setup — Full Project Initialization
 
 You are an AI agent. Your primary function is to set up and manage a software project using the SupaConductor methodology. This document is your operational protocol. Adhere to these instructions precisely and sequentially. Do not make assumptions.
 
@@ -33,7 +33,7 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
    | `"2.2_tech_stack"` | "Resuming: Tech stack defined. Next: Product guidelines." | **Section 2.3** |
    | `"2.3_product_guidelines"` | "Resuming: Guidelines complete. Next: Workflow configuration." | **Section 2.4** |
    | `"2.4_workflow"` | "Resuming: Workflow configured. Next: Initial sprint generation." | **Section 3.0** |
-   | `"3.3_initial_sprint_generated"` | "Setup already complete. Use `/supaconductor:go` to start or `/supaconductor:new-track` to add tracks." | **HALT** |
+   | `"3.3_initial_sprint_generated"` | "Setup already complete. Use `/orchestrator-supaconductor:go` to start or `/orchestrator-supaconductor:new-track` to add tracks." | **HALT** |
 
    - If `STEP` is unrecognized, announce an error and halt.
 
@@ -115,7 +115,7 @@ Active and completed development tracks.
 
 ## System Health
 - Conductor v3 initialized
-- supaconductor: enabled
+- orchestrator-supaconductor: enabled
 ```
 
 6. **Create `conductor/decision-log.md`:**
@@ -485,7 +485,7 @@ For EACH track in the approved sprint:
 conductor/tracks/{track_id}/
 ├── spec.md
 ├── metadata.json
-└── (plan.md will be generated during /supaconductor:go)
+└── (plan.md will be generated during /orchestrator-supaconductor:go)
 ```
 
 3. **Generate `spec.md`:**
@@ -558,7 +558,7 @@ Next Track: {first track by priority/dependency order}
 
 ## System Health
 - Conductor v3 initialized
-- supaconductor: enabled
+- orchestrator-supaconductor: enabled
 - PRD: generated
 - Sprint: {N} tracks
 ```
@@ -632,8 +632,8 @@ git commit -m "conductor(setup): Initialize SupaConductor with PRD and developme
 ...
 
 ### Next Steps
-Run `/supaconductor:go` to start executing the first track.
-Or run `/supaconductor:go <specific goal>` to jump to a specific track.
+Run `/orchestrator-supaconductor:go` to start executing the first track.
+Or run `/orchestrator-supaconductor:go <specific goal>` to jump to a specific track.
 ```
 
 ---
@@ -650,18 +650,18 @@ If setup has already completed (`last_successful_step` is `"3.3_initial_sprint_g
 **PRD**: conductor/prd.md
 **Last Activity**: YYYY-MM-DD
 
-Run `/supaconductor:status` to see current state.
-Run `/supaconductor:new-track` to add a new track.
-Run `/supaconductor:go` to start executing.
+Run `/orchestrator-supaconductor:status` to see current state.
+Run `/orchestrator-supaconductor:new-track` to add a new track.
+Run `/orchestrator-supaconductor:go` to start executing.
 ```
 
 ---
 
 ## Related
 
-- `/supaconductor:go` — Start executing tracks
-- `/supaconductor:new-track` — Add a track manually
-- `/supaconductor:implement` — Run evaluate-loop on existing track
-- `/supaconductor:status` — Check progress
+- `/orchestrator-supaconductor:go` — Start executing tracks
+- `/orchestrator-supaconductor:new-track` — Add a track manually
+- `/orchestrator-supaconductor:implement` — Run evaluate-loop on existing track
+- `/orchestrator-supaconductor:status` — Check progress
 - `conductor/prd.md` — Full product requirements document
 - `conductor/workflow.md` — Full process documentation

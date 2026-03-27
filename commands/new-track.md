@@ -9,15 +9,15 @@ arguments:
 user_invocable: true
 ---
 
-# /supaconductor:new-track — Create New Track
+# /orchestrator-supaconductor:new-track — Create New Track
 
 Interactive workflow to create a new development track with specification, implementation plan, and metadata.
 
 ## Usage
 
 ```bash
-/supaconductor:new-track
-/supaconductor:new-track "Add Stripe payment integration"
+/orchestrator-supaconductor:new-track
+/orchestrator-supaconductor:new-track "Add Stripe payment integration"
 ```
 
 ## Your Task
@@ -91,7 +91,7 @@ Show the user:
 - Track ID and location
 - Spec summary (3-5 bullet points)
 - Estimated complexity
-- Next step: Run `/supaconductor:implement` to start
+- Next step: Run `/orchestrator-supaconductor:implement` to start
 
 ## Track Types
 
@@ -125,12 +125,12 @@ Show the user:
 - conductor/tracks/stripe-payment-integration_20260216/spec.md
 - conductor/tracks/stripe-payment-integration_20260216/metadata.json
 
-**Next Step**: Run `/supaconductor:implement` to start the Evaluate-Loop
+**Next Step**: Run `/orchestrator-supaconductor:implement` to start the Evaluate-Loop
 ```
 
 ## Related
 
-- `/supaconductor:implement` — Run the evaluate-loop on this track
-- `/supaconductor:status` — Check track status
-- `/supaconductor:go` — Shorthand that creates track + starts implement automatically
+- `/orchestrator-supaconductor:implement` — Run the evaluate-loop on this track
+- `/orchestrator-supaconductor:status` — Check track status
+- `/orchestrator-supaconductor:go` — Shorthand that creates track + starts implement automatically
 

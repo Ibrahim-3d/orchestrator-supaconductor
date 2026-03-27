@@ -12,14 +12,14 @@ arguments:
 user_invocable: true
 ---
 
-# /supaconductor:task-worker — Execute Single Task
+# /orchestrator-supaconductor:task-worker — Execute Single Task
 
 Ephemeral worker for executing a single task. Used by parallel-dispatcher for concurrent execution.
 
 ## Usage
 
 ```bash
-/supaconductor:task-worker <track-id> <task-id>
+/orchestrator-supaconductor:task-worker <track-id> <task-id>
 ```
 
 ## Your Task
@@ -84,4 +84,4 @@ FILES: {list of files modified}
 
 ## Reference
 
-Full agent instructions: `.claude/agents/supaconductor:task-worker.md`
+Full agent instructions: `.claude/agents/orchestrator-supaconductor:task-worker.md`

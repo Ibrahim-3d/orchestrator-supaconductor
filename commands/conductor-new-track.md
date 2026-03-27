@@ -132,4 +132,4 @@ Show the user:
 
 - `/conductor:implement` — Run the evaluate-loop on this track
 - `/conductor:status` — Check track status
-- `/supaconductor:go` — Shorthand that creates track + starts implement automatically
+- `/orchestrator-supaconductor:go` — Shorthand that creates track + starts implement automatically

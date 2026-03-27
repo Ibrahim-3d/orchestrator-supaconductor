@@ -15,7 +15,7 @@ The loop runs autonomously, managing state through `metadata.json` and delegatin
 ### Step 1: PLAN
 
 **Input**: `spec.md` (requirements)
-**Agent**: `supaconductor:writing-plans` (Superpower-enhanced)
+**Agent**: `orchestrator-supaconductor:writing-plans` (Superpower-enhanced)
 **Process**:
 - Analyze requirements in `spec.md`.
 - Generate a task-by-task implementation plan in `plan.md`.
@@ -27,7 +27,7 @@ The loop runs autonomously, managing state through `metadata.json` and delegatin
 ### Step 2: EVALUATE PLAN
 
 **Input**: `plan.md`
-**Agent**: `supaconductor:loop-plan-evaluator`
+**Agent**: `orchestrator-supaconductor:loop-plan-evaluator`
 **Process**:
 - Check for technical feasibility and scope discipline.
 - Check for overlap with other active tracks in `tracks.md`.
@@ -41,7 +41,7 @@ The loop runs autonomously, managing state through `metadata.json` and delegatin
 ### Step 3: EXECUTE
 
 **Input**: `plan.md` + track metadata
-**Agent**: `supaconductor:executing-plans` (Superpower-enhanced)
+**Agent**: `orchestrator-supaconductor:executing-plans` (Superpower-enhanced)
 **Process**:
 - Parse the plan's DAG for parallelizable tasks.
 - Dispatch workers to implement code changes task-by-task.
@@ -53,7 +53,7 @@ The loop runs autonomously, managing state through `metadata.json` and delegatin
 ### Step 4: EVALUATE EXECUTION (Quality Gate)
 
 **Input**: Implementation changes + `plan.md`
-**Agent**: `supaconductor:loop-execution-evaluator`
+**Agent**: `orchestrator-supaconductor:loop-execution-evaluator`
 **Process**:
 - Dispatch specialized evaluators for deep verification:
   - `eval-ui-ux`: Audit for accessibility, design system, and user experience.
@@ -69,7 +69,7 @@ The loop runs autonomously, managing state through `metadata.json` and delegatin
 ### Step 5: FIX
 
 **Input**: `evaluation-report.md` with failure list
-**Agent**: `supaconductor:systematic-debugging` (Superpower-enhanced)
+**Agent**: `orchestrator-supaconductor:systematic-debugging` (Superpower-enhanced)
 **Process**:
 - Perform root-cause analysis for each failure in the report.
 - Propose and implement fixes sequentially.

@@ -9,14 +9,14 @@ arguments:
 user_invocable: true
 ---
 
-# /supaconductor:loop-planner — Create Execution Plan
+# /orchestrator-supaconductor:loop-planner — Create Execution Plan
 
 Evaluate-Loop Step 1: Create a detailed, phased execution plan from the track's specification.
 
 ## Usage
 
 ```bash
-/supaconductor:loop-planner <track-id>
+/orchestrator-supaconductor:loop-planner <track-id>
 ```
 
 ## Your Task
@@ -51,4 +51,4 @@ echo "PASS" > .message-bus/events/PLAN_COMPLETE_{track_id}.event
 
 ## Reference
 
-Full agent instructions: `.claude/agents/supaconductor:loop-planner.md`
+Full agent instructions: `.claude/agents/orchestrator-supaconductor:loop-planner.md`
