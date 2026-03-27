@@ -1,423 +1,457 @@
 <p align="center">
-  <img src="assets/conductor-banner.png" alt="Conductor Orchestrator SupaConductor" width="800"/>
+  <img src="assets/conductor-banner.png" alt="SupaConductor" width="800"/>
 </p>
 
-# SupaConductor (formerly conductor-orchestrator-superpowers)
-
-> ⚠️ **CRITICAL: PLUGIN RENAMED TO SUPACONDUCTOR**
-> This plugin has been renamed from `conductor-orchestrator-superpowers` to `supaconductor`.
-> **Existing users MUST follow the [Migration Guide](#migration-guide-from-conductor-orchestrator-superpowers) below to avoid command failures.**
+<h1 align="center">SupaConductor</h1>
 
 <p align="center">
-  <strong>Multi-agent orchestration for Claude Code</strong><br/>
-  Parallel execution &bull; Automated quality gates &bull; Board of Directors
-</p>
-
-<p align="center">
-  <strong>Multi-agent orchestration for Claude Code</strong><br/>
-  Parallel execution &bull; Automated quality gates &bull; Board of Directors
+  <strong>Turn Claude Code into a full engineering team.</strong><br/>
+  One command builds features, fixes bugs, and ships code — with automated planning, execution, and quality checks.
 </p>
 
 <p align="center">
   <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-  <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor"><img alt="Version" src="https://img.shields.io/badge/version-3.3.0-green.svg"/></a>
+  <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor"><img alt="Version" src="https://img.shields.io/badge/version-3.3.1-green.svg"/></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img alt="Claude Code" src="https://img.shields.io/badge/Claude_Code-Plugin-blueviolet.svg"/></a>
-  <a href="https://github.com/obra/superpowers"><img alt="Superpowers" src="https://img.shields.io/badge/superpowers-v4.3.0-orange.svg"/></a>
+  <a href="https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor/discussions"><img alt="Community" src="https://img.shields.io/badge/community-discussions-orange.svg"/></a>
 </p>
 
 <p align="center">
-  <a href="#installation">Installation</a> &bull;
-  <a href="#quick-start">Quick Start</a> &bull;
-  <a href="#the-evaluate-loop">How It Works</a> &bull;
-  <a href="#commands">Commands</a> &bull;
-  <a href="#architecture">Architecture</a> &bull;
-  <a href="#license">License</a>
+  <a href="#what-does-this-do">What Is This?</a> &bull;
+  <a href="#installation">Install</a> &bull;
+  <a href="#getting-started">Get Started</a> &bull;
+  <a href="#how-it-works">How It Works</a> &bull;
+  <a href="#all-commands">Commands</a> &bull;
+  <a href="#faq">FAQ</a> &bull;
+  <a href="#community">Community</a>
 </p>
-
-## Migration Guide (from conductor-orchestrator-superpowers)
-
-If you have the old `conductor-orchestrator-superpowers` plugin installed, you **must** perform these steps to migrate to SupaConductor:
-
-1.  **Uninstall old plugin**: Run `/plugin` in Claude Code, find `conductor-orchestrator-superpowers`, and disable/remove it.
-2.  **Delete old directory**: Manually delete `~/.claude/plugins/conductor-orchestrator-superpowers` (or wherever you cloned it).
-3.  **Install SupaConductor**: Follow the [Installation](#installation) instructions above.
-4.  **Update existing projects**: If you have active Conductor tracks, run `/supaconductor:setup` in those projects to update the internal references.
-
-**Why the change?** We renamed from `conductor-orchestrator-superpowers` to `supaconductor` because the old name was too long and causing path-length issues in some environments. All your existing tracks and data are safe, but the *commands* you use to interact with them have changed to the `/supaconductor:` namespace.
 
 ---
 
-## What is this?
+## What Does This Do?
 
-Conductor turns Claude Code into a **structured engineering team**. Instead of ad-hoc coding, it organizes work into tracks with specs, plans, parallel execution, and automated evaluation.
+You tell Claude Code what you want. SupaConductor figures out how to build it — step by step, with quality checks at every stage.
 
-**One command. Full automation.**
+**Without SupaConductor**, you prompt Claude Code and hope for the best. You manually review, re-prompt, and fix what it misses.
 
-```bash
-/supaconductor:go Add user authentication with OAuth
+**With SupaConductor**, you type one command:
+
+```
+/supaconductor:go Add user authentication with Google OAuth
 ```
 
-That single command triggers the full lifecycle — spec, plan, execute, evaluate, fix — without any manual handoffs.
+And it automatically:
+1. Writes a detailed specification
+2. Creates an implementation plan with task dependencies
+3. Executes each task (in parallel when possible)
+4. Checks the work with specialized evaluators
+5. Fixes any issues it finds
+6. Marks the work complete when everything passes
 
-## What's Included
+No babysitting. No re-prompting. Just describe what you want and walk away.
 
-| Component | Count | Highlights |
-|-----------|------:|------------|
-| **Agents** | 16 | Orchestrator, loop agents, board directors, executive advisors, workers |
-| **Skills** | 42 | Planning, execution, evaluation, debugging, TDD, code review |
-| **Commands** | 22 | `/supaconductor:go`, `/supaconductor:setup`, `/supaconductor:board-meeting`, `/supaconductor:cto-advisor`, and more |
-| **Evaluators** | 4 | UI/UX, Code Quality, Integration, Business Logic |
-| **Board of Directors** | 5 | Chief Architect, CPO, CSO, COO, CXO |
-| **Lead Engineers** | 4 | Architecture, Product, Tech, QA |
+---
 
-Bundles [superpowers](https://github.com/obra/superpowers) v4.3.0 (MIT) — no external dependencies.
+## What's Inside
+
+| Component | Count | What It Does |
+|-----------|------:|-------------|
+| **Commands** | 36 | Slash commands you type to control everything |
+| **Skills** | 39 | Specialized knowledge modules that activate when needed |
+| **Agents** | 15 | Autonomous workers that handle planning, coding, and evaluation |
+| **Evaluators** | 4 | Quality checkers for UI/UX, code quality, integrations, and business logic |
+| **Board of Directors** | 5 | Virtual executives who deliberate on major decisions |
+| **Lead Engineers** | 4 | Architecture, Product, Tech, and QA specialists |
+
+Bundles [Superpowers](https://github.com/obra/superpowers) v4.3.0 (MIT) — everything works out of the box with zero setup.
 
 ---
 
 ## Installation
 
-### Option 1: Plugin Marketplace (easiest)
+### Option 1: Marketplace (recommended)
 
-```bash
-/plugin marketplace add Ibrahim-3d/conductor-orchestrator-supaconductor
-/plugin install conductor-orchestrator-supaconductor@ibrahim-plugins
+Open Claude Code and run:
+
+```
+/install Ibrahim-3d/conductor-orchestrator-supaconductor
 ```
 
-### Option 2: Clone directly
+### Option 2: Clone from GitHub
 
 ```bash
 git clone https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor.git ~/.claude/plugins/conductor-orchestrator-supaconductor
 ```
 
-### Option 3: Manual download
+### Option 3: Download manually
 
-Download the latest release and extract to `~/.claude/plugins/conductor-orchestrator-supaconductor/`.
+Download the [latest release](https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor/releases) and extract it to `~/.claude/plugins/conductor-orchestrator-supaconductor/`.
 
-### Verify
+### Verify it works
 
-Start a new Claude Code session. Type `/` and check for `/supaconductor:go`, `/supaconductor:implement`, `/supaconductor:board-meeting` in the command list.
+Start a new Claude Code session and type `/supaconductor:`. You should see a list of commands appear. If you see `/supaconductor:go`, you're all set.
 
 ---
 
-## Quick Start
+## Getting Started
 
-**1. Initialize Conductor in your project:**
+### Step 1: Set up your project
 
-```bash
+Open Claude Code in your project folder and run:
+
+```
 /supaconductor:setup
 ```
 
-Creates a `conductor/` directory with track registry, workflow docs, and knowledge base.
+This walks you through an interactive setup that:
+- Analyzes your existing codebase (or starts fresh for new projects)
+- Helps define your product vision and tech stack
+- Creates a `conductor/` folder in your project to track all work
+- Generates an initial development sprint with ready-to-execute tracks
 
-**2. Build something:**
+You only need to do this once per project.
 
-```bash
+### Step 2: Build something
+
+Tell it what you want in plain English:
+
+```
 /supaconductor:go Add Stripe payment integration with webhooks
+```
+
+```
 /supaconductor:go Fix the login bug where users get logged out after refresh
+```
+
+```
 /supaconductor:go Build a dashboard with real-time analytics charts
+```
+
+```
 /supaconductor:go Refactor the database layer to use connection pooling
 ```
 
-**3. Monitor and control:**
+That's it. SupaConductor takes over from here — planning, coding, testing, and evaluating the work automatically.
 
-```bash
-/supaconductor:status          # See all tracks and progress
-/supaconductor:implement       # Continue work on current track
-/supaconductor:new-track       # Create a track manually
-/supaconductor:phase-review              # Run quality gate evaluation
+### Step 3: Check on progress
+
 ```
+/supaconductor:status
+```
+
+Shows all your active tracks, what step each one is on, and what's completed.
+
+### Step 4: Resume interrupted work
+
+If a session ends before a track completes, just run:
+
+```
+/supaconductor:go
+```
+
+It picks up exactly where it left off.
 
 ---
 
-## The Evaluate-Loop
+## How It Works
 
-Every track follows a rigorous, automated cycle:
+Every piece of work follows a structured cycle called the **Evaluate-Loop**:
 
 <p align="center">
-  <img src="assets/evaluate-loop.png" alt="Evaluate-Loop: Plan → Evaluate Plan → Execute → Evaluate Execution → Fix/Complete" width="700"/>
+  <img src="assets/evaluate-loop.png" alt="Evaluate-Loop: Plan, Evaluate Plan, Execute, Evaluate Execution, Fix or Complete" width="700"/>
 </p>
 
 | Step | What Happens |
 |------|-------------|
-| **Plan** | Generates implementation steps with dependency graph (DAG) |
-| **Evaluate Plan** | Checks scope, overlap with existing tracks, feasibility |
-| **Execute** | Implements code, runs tests, updates progress |
-| **Evaluate Execution** | Dispatches specialized evaluators (UI/UX, code quality, integration, business logic) |
-| **Fix** | Addresses failures, loops back to evaluation (max 5 cycles, then completes with warnings) |
-| **Complete** | All evaluators pass — track marked done |
-| **Retrospective** | Extracts reusable patterns and error fixes to knowledge layer |
+| **Plan** | Breaks your goal into tasks with a dependency graph |
+| **Evaluate Plan** | Checks for scope issues, overlap with other work, and feasibility |
+| **Execute** | Writes code, runs tests, tracks progress — parallel when possible |
+| **Evaluate Execution** | Specialized checkers review UI/UX, code quality, integrations, and business logic |
+| **Fix** | Addresses any failures, then loops back to evaluation (max 3 cycles) |
+| **Complete** | All checks pass — track is marked done |
 
-The loop runs **fully automated**. It stops when the track is complete, when the fix cycle exceeds 3 iterations, or when it needs human input.
+The loop runs fully automated. It stops when the work passes all quality checks or when it needs your input.
 
----
+### Parallel Execution
 
-## Parallel Execution
-
-Tasks without dependencies run simultaneously via DAG scheduling:
+When tasks don't depend on each other, they run simultaneously:
 
 <p align="center">
-  <img src="assets/parallel-execution.png" alt="Parallel execution DAG showing tasks running simultaneously" width="700"/>
+  <img src="assets/parallel-execution.png" alt="Parallel execution showing independent tasks running at the same time" width="700"/>
 </p>
 
-The orchestrator reads the dependency graph and dispatches independent tasks to parallel worker agents. When all upstream dependencies resolve, downstream tasks start automatically.
+This means a feature with 6 tasks might only take as long as 3, because independent tasks run in parallel.
+
+### Two Modes
+
+SupaConductor can work in two ways:
+
+| Mode | Behavior | Best For |
+|------|----------|----------|
+| **Agentic** (default) | Fully autonomous — makes all decisions itself | Experienced users who trust the system |
+| **Human-in-the-loop** | Pauses at key decision points to ask you | Learning the system, critical work, or when you want more control |
+
+Switch modes by editing `conductor/config.json` in your project:
+
+```json
+{ "mode": "agentic" }
+```
+```json
+{ "mode": "human-in-the-loop" }
+```
 
 ---
 
 ## Board of Directors
 
-For major architectural and strategic decisions, a 5-member board deliberates across 5 phases:
+For major decisions (architecture choices, technology migrations, design tradeoffs), you can convene a virtual board:
 
 <p align="center">
-  <img src="assets/board-of-directors.png" alt="Board of Directors: Chief Architect, CPO, CSO, COO, CXO around a decision table" width="700"/>
+  <img src="assets/board-of-directors.png" alt="Board of Directors: 5 executive perspectives deliberating on a decision" width="700"/>
 </p>
 
-| Director | Domain | Focus |
-|----------|--------|-------|
-| **Chief Architect** | Technical | System design, patterns, scalability, tech debt |
-| **Chief Product Officer** | Product | User value, market fit, scope discipline |
-| **Chief Security Officer** | Security | Vulnerabilities, compliance, data protection |
-| **Chief Operations Officer** | Operations | Feasibility, timeline, resources, deployment |
-| **Chief Experience Officer** | Experience | UX/UI, accessibility, user journey |
+| Director | Focus |
+|----------|-------|
+| **Chief Architect** | System design, scalability, technical debt |
+| **Chief Product Officer** | User value, market fit, feature scope |
+| **Chief Security Officer** | Vulnerabilities, compliance, data protection |
+| **Chief Operations Officer** | Feasibility, timelines, deployment risks |
+| **Chief Experience Officer** | UX/UI, accessibility, user journeys |
 
-Each director independently assesses, then they discuss and vote with written rationale.
+Each director independently assesses your question, then they discuss and vote with written rationale.
 
-```bash
+```
 /supaconductor:board-meeting Should we migrate from REST to GraphQL?
+```
+
+```
 /supaconductor:board-review Add real-time notifications via WebSocket
 ```
 
+Use `board-meeting` for full deliberation (detailed, takes longer) or `board-review` for quick assessments.
+
 ---
 
-## Commands
+## All Commands
 
-### Core
+### The Main Ones
 
-| Command | Description |
+| Command | What It Does |
 |---------|-------------|
-| `/supaconductor:go <goal>` | State your goal — Conductor handles everything |
-| `/supaconductor:status` | View all tracks and current progress |
-| `/supaconductor:implement` | Run the Evaluate-Loop on current track |
-| `/supaconductor:new-track` | Create a new track with spec and plan |
-| `/supaconductor:setup` | Initialize Conductor in a project |
+| `/supaconductor:go <goal>` | Describe what you want — everything else is automatic |
+| `/supaconductor:setup` | Set up SupaConductor in your project (run once) |
+| `/supaconductor:status` | See all your tracks and their progress |
+| `/supaconductor:implement` | Continue the Evaluate-Loop on the current track |
+| `/supaconductor:new-track` | Create a new track with more manual control |
 
-### Quality & Review
+### Quality and Review
 
-| Command | Description |
+| Command | What It Does |
 |---------|-------------|
-| `/supaconductor:phase-review` | Post-execution quality gate |
-| `/supaconductor:cto-advisor` | CTO-level architecture review |
-| `/supaconductor:board-meeting <topic>` | Full board deliberation (4 phases) |
+| `/supaconductor:phase-review` | Run a quality gate on completed work |
+| `/supaconductor:cto-advisor` | Get a CTO-level architecture review |
+| `/supaconductor:board-meeting <topic>` | Full board deliberation with voting |
 | `/supaconductor:board-review <topic>` | Quick board assessment |
-| `/supaconductor:ui-audit` | UI/UX accessibility audit |
+| `/supaconductor:ui-audit` | Accessibility and UI/UX review |
 
-### Advisors
+### Expert Advisors
 
-| Command | Description |
+Ask for advice from virtual executives — they analyze your project and give guidance:
+
+| Command | Advisor |
+|---------|---------|
+| `/supaconductor:ceo` | Business strategy and product direction |
+| `/supaconductor:cmo` | Marketing strategy and positioning |
+| `/supaconductor:cto` | Technical architecture and engineering |
+| `/supaconductor:ux-designer` | User experience and design |
+
+### Planning and Execution
+
+| Command | What It Does |
 |---------|-------------|
-| `/supaconductor:ceo` | Strategic business advice |
-| `/supaconductor:cmo` | Marketing strategy guidance |
-| `/supaconductor:cto` | Technical architecture guidance |
-| `/supaconductor:ux-designer` | UX strategy and design guidance |
+| `/supaconductor:writing-plans` | Create a structured implementation plan |
+| `/supaconductor:executing-plans` | Execute an existing plan step by step |
+| `/supaconductor:brainstorming` | Creative exploration before building |
+| `/supaconductor:systematic-debugging` | Structured approach to finding and fixing bugs |
+| `/supaconductor:using-git-worktrees` | Isolate feature work in separate git worktrees |
+| `/supaconductor:finishing-a-development-branch` | Wrap up a branch — merge, PR, or cleanup |
 
-### Superpowers (Bundled)
+### Loop Control (Advanced)
 
-| Command | Description |
-|---------|-------------|
-| `/supaconductor:writing-plans` | Create a plan using superpowers patterns |
-| `/supaconductor:executing-plans` | Execute a plan using superpowers patterns |
-| `/supaconductor:brainstorm` | Creative problem-solving session |
+These give you fine-grained control over individual loop steps:
+
+| Command | Step |
+|---------|------|
+| `/supaconductor:loop-planner` | Run just the planning step |
+| `/supaconductor:loop-plan-evaluator` | Evaluate just the plan |
+| `/supaconductor:loop-executor` | Run just the execution step |
+| `/supaconductor:loop-execution-evaluator` | Evaluate just the execution |
+| `/supaconductor:loop-fixer` | Run just the fix step |
+| `/supaconductor:parallel-dispatcher` | Dispatch parallel workers manually |
+| `/supaconductor:task-worker` | Run a single task from the plan |
 
 ---
 
 ## Architecture
 
-### How the pieces fit together
+### How the system fits together
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    /go <your goal>                           │
-│                         │                                   │
-│              ┌──────────▼──────────┐                        │
-│              │    Orchestrator     │  conductor-orchestrator │
-│              │  (master loop)      │                        │
-│              └──────────┬──────────┘                        │
-│                         │                                   │
-│    ┌────────────────────┼────────────────────┐              │
-│    ▼                    ▼                    ▼              │
-│ ┌──────┐         ┌──────────┐         ┌──────────┐         │
-│ │ Plan │ ──────▶ │ Execute  │ ──────▶ │ Evaluate │         │
-│ └──────┘         └──────────┘         └──────────┘         │
-│    │                    │                    │              │
-│    ▼                    ▼                    ▼              │
-│ writing-plans   parallel-dispatcher   4 evaluators          │
-│ plan-evaluator   ├─ task-worker       ├─ eval-ui-ux        │
-│ cto-reviewer     ├─ task-worker       ├─ eval-code-quality  │
-│                  └─ task-worker       ├─ eval-integration   │
-│                                       └─ eval-business      │
-│                                                             │
-│  ┌──────────────────────┐  ┌─────────────────────────────┐  │
-│  │  Board of Directors  │  │  Knowledge / Retrospective  │  │
-│  │  5 directors + vote  │  │  patterns.md + errors.json  │  │
-│  └──────────────────────┘  └─────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+                         /go <your goal>
+                              |
+                   +----------v-----------+
+                   |    Orchestrator       |
+                   |   (controls the loop) |
+                   +----------+-----------+
+                              |
+          +-------------------+-------------------+
+          v                   v                   v
+     +--------+         +---------+         +----------+
+     |  Plan  | ------> | Execute | ------> | Evaluate |
+     +--------+         +---------+         +----------+
+          |                   |                   |
+          v                   v                   v
+    writing-plans      parallel-dispatcher   4 evaluators
+    plan-evaluator      |-- task-worker      |-- eval-ui-ux
+    cto-reviewer        |-- task-worker      |-- eval-code-quality
+                        +-- task-worker      |-- eval-integration
+                                             +-- eval-business-logic
+
+     +----------------------+    +----------------------------+
+     |  Board of Directors  |    |  Knowledge / Retrospective |
+     |  5 directors + vote  |    |  patterns.md + errors.json |
+     +----------------------+    +----------------------------+
 ```
 
-### Plugin directory structure
+### What gets created in your project
 
-```
-conductor-orchestrator-supaconductor/
-├── .claude-plugin/
-│   └── plugin.json              # Plugin manifest
-├── assets/                      # Diagrams and images
-├── agents/                      # 16 agent definitions
-│   ├── conductor-orchestrator.md
-│   ├── loop-planner.md
-│   ├── loop-executor.md
-│   ├── loop-fixer.md
-│   ├── loop-plan-evaluator.md
-│   ├── loop-execution-evaluator.md
-│   ├── board-meeting.md
-│   ├── code-reviewer.md
-│   ├── parallel-dispatcher.md
-│   ├── task-worker.md
-│   └── ...                      # Executive advisors
-├── commands/                    # 22 slash commands
-├── skills/                      # 42 skills
-│   ├── conductor-orchestrator/  # Core loop orchestration
-│   ├── writing-plans/           # Plan creation (superpowers)
-│   ├── executing-plans/         # Plan execution (superpowers)
-│   ├── systematic-debugging/    # Debugging (superpowers)
-│   ├── eval-ui-ux/             # UI/UX evaluator
-│   ├── eval-code-quality/      # Code quality evaluator
-│   ├── eval-integration/       # Integration evaluator
-│   ├── eval-business-logic/    # Business logic evaluator
-│   ├── board-of-directors/     # Board deliberation system
-│   │   └── directors/          # 5 director profiles
-│   ├── leads/                  # 4 lead engineer roles
-│   ├── parallel-dispatch/      # DAG-based parallel execution
-│   ├── message-bus/            # Inter-agent communication
-│   └── ...                     # 25+ more skills
-├── hooks/                       # Session hooks
-├── lib/                         # Utility scripts
-├── docs/                        # Workflow, authority, and protocol docs
-├── scripts/                     # Setup script
-└── LICENSES/                    # Third-party license files
-```
-
-### Track structure (created per project)
-
-When you run `/supaconductor:setup`, it creates:
+When you run `/supaconductor:setup`, it creates a `conductor/` folder:
 
 ```
 your-project/
-└── conductor/
-    ├── tracks.md               # Track registry
-    ├── workflow.md             # Process documentation
-    ├── authority-matrix.md     # Decision boundaries
-    ├── decision-log.md         # Architectural decisions
-    ├── knowledge/
-    │   ├── patterns.md         # Learned patterns
-    │   └── errors.json         # Error-fix registry
-    └── tracks/
-        └── feature-name/
-            ├── spec.md         # Requirements
-            ├── plan.md         # Implementation plan + DAG
-            └── metadata.json   # State machine + config
++-- conductor/
+    |-- tracks.md                # Registry of all your work tracks
+    |-- config.json              # Mode setting (agentic or human-in-the-loop)
+    |-- workflow.md              # How the development process works
+    |-- authority-matrix.md      # Who can make which decisions
+    |-- decision-log.md          # Record of architectural decisions
+    |-- product.md               # Product vision and requirements
+    |-- tech-stack.md            # Technology choices and constraints
+    |-- knowledge/
+    |   |-- patterns.md          # Patterns learned from completed work
+    |   +-- errors.json          # Fixes for recurring errors
+    +-- tracks/
+        +-- feature-name/
+            |-- spec.md          # What needs to be built
+            |-- plan.md          # How to build it (tasks + dependencies)
+            +-- metadata.json    # Current state and configuration
 ```
 
----
-
-## Project-Specific Skills
-
-Conductor handles orchestration. Your project handles domain knowledge. Keep project-specific skills in `${CLAUDE_PLUGIN_ROOT}/skills/`:
-
-```
-your-project/${CLAUDE_PLUGIN_ROOT}/skills/
-├── product-rules/SKILL.md       # Business logic, personas
-├── api-patterns/SKILL.md        # API conventions
-├── design-system/SKILL.md       # Design tokens, components
-└── testing-standards/SKILL.md   # Coverage targets, test patterns
-```
-
-The orchestrator loads both plugin skills and project skills automatically.
+All of these are plain Markdown and JSON files. You can read, edit, or delete them anytime.
 
 ---
 
 ## FAQ
 
-### How much context does this plugin use?
+### Do I need to know how to code?
 
-Skills use **progressive disclosure** — only ~100 tokens per skill for metadata scanning. Full instructions load only when a skill activates (typically <5k tokens each). In practice, a `/go` session loads the orchestrator skill (~4k tokens) plus whichever evaluator/planner is active at that step. Inactive skills stay dormant. The 42 skills are **not** all loaded at once.
+You need [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed and running — that requires basic terminal knowledge. But once SupaConductor is set up, you describe what you want in plain English and it handles the implementation.
 
-Commands (slash commands) add zero context until invoked. Agents run as **subprocesses with their own context windows**, so they don't consume your main conversation's context.
+### How much does this cost in API credits?
 
-**Estimated overhead per step:**
+SupaConductor uses the same Claude API as normal Claude Code — it just structures the work more carefully. Because it runs multiple agents (planning, execution, evaluation), it uses roughly **3-5x** the API calls compared to doing everything manually in one conversation.
 
-| Step | Context Added | Notes |
-|------|--------------|-------|
-| Orchestrator | ~4k tokens | Always active during `/go` |
-| Planner | ~3k tokens | Active during planning only |
-| Evaluator | ~2-3k tokens each | Only active evaluator loads |
-| Board meeting | ~5k tokens | On-demand, not part of default loop |
-| Idle (between steps) | ~500 tokens | Metadata only |
+SupaConductor optimizes costs automatically: it uses **Opus** (the most capable model) for planning and evaluation, and **Sonnet** (faster, cheaper) for execution tasks.
 
-### Does this work with Gemini CLI, Trae, Cursor, or other AI tools?
+Ways to reduce cost:
+- Use `/supaconductor:implement` if you write specs yourself
+- Skip board meetings for small features (they're opt-in)
+- Use human-in-the-loop mode to stay in control of scope
 
-**Short answer:** No. This is a Claude Code plugin that uses Claude Code's plugin system (agents, skills, slash commands, hooks). It cannot run in Gemini CLI, Trae, Cursor, Windsurf, or other tools — they have different architectures and APIs.
+### How much of my context window does this use?
 
-**However**, the underlying concepts are portable:
-- The `conductor/` directory it creates in your project (specs, plans, track registry) is just Markdown files. Any AI tool can read_file them.
-- If you start a project with Conductor and later switch tools, your specs and plans remain useful documentation.
-- The Evaluate-Loop pattern (plan → evaluate → execute → evaluate → fix) is a workflow methodology, not locked to any runtime.
+Skills use **progressive disclosure** — only ~100 tokens each for metadata. Full instructions load only when activated (typically under 5,000 tokens each). The 39 skills are not loaded all at once.
 
-### What does this cost in API credits?
+Agents run as **separate conversations** with their own context windows, so they don't fill up your main conversation.
 
-Conductor uses the same Claude API calls you'd make manually — it just structures them. Multi-agent orchestration does mean **more API calls** because:
-- Each agent subprocess is a separate conversation
-- Evaluation steps add calls you might skip manually
-- Board meetings use 5+ parallel agent calls
+| Component | Context Used | When |
+|-----------|-------------|------|
+| Orchestrator | ~4,000 tokens | Active during `/go` |
+| Planner | ~3,000 tokens | During planning only |
+| Evaluator | ~2,500 tokens each | Only the active evaluator loads |
+| Board meeting | ~5,000 tokens | On-demand only |
+| Idle | ~500 tokens | Between steps |
 
-**Rough multiplier:** A `/go` session for a medium feature uses roughly **3-5x** the API calls of doing it manually. You're trading credits for structure, quality gates, and reduced rework.
+### Does this work with Cursor, Windsurf, or other AI tools?
 
-**Ways to reduce cost:**
-- Use `/supaconductor:implement` (skips spec generation if you write_file your own)
-- Skip board meetings for small features (they're opt-in via `/board-meeting`)
-- Use Sonnet or Haiku for the model where possible (agent model selection respects your Claude Code config)
+No — SupaConductor is a Claude Code plugin that requires Claude Code's plugin system (agents, skills, slash commands, hooks).
 
-### Which Claude models does this work with?
+**However**, the `conductor/` directory it creates is just Markdown files. Any AI tool can read them. If you start with SupaConductor and switch tools later, your specs, plans, and documentation remain useful.
 
-All of them. The plugin works with whatever model you've configured in Claude Code (Opus, Sonnet, Haiku). Agents inherit the parent model by default, but the orchestrator can dispatch to specific models when appropriate (e.g., Haiku for simple tasks, Opus for complex evaluation).
+### Is this overkill for small tasks?
 
-### Is this overkill for small projects?
-
-For a one-file script or a quick fix — yes, skip it. Use Conductor when:
-- The feature touches 3+ files
-- You'd normally spend time planning before coding
-- You want automated quality checks before shipping
-- You're building something that needs to be right the first time
+For a quick one-file fix — yes, just use Claude Code directly. Use SupaConductor when:
+- The work touches 3 or more files
+- You'd normally plan before coding
+- You want automated quality checks
+- You want the work done right the first time
 
 You can also use individual commands without the full loop:
-```bash
-/board-review Should we use Redis or Memcached?   # Just get board input
-/cto-advisor                                       # Just get architecture review
-/write_file-plan                                        # Just create a plan
+
+```
+/supaconductor:board-review Should we use Redis or PostgreSQL for sessions?
+/supaconductor:cto-advisor
+/supaconductor:writing-plans
 ```
 
 ### Can I use this alongside other Claude Code plugins?
 
-Yes. Conductor coexists with any other plugin. It doesn't override built-in commands or conflict with other plugin namespaces. Your other plugins' slash commands, agents, and MCP servers remain fully available during Conductor sessions.
+Yes. SupaConductor uses the `/supaconductor:` namespace and doesn't conflict with any other plugins, built-in commands, or MCP servers.
 
-### How do I uninstall or disable it?
+### How do I update to a newer version?
+
+If you installed via marketplace:
+```
+/install Ibrahim-3d/conductor-orchestrator-supaconductor
+```
+
+If you cloned via git:
+```bash
+cd ~/.claude/plugins/conductor-orchestrator-supaconductor && git pull
+```
+
+### How do I uninstall?
 
 ```bash
 # Disable without removing
-/plugin          # Toggle off in the plugin menu
+/plugin    # Toggle it off in the plugin menu
 
 # Full removal
-rm -rf ~/${CLAUDE_PLUGIN_ROOT}/plugins/conductor-orchestrator-supaconductor
+rm -rf ~/.claude/plugins/conductor-orchestrator-supaconductor
 ```
 
-The `conductor/` directory in your project persists after uninstall — it's just Markdown files that serve as documentation regardless.
+The `conductor/` directory in your project stays — it's just documentation files.
+
+---
+
+## Migration from the Old Name
+
+If you previously installed `conductor-orchestrator-superpowers` (the old name):
+
+1. Disable the old plugin: run `/plugin` in Claude Code and toggle it off
+2. Delete the old folder: `rm -rf ~/.claude/plugins/conductor-orchestrator-superpowers`
+3. Install SupaConductor using the [instructions above](#installation)
+4. Run `/supaconductor:setup` in your existing projects to update references
+
+Your existing tracks and data are safe — only the command prefix changed from `/conductor:` to `/supaconductor:`.
+
+---
+
+## Community
+
+- [Discussions](https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor/discussions) — Ask questions, share ideas, show what you've built
+- [Issues](https://github.com/Ibrahim-3d/conductor-orchestrator-supaconductor/issues) — Report bugs or request features
+- [Changelog](CHANGELOG.md) — See what's new in each release
 
 ---
 
@@ -428,9 +462,8 @@ The `conductor/` directory in your project persists after uninstall — it's jus
 
 ## Third-Party
 
-Bundles [superpowers](https://github.com/obra/superpowers) v4.3.0 by [Jesse Vincent](https://github.com/obra), licensed under MIT. See [LICENSES/superpowers-MIT](LICENSES/superpowers-MIT).
+Bundles [Superpowers](https://github.com/obra/superpowers) v4.3.0 by [Jesse Vincent](https://github.com/obra), licensed under MIT. See [LICENSES/superpowers-MIT](LICENSES/superpowers-MIT).
 
 ## License
 
 MIT — see [LICENSE](LICENSE)
-
