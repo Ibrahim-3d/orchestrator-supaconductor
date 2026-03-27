@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.0] - 2026-03-27
+
+### Features
+
+- **New `/plan-sprint` command** — Takes a list of features and creates fully planned tracks in parallel. Spawns one agent per track for concurrent spec + plan generation. Analyzes inter-track dependencies and priority ordering.
+- **`/new-track` now generates plan.md** — Tracks are created with spec, plan, AND metadata in one step. Calls loop-planner internally so tracks are immediately ready for execution.
+- **TDD bite-sized task format in loop-planner** — Plans now include exact file paths, complete code, failing test → implement → verify → commit steps. Inspired by the writing-plans skill.
+
+### Refactoring
+
+- **Unified planning system around conductor tracks** — All superpowers skills (`writing-plans`, `brainstorming`, `subagent-driven-development`, `requesting-code-review`) now save artifacts to `conductor/tracks/{track_id}/` instead of the old `docs/plans/` path. Eliminates the two-system fragmentation.
+- **`writing-plans` no longer auto-executes** — Saves plan to track dir and HALTs. Execution is a separate user action via `/implement` or `/go`.
+
 ## [3.5.0] - 2026-03-27
 
 ### Features

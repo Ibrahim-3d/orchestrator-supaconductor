@@ -177,7 +177,60 @@ def generate_dag(tasks: list) -> dict:
     }
 ```
 
-### 3.2 Task Type Detection
+### 3.2 Bite-Sized Task Format
+
+Each task MUST follow the TDD bite-sized format. Every task is one focused action (2-5 minutes) with exact file paths and complete code:
+
+````markdown
+### Task 1.1: [Component Name]
+
+**Files:**
+- Create: `exact/path/to/file.ts`
+- Modify: `exact/path/to/existing.ts:123-145`
+- Test: `tests/exact/path/to/test.ts`
+
+**Step 1: Write the failing test**
+
+```typescript
+test('specific behavior', () => {
+    const result = function(input);
+    expect(result).toBe(expected);
+});
+```
+
+**Step 2: Run test to verify it fails**
+
+Run: `npm test -- --grep "specific behavior"`
+Expected: FAIL with "function not defined"
+
+**Step 3: Write minimal implementation**
+
+```typescript
+export function specificFunction(input: string): string {
+    return expected;
+}
+```
+
+**Step 4: Run test to verify it passes**
+
+Run: `npm test -- --grep "specific behavior"`
+Expected: PASS
+
+**Step 5: Commit**
+
+```bash
+git add tests/path/test.ts src/path/file.ts
+git commit -m "feat: add specific feature"
+```
+````
+
+**Key rules:**
+- Exact file paths always — no "add to the appropriate file"
+- Complete code in plan — not "add validation" or "implement logic"
+- Exact commands with expected output
+- DRY, YAGNI, TDD, frequent commits
+
+### 3.3 Task Type Detection
 
 Automatically detect task type from description and files:
 
@@ -190,7 +243,7 @@ Automatically detect task type from description and files:
 | `config`, `.json`, `.env` | `config` |
 | Default | `code` |
 
-### 3.3 Parallel Group Identification
+### 3.4 Parallel Group Identification
 
 Tasks can run in parallel if:
 1. No dependency relationship (neither depends on the other)
@@ -199,7 +252,7 @@ Tasks can run in parallel if:
    - No shared files (conflict_free: true)
    - Shared files with coordination strategy (conflict_free: false)
 
-### 4. Plan Quality Checklist
+### 3.5 Plan Quality Checklist
 
 Before finalizing, verify:
 
@@ -211,7 +264,7 @@ Before finalizing, verify:
 | Ordered | Are tasks sequenced by dependency? |
 | Sized | Can each task be completed in a single session? |
 
-### 5. Output
+### 4. Output
 
 Save the plan to the track's `plan.md` and report:
 

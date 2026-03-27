@@ -58,7 +58,7 @@ HEAD_SHA=$(git rev-parse HEAD)
 
 [Dispatch orchestrator-supaconductor:code-reviewer subagent]
   WHAT_WAS_IMPLEMENTED: Verification and repair functions for conversation index
-  PLAN_OR_REQUIREMENTS: Task 2 from docs/plans/deployment-plan.md
+  PLAN_OR_REQUIREMENTS: Task 2 from conductor/tracks/deployment_20260327/plan.md
   BASE_SHA: a7981ec
   HEAD_SHA: 3df7661
   DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types

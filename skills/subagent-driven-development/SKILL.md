@@ -93,7 +93,7 @@ digraph process {
 ```
 You: I'm using Subagent-Driven Development to execute this plan.
 
-[read_file plan file once: docs/plans/feature-plan.md]
+[read_file plan file once: conductor/tracks/{track_id}/plan.md]
 [Extract all 5 tasks with full text and context]
 [Create TodoWrite with all tasks]
 

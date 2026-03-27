@@ -13,9 +13,8 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
 
-**Context:** This should be run in a dedicated worktree (created by brainstorming skill).
-
-**Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
+**Save plans to:** The active conductor track directory: `conductor/tracks/{track_id}/plan.md`
+If no conductor track exists, create one first using the `/orchestrator-supaconductor:new-track` flow.
 
 ## Bite-Sized Task Granularity
 
@@ -96,23 +95,21 @@ git commit -m "feat: add specific feature"
 
 ## Conductor Integration
 
-When invoked with `--output-dir` and `--spec` parameters (from Conductor orchestrator):
-- Save plan.md to the specified `--output-dir` (NOT `docs/plans/`)
+This skill is part of the Conductor workflow. All plans are saved to the active track directory.
+
+**When invoked by the Conductor orchestrator** (with `--track-dir` and `--spec` parameters):
 - Read spec from `--spec` path
-- Read project context from `--context-files` paths
-- Include DAG section if `--include-dag=true`
-- After saving, do NOT offer execution choice — return control to orchestrator
-- Update `--metadata` checkpoint to `PLAN: PASSED`
+- Read project context from `conductor/product.md`, `conductor/tech-stack.md`
+- Save plan to `{--track-dir}/plan.md`
+- Include DAG section for parallel execution
+- Update track's `metadata.json` checkpoint to `PLAN: PASSED`
+- Return control to orchestrator — do NOT start execution
 
-When these parameters are absent, fall back to the standalone workflow below.
-
-## Execution Handoff (Standalone Mode)
-
-After saving the plan, proceed directly to execution — **do NOT ask the user which approach to use.**
-
-**Default: Subagent-Driven execution in this session:**
-- **REQUIRED SUB-SKILL:** Use orchestrator-supaconductor:subagent-driven-development
-- Stay in this session
-- Fresh subagent per task + code review
-- Execute ALL tasks autonomously to completion
+**When invoked standalone** (no parameters):
+- Look for the active track in `conductor/tracks.md`
+- Read its `spec.md` for requirements
+- Save plan to `conductor/tracks/{track_id}/plan.md`
+- Update track's `metadata.json` checkpoint to `PLAN: PASSED`
+- After saving, announce the plan summary and HALT — do NOT start execution
+- The user should run `/orchestrator-supaconductor:implement` or `/orchestrator-supaconductor:go` to execute
 

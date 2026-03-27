@@ -1,7 +1,7 @@
 {
   "name": "ibrahim-plugins",
   "description": "Official Claude Code plugins by Ibrahim — AI image generation, multi-agent orchestration, and more",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "owner": {
     "name": "Ibrahim",
     "url": "https://github.com/Ibrahim-3d"
@@ -14,7 +14,7 @@
         "repo": "Ibrahim-3d/orchestrator-supaconductor"
       },
       "description": "Conductor v3 — Multi-agent orchestration with Evaluate-Loop, parallel execution, Board of Directors, and bundled SupaConductor skills for Claude Code",
-      "version": "3.5.0",
+      "version": "3.6.0",
       "author": {
         "name": "Ibrahim",
         "url": "https://github.com/Ibrahim-3d"
