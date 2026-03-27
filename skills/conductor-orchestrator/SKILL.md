@@ -845,6 +845,50 @@ PLAN ──► EVALUATE_PLAN ──► EXECUTE ──► EVALUATE_EXECUTION
 
 ---
 
+## Autonomous Resolution Utility Functions
+
+These utility functions implement the autonomous resolution patterns. They operate on metadata.json:
+
+### `logAutonomousDecision(trackId, type, reasoning)`
+
+Append a decision record to the `autonomous_decisions` array in metadata.json:
+```json
+{
+  "timestamp": "{ISO timestamp}",
+  "type": "ambiguity_resolved|blocker_skipped|board_decided|fix_limit_reached|completed_with_warnings",
+  "context": "{current_step at time of decision}",
+  "decision": "{what was decided}",
+  "reasoning": "{why this was chosen}"
+}
+```
+
+### `escalateToBoard(question)`
+
+Dispatch a board meeting for autonomous resolution:
+1. Spawn: `claude --print --model opus "/supaconductor:board-meeting {question}"`
+2. Parse board verdict (APPROVED / REJECTED)
+3. If APPROVED → continue with board conditions as constraints
+4. If REJECTED → re-plan incorporating all board feedback
+5. Log board decision via `logAutonomousDecision()`
+
+### `skipBlockedTasks(trackId, activeBlockers)`
+
+Skip blocked tasks and continue with unblocked work:
+1. Read plan.md and mark blocked tasks as `[~] SKIPPED`
+2. Add each blocker to metadata.json `"blockers"` array with description and timestamp
+3. Continue executing the next unblocked task in DAG order
+
+### `completeWithWarnings(trackId)`
+
+Complete the track with warnings instead of blocking:
+1. Update metadata.json: `current_step = "COMPLETE"`, `step_status = "PASSED_WITH_WARNINGS"`
+2. Add `"warnings"` array to metadata with unresolved issues
+3. Update tracks.md — mark track as "Done (with warnings)"
+4. Log via `logAutonomousDecision("completed_with_warnings", ...)`
+5. Output summary report listing all warnings
+
+---
+
 ## Track Completion Protocol
 
 When `current_step` reaches `COMPLETE`:

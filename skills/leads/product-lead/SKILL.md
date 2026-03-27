@@ -241,7 +241,7 @@ if (response.decision_made) {
   proceed(response.decision);
 } else {
   // Escalate to board
-  escalate("user", response.escalation_reason);
+  escalateToBoard(response.escalation_reason);
 }
 ```
 

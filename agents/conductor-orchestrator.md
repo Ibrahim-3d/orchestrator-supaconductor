@@ -286,7 +286,7 @@ const stepStatus = metadata.loop_state.step_status;
 // Values: "NOT_STARTED", "IN_PROGRESS", "PASSED", "FAILED", "BLOCKED"
 
 const fixCycleCount = metadata.loop_state.fix_cycle_count || 0;
-// Number of fix attempts (max 3 before escalation)
+// Number of fix attempts (max 5 before completing with warnings)
 ```
 
 ### 1.4 If No metadata.json Exists
@@ -303,7 +303,7 @@ Create it with this initial structure:
     "current_step": "PLAN",
     "step_status": "NOT_STARTED",
     "fix_cycle_count": 0,
-    "max_fix_cycles": 3,
+    "max_fix_cycles": 5,
     "checkpoints": {}
   }
 }
@@ -559,7 +559,7 @@ If NOT at COMPLETE and NOT escalating:
 
 | Condition | Autonomous Resolution |
 |-----------|----------------------|
-| Fix cycle exceeded (`fix_cycle_count >= 3`) | Increase max to 5. Spawn systematic-debugging with `--alternative-approach=true`. If still failing after 5, log as `needs-review` in metadata and mark track complete with warnings. |
+| Fix cycle exceeded (`fix_cycle_count >= 5`) | Spawn systematic-debugging with `--alternative-approach=true`. If still failing after 5, log as `needs-review` in metadata and mark track complete with warnings. |
 | Blocked by external dependency | Log blocker in metadata. Skip blocked tasks. Continue with unblocked tasks. Add `"blockers"` array to metadata for post-completion review. |
 | High-impact decision required | Route to Board of Directors for autonomous deliberation. Board always produces a verdict (no deadlocks — see tiebreak protocol). |
 | Board rejected plan | Re-plan incorporating ALL board conditions as constraints. Dispatch writing-plans with board feedback appended to spec. |
@@ -583,7 +583,49 @@ Instead of stopping, log all autonomous decisions for post-completion review:
 }
 ```
 
-### 5.4 Completion Protocol
+### 5.4 Autonomous Resolution Utility Functions
+
+These functions are used throughout the orchestration loop. Implement them using `read_file` and `write_file` on metadata.json:
+
+#### `logAutonomousDecision(trackId, type, reasoning)`
+```
+ACTION: read_file conductor/tracks/{trackId}/metadata.json
+ADD to autonomous_decisions array:
+  { "timestamp": "{ISO now}", "type": type, "context": current_step, "decision": type, "reasoning": reasoning }
+ACTION: write_file updated metadata.json
+```
+
+#### `escalateToBoard(question)`
+```
+ACTION: Dispatch board-meeting subagent via run_shell_command:
+  claude --print --model opus "/supaconductor:board-meeting {question}"
+PARSE: Board verdict (APPROVED / REJECTED)
+IF APPROVED: Continue with board conditions applied
+IF REJECTED: Re-plan with board feedback as constraints
+ALWAYS: Log board decision via logAutonomousDecision()
+```
+
+#### `skipBlockedTasks(trackId, activeBlockers)`
+```
+ACTION: read_file conductor/tracks/{trackId}/plan.md
+FOR each blocked task:
+  - Mark as [~] SKIPPED in plan.md (not [x] completed)
+  - Log blocker details in metadata.json "blockers" array
+ACTION: Continue with next unblocked task in DAG
+```
+
+#### `completeWithWarnings(trackId)`
+```
+ACTION: Update metadata.json:
+  current_step = "COMPLETE"
+  step_status = "PASSED_WITH_WARNINGS"
+  Add "warnings" array with unresolved issues
+ACTION: Update tracks.md — mark track as "Done (with warnings)"
+ACTION: Log via logAutonomousDecision("completed_with_warnings", ...)
+OUTPUT: Report summary with warnings listed
+```
+
+### 5.5 Completion Protocol
 
 When reaching COMPLETE:
 

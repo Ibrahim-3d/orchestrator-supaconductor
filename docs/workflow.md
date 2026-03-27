@@ -90,7 +90,7 @@ The orchestrator manages the loop state in `conductor/tracks/{trackId}/metadata.
     "current_step": "EXECUTE",
     "step_status": "IN_PROGRESS",
     "fix_cycle_count": 0,
-    "max_fix_cycles": 3,
+    "max_fix_cycles": 5,
     "superpower_enhanced": true
   }
 }

@@ -134,5 +134,5 @@ A successful fix cycle:
 - [ ] Fix Phase added to plan.md with commit SHAs
 - [ ] New error patterns logged to errors.json
 - [ ] Metadata.json updated to EVALUATE_EXECUTION step
-- [ ] Escalates after 3 failed cycles
+- [ ] Completes with warnings after 5 failed cycles (NEVER asks user)
 
