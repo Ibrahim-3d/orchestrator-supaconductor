@@ -108,7 +108,7 @@ metadata.loop_state.fix_cycle_count++;
 
 ## Fix Cycle Limit
 
-If `fix_cycle_count >= 3`, escalate to user instead of continuing to FIX step.
+If `fix_cycle_count >= 5`, mark track as `completed-with-warnings` instead of continuing to FIX step. Log unresolved issues in metadata.
 
 ## Output Protocol
 

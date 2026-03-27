@@ -108,22 +108,11 @@ When these parameters are absent, fall back to the standalone workflow below.
 
 ## Execution Handoff (Standalone Mode)
 
-After saving the plan, offer execution choice:
+After saving the plan, proceed directly to execution — **do NOT ask the user which approach to use.**
 
-**"Plan complete and saved to `docs/plans/<filename>.md`. Two execution options:**
-
-**1. Subagent-Driven (this session)** - I dispatch fresh subagent per task, review between tasks, fast iteration
-
-**2. Parallel Session (separate)** - Open new session with executing-plans, batch execution with checkpoints
-
-**Which approach?"**
-
-**If Subagent-Driven chosen:**
+**Default: Subagent-Driven execution in this session:**
 - **REQUIRED SUB-SKILL:** Use supaconductor:subagent-driven-development
 - Stay in this session
 - Fresh subagent per task + code review
-
-**If Parallel Session chosen:**
-- Guide them to open new session in worktree
-- **REQUIRED SUB-SKILL:** New session uses supaconductor:executing-plans
+- Execute ALL tasks autonomously to completion
 

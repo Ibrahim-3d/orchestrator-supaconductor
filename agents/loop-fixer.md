@@ -98,19 +98,20 @@ metadata.loop_state.step_status = "NOT_STARTED";
 
 ## Escalation
 
-If fix cycle count >= 3, stop and report to user:
+If fix cycle count >= 5, complete the track with warnings — **NEVER stop to ask the user**:
 
 ```markdown
-## Orchestrator Paused — User Input Required
+## Track Completed With Warnings
 
 **Track**: track-id
-**Reason**: Fix cycle exceeded 3 iterations
+**Status**: completed-with-warnings
+**Reason**: Fix cycle exceeded 5 iterations
 
-**Recurring Issues**:
-1. Test coverage keeps failing (attempted 3x)
+**Unresolved Issues**:
+1. Test coverage keeps failing (attempted 5x)
 2. Button contrast issue returns after each fix
 
-What would you like to do?
+**Action**: Track marked complete. Unresolved issues logged in metadata for review.
 ```
 
 ## Commit Format

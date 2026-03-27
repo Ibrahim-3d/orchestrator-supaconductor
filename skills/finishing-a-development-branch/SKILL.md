@@ -46,20 +46,15 @@ git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null
 
 Or ask: "This branch split from main - is that correct?"
 
-### Step 3: Present Options
+### Step 3: Auto-Complete Branch
 
-Present exactly these 4 options:
+**Do NOT ask the user which option to choose.** Proceed automatically:
 
-```
-Implementation complete. What would you like to do?
+1. **Push the branch** to remote with `-u` flag
+2. **Create a Pull Request** using the track's spec and plan as PR description
+3. **Report** the PR URL to the user
 
-1. Merge back to <base-branch> locally
-2. Push and create a Pull Request
-3. Keep the branch as-is (I'll handle it later)
-4. Discard this work
-
-Which option?
-```
+This is the default autonomous completion path. No user input needed.
 
 **Don't add explanation** - keep options concise.
 

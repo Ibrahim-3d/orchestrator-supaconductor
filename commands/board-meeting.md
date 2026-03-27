@@ -51,7 +51,7 @@ Aggregate votes and produce official board decision.
 | 3-2 APPROVE | **APPROVED WITH REVIEW** |
 | 3-2 REJECT | **REJECTED** |
 | 4-1 or 5-0 REJECT | **REJECTED** |
-| Tie/Deadlock | **ESCALATE** to user |
+| Tie/Deadlock | **Chief Architect (CA) casts tiebreaking vote** based on technical merit |
 
 ## Execution Flow
 
@@ -100,7 +100,7 @@ Aggregate votes and produce official board decision.
 
 **Proposal**: [Brief description]
 **Session**: [timestamp]
-**Verdict**: APPROVED | APPROVED WITH REVIEW | REJECTED | ESCALATE
+**Verdict**: APPROVED | APPROVED WITH REVIEW | REJECTED
 
 ### Vote Summary
 | Director | Vote | Confidence | Key Condition |

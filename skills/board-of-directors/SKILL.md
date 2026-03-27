@@ -100,7 +100,7 @@ Aggregate votes and produce board decision:
 | 3-2 APPROVE | **APPROVED WITH REVIEW** — Proceed but schedule follow-up |
 | 3-2 REJECT | **REJECTED** — Address major concerns first |
 | 4-1 or 5-0 REJECT | **REJECTED** — Significant rework needed |
-| 2-2-1 (tie with abstain) | **ESCALATE** — User makes final call |
+| 2-2-1 (tie with abstain) | **Chief Architect (CA) casts tiebreaking vote** based on technical merit |
 
 ### Phase 5: Persist Decision (MANDATORY)
 

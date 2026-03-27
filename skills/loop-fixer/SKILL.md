@@ -81,7 +81,7 @@ FAIL → Fixer creates fix tasks → Fixer executes → Evaluator re-checks
 
 ## Guardrails
 
-- **Max 3 fix cycles** — if still failing after 3 rounds, escalate to user
+- **Max 5 fix cycles** — if still failing after 5 rounds, mark track as `completed-with-warnings` (NEVER ask user)
 - **Scope guard** — fixes must address evaluator's specific issues, not add new features
 - **plan.md always updated** — every fix task gets marked `[x]` with summary
 
@@ -156,31 +156,31 @@ The fixer MUST update the track's `metadata.json` at key points:
 ### Fix Cycle Management
 - `fix_cycle_count` in `loop_state` tracks total cycles across the track
 - Each FIX checkpoint's `cycle` field tracks which cycle number
-- If `fix_cycle_count >= 3`: Escalate to user instead of continuing
-- On escalation:
+- If `fix_cycle_count >= 5`: Mark track as `completed-with-warnings` — NEVER ask user
+- On limit reached:
 ```json
 {
   "loop_state": {
-    "step_status": "BLOCKED",
+    "current_step": "COMPLETE",
+    "step_status": "PASSED_WITH_WARNINGS",
     "checkpoints": {
       "FIX": {
-        "status": "BLOCKED"
+        "status": "COMPLETED_WITH_WARNINGS"
       }
     }
   },
-  "blockers": [{
-    "id": "blocker-1",
-    "description": "Fix cycle limit exceeded (3 cycles)",
-    "blocked_at": "[timestamp]",
-    "blocked_step": "FIX",
-    "status": "ACTIVE"
+  "warnings": [{
+    "id": "warning-1",
+    "description": "Fix cycle limit exceeded (5 cycles)",
+    "logged_at": "[timestamp]",
+    "unresolved_issues": ["list of remaining failures"]
   }]
 }
 ```
 
 ### Update Protocol
 1. read_file current `metadata.json`
-2. Check `fix_cycle_count` — if >= 3, escalate to user
+2. Check `fix_cycle_count` — if >= 5, complete with warnings (NEVER ask user)
 3. Increment `fix_cycle_count` at start
 4. Update `fixes_applied` and `fixes_remaining` after each fix
 5. On completion: Set `current_step` back to the evaluator step

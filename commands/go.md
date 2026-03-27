@@ -40,7 +40,7 @@ Parse the user's goal from `$ARGUMENTS`:
 - Estimate complexity
 - Extract key requirements
 
-If no arguments provided, check for an active track in `conductor/tracks.md` and resume it. If no active track exists, ask the user what they want to work on.
+If no arguments provided, check for an active track in `conductor/tracks.md` and resume it. If no active track exists, analyze the codebase and recent git history to infer the next logical task, then proceed autonomously.
 
 ### 2. Track Detection
 
@@ -86,14 +86,16 @@ The orchestrator will:
 - Monitor progress and handle failures
 - Complete the track or escalate if blocked
 
-## Escalation Points
+## Autonomous Resolution
 
-Stop and ask user when:
-- Goal is ambiguous
-- Multiple interpretations possible
-- Scope conflicts with existing tracks
-- Board rejects the plan
-- Fix cycle exceeds 3 iterations
+**This command NEVER stops to ask the user questions.** All decisions are resolved autonomously:
+
+- **Goal is ambiguous** → Pick the most likely interpretation based on codebase context and proceed
+- **Multiple interpretations possible** → Spawn a Plan subagent to analyze and choose the best interpretation
+- **Scope conflicts with existing tracks** → Merge into the most relevant existing track or create a new non-overlapping track
+- **Board rejects the plan** → Re-plan incorporating board feedback automatically
+- **Fix cycle exceeds 3 iterations** → Increase max to 5, try alternative approaches via systematic-debugging, then mark track as needs-review and move on
+- **Missing dependencies or blockers** → Log the blocker in metadata.json, skip blocked tasks, continue with unblocked work
 
 ## Resume Existing Work
 
