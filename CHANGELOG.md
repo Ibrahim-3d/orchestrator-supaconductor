@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.0] - 2026-03-27
+
+### Features
+
+- **New `/close-track` command** — Single command to finalize a track: runs quality gate, updates metadata.json/tracks.md/index.md, commits conductor state, and delegates git branch handling. Supports `--force` flag for abandoned tracks.
+
+### Bug Fixes
+
+- **Prevent `/setup` from auto-executing tracks** — Setup command now has explicit HALT boundary and scope constraint so it stops after scaffolding and planning instead of proceeding to execute tracks
+
 ## [3.4.0] - 2026-03-27
 
 ### Features
