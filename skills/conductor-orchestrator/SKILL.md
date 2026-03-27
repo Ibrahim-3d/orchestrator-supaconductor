@@ -396,19 +396,21 @@ Task({
 })
 ```
 
-### Agent Roster (v3)
+### Agent Roster (v3) — with Model Allocation
 
-| Step | Agent | Skill | Dispatch Prompt Key Points |
-|------|-------|-------|---------------------------|
-| PRE-PLAN | Knowledge Manager | `knowledge-manager` | Load patterns + errors for this track type |
-| PLAN | Planner | `loop-planner` | Create plan.md WITH DAG, update metadata |
-| EVALUATE_PLAN | Plan Evaluator | `loop-plan-evaluator` | Run 6 checks (+ DAG + Board), write_file verdict |
-| EVALUATE_PLAN | **Board** | `board-of-directors` | **NEW**: Full deliberation for major tracks |
-| PARALLEL_EXECUTE | **Workers** | `worker-templates/*` | **NEW**: Parallel Task calls via agent-factory |
-| EVALUATE_EXECUTION | Exec Evaluator | `loop-execution-evaluator` | Dispatch evaluators + quick board review |
-| FIX | Fixer | `loop-fixer` | Check fix_cycle_count, implement fixes |
-| BUSINESS_SYNC | Biz Doc Sync | `business-docs-sync` | Update Tier 1-3 docs if needed |
-| POST-COMPLETE | Retrospective | `retrospective-agent` | Extract learnings, cleanup workers |
+**Use Opus for planning/strategy, Sonnet for execution/implementation.** This saves tokens while maintaining quality.
+
+| Step | Agent | Skill | Model | Rationale |
+|------|-------|-------|-------|-----------|
+| PRE-PLAN | Knowledge Manager | `knowledge-manager` | **sonnet** | Data retrieval |
+| PLAN | Planner | `loop-planner` | **opus** | Strategic planning requires deep thinking |
+| EVALUATE_PLAN | Plan Evaluator | `loop-plan-evaluator` | **opus** | Architectural judgment |
+| EVALUATE_PLAN | **Board** | `board-of-directors` | **opus** | Nuanced deliberation |
+| PARALLEL_EXECUTE | **Workers** | `worker-templates/*` | **sonnet** | Procedural code execution |
+| EVALUATE_EXECUTION | Exec Evaluator | `loop-execution-evaluator` | **sonnet** | Checklist-based evaluation |
+| FIX | Fixer | `loop-fixer` | **sonnet** | Follows evaluation report |
+| BUSINESS_SYNC | Biz Doc Sync | `business-docs-sync` | **sonnet** | Document updates |
+| POST-COMPLETE | Retrospective | `retrospective-agent` | **sonnet** | Pattern extraction |
 
 ---
 
