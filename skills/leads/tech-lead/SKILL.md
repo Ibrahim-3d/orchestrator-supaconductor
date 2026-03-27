@@ -263,7 +263,7 @@ if (response.decision_made) {
   proceed(response.decision);
 } else {
   // Escalate to board with alternatives
-  escalate("user", response.escalation_reason);
+  escalateToBoard(response.escalation_reason);
 }
 ```
 

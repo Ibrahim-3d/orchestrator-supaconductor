@@ -44,7 +44,7 @@ PLAN → EVALUATE PLAN → EXECUTE → EVALUATE EXECUTION
 ## Superpower vs Legacy Detection
 
 The orchestrator checks `metadata.json` for `superpower_enhanced: true`:
-- **If true (new tracks):** Uses `superpowers:writing-plans`, `superpowers:executing-plans`, `superpowers:systematic-debugging`
+- **If true (new tracks):** Uses `supaconductor:writing-plans`, `supaconductor:executing-plans`, `supaconductor:systematic-debugging`
 - **If false/missing (legacy):** Uses `loop-planner`, `loop-executor`, `loop-fixer`
 
 Both systems use the same evaluators and quality gates.
