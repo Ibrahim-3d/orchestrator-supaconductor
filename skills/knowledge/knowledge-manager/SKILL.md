@@ -37,14 +37,14 @@ Keywords come from:
 
 ### 2. Search Pattern Library
 
-Search `conductor/knowledge/patterns.md` for matching patterns:
+Search `conductor/knowledge/patterns.md` for matching patterns. Score each entry by keyword overlap and **return only the top 3 highest-scoring results** (skip zero-score entries):
 
 ```markdown
-## Relevant Patterns Found
+## Relevant Patterns Found (top 3 by relevance)
 
 ### Pattern: Supabase Client Singleton
 **Category**: Integration
-**Relevance**: Track mentions Supabase auth
+**Relevance score**: 3/5 keywords matched
 **Summary**: Use singleton pattern with server/client separation
 **Key Code**:
 ```tsx
@@ -54,13 +54,13 @@ export const createClient = async () => { /* ... */ };
 
 ### Pattern: Server Actions with Error Handling
 **Category**: API
-**Relevance**: Track implements auth actions
+**Relevance score**: 2/5 keywords matched
 **Summary**: Wrap all server actions with try/catch and typed responses
 ```
 
 ### 3. Search Error Registry
 
-Search `conductor/knowledge/errors.json` for errors related to this track type:
+Search `conductor/knowledge/errors.json` for errors related to this track type. Score each entry by keyword overlap and **return only the top 3 highest-scoring results**:
 
 ```markdown
 ## Known Errors to Watch For
@@ -78,7 +78,7 @@ Search `conductor/knowledge/errors.json` for errors related to this track type:
 
 ### 4. Generate Knowledge Brief
 
-Output a knowledge brief that gets injected into the planner's prompt:
+Output a knowledge brief that gets injected into the planner's prompt. **Total output must not exceed 500 tokens.** If the top-3 patterns + top-3 errors would exceed this budget, truncate lower-scored entries first:
 
 ```markdown
 # Knowledge Brief for [Track ID]

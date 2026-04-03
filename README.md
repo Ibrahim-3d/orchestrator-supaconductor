@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/Ibrahim-3d/orchestrator-supaconductor/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-  <a href="https://github.com/Ibrahim-3d/orchestrator-supaconductor"><img alt="Version" src="https://img.shields.io/badge/version-3.6.0-green.svg"/></a>
+  <a href="https://github.com/Ibrahim-3d/orchestrator-supaconductor"><img alt="Version" src="https://img.shields.io/badge/version-3.7.0-green.svg"/></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img alt="Claude Code" src="https://img.shields.io/badge/Claude_Code-Plugin-blueviolet.svg"/></a>
   <a href="https://github.com/Ibrahim-3d/orchestrator-supaconductor/discussions"><img alt="Community" src="https://img.shields.io/badge/community-discussions-orange.svg"/></a>
 </p>
@@ -25,6 +25,16 @@
   <a href="#faq">FAQ</a> &bull;
   <a href="#community">Community</a>
 </p>
+
+---
+
+## What's New in v3.7.0
+
+- **Board of Directors fast-path** — Routine tracks now use a single Opus call (all 5 lenses in one pass) at ~1/10th the cost of the full multi-agent deliberation. Full board is reserved for high-stakes decisions: production deploys, security architecture, breaking API changes, data-loss migrations.
+- **Plan revision guard** — Prevents infinite planning loops. Tracks the number of times a plan is rejected and calls it done (with warnings) after 3 revisions.
+- **Execution state reconciliation** — On session resume, `plan.md` checkboxes are now treated as the source of truth. Prevents already-completed tasks from being re-executed after a crash.
+- **Atomic file locks** — Parallel workers can no longer accidentally acquire the same file lock simultaneously. Uses `fcntl` OS-level locking on a dedicated mutex file.
+- **Bounded knowledge injection** — The knowledge brief injected before planning is capped at 500 tokens (top-3 most relevant patterns and errors). Prevents context growth as your project's knowledge base accumulates.
 
 ---
 
@@ -167,7 +177,7 @@ Every piece of work follows a structured cycle called the **Evaluate-Loop**:
 | **Evaluate Plan** | Checks for scope issues, overlap with other work, and feasibility |
 | **Execute** | Writes code, runs tests, tracks progress — parallel when possible |
 | **Evaluate Execution** | Specialized checkers review UI/UX, code quality, integrations, and business logic |
-| **Fix** | Addresses any failures, then loops back to evaluation (max 3 cycles) |
+| **Fix** | Addresses any failures, then loops back to evaluation (up to 5 fix cycles; up to 3 plan revisions) |
 | **Complete** | All checks pass — track is marked done |
 
 The loop runs fully automated. It stops when the work passes all quality checks or when it needs your input.
@@ -204,7 +214,7 @@ Switch modes by editing `conductor/config.json` in your project:
 
 ## Board of Directors
 
-For major decisions (architecture choices, technology migrations, design tradeoffs), you can convene a virtual board:
+For major decisions — and automatically for high-stakes tracks like production deploys, security architecture changes, breaking API migrations, or data-loss operations — a virtual board deliberates with written rationale:
 
 <p align="center">
   <img src="assets/board-of-directors.png" alt="Board of Directors: 5 executive perspectives deliberating on a decision" width="700"/>

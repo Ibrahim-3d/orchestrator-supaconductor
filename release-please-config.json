@@ -7,7 +7,21 @@
       "bump-minor-pre-major": true,
       "bump-patch-for-minor-pre-major": true,
       "extra-files": [
-        ".claude-plugin/plugin.json"
+        ".claude-plugin/plugin.json",
+        {
+          "type": "json",
+          "path": ".claude-plugin/marketplace.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": ".claude-plugin/marketplace.json",
+          "jsonpath": "$.plugins[?(@.name=='orchestrator-supaconductor')].version"
+        },
+        {
+          "type": "generic",
+          "path": "README.md"
+        }
       ],
       "changelog-sections": [
         { "type": "feat", "section": "Features" },

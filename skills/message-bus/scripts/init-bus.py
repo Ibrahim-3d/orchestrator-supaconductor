@@ -44,6 +44,11 @@ def init_message_bus(track_path: str) -> str:
         with open(queue_file, "w") as f:
             f.write(json.dumps(init_msg) + "\n")
 
+    # Create OS-level mutex file for atomic file-lock operations
+    mutex_file = os.path.join(bus_path, ".lock_mutex")
+    if not os.path.exists(mutex_file):
+        Path(mutex_file).touch()
+
     # Initialize locks.json
     locks_file = os.path.join(bus_path, "locks.json")
     if not os.path.exists(locks_file):
@@ -94,6 +99,7 @@ def main():
     print("\nCreated structure:")
     print(f"  {bus_path}/")
     print("  ├── queue.jsonl")
+    print("  ├── .lock_mutex")
     print("  ├── locks.json")
     print("  ├── worker-status.json")
     print("  ├── events/")
