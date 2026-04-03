@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.0] - 2026-04-03
+
+### Features
+
+- **Board of Directors fast-path** — Routine tracks now use a single structured Opus call (`collapsedBoardEval`) that evaluates all 5 board perspectives (architecture, product, security, operations, UX) at ~1/10th the cost of the full multi-agent deliberation. Full 5-agent board is reserved for genuinely high-stakes decisions: production deploys, security architecture changes, breaking API changes, and data-loss migrations.
+- **Plan revision loop guard** — Added `plan_revision_count` tracking with a configurable limit (default 3, set via `max_plan_revisions` in `conductor/config.json`). Prevents infinite PLAN→EVALUATE_PLAN cycles when a board or evaluator repeatedly rejects a plan. At the limit the track completes with warnings instead of looping forever.
+- **Execution state reconciliation on resume** — New `reconcileProgress()` utility reconciles `plan.md` `[x]` checkboxes against `metadata.json` `tasks_completed` before resuming an interrupted execution. Treats plan.md as the source of truth and uses file modification timestamps to skip the check when already in sync. Prevents completed tasks from being re-executed or skipped after a session crash.
+
+### Bug Fixes
+
+- **Atomic file lock for message bus** — `acquire_lock` previously used a non-atomic check-then-write pattern (TOCTOU race). Replaced with `fcntl.flock(LOCK_EX | LOCK_NB)` on a dedicated `.lock_mutex` file (opened in append mode to avoid truncation). Two parallel workers can no longer simultaneously acquire the same lock. `init-bus.py` now creates the mutex file during bus initialization.
+- **Bounded knowledge injection** — Knowledge Manager now scores each pattern and error entry by keyword overlap with the track spec, returns only the top-3 highest-scoring matches, and caps total output at 500 tokens. Prevents unbounded context growth as the `conductor/knowledge/` base accumulates across many completed tracks.
+
+### Maintenance
+
+- Remove redundant "Red Flags", "Common Rationalizations", and "Real-World Impact" sections from `systematic-debugging` skill. The procedural guidance in The Iron Law and the Four Phases already covers all cases. (297 → 246 lines)
+- Correct the Evaluate-Loop table in README: the Fix step allows up to 5 fix cycles and up to 3 plan revisions (not "max 3 cycles" as previously stated).
+
 ## [3.6.0] - 2026-03-27
 
 ### Features

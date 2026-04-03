@@ -1,0 +1,134 @@
+name: Announce Release in Discussions
+
+# Fires after every published GitHub Release (which release-please creates automatically).
+# Posts a Discussion in the "Announcements" category (falls back to "General").
+# Requires the repo to have GitHub Discussions enabled.
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  discussions: write
+  contents: read
+
+jobs:
+  announce:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repository node ID and discussion category
+        id: repo-info
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Fetch repo node_id and first matching discussion category
+          RESULT=$(gh api graphql -f query='
+            query($owner: String!, $name: String!) {
+              repository(owner: $owner, name: $name) {
+                id
+                discussionCategories(first: 20) {
+                  nodes { id name }
+                }
+              }
+            }' \
+            -f owner="${{ github.repository_owner }}" \
+            -f name="${{ github.event.repository.name }}")
+
+          REPO_ID=$(echo "$RESULT" | jq -r '.data.repository.id')
+
+          # Prefer "Announcements", fall back to "General"
+          CATEGORY_ID=$(echo "$RESULT" | jq -r \
+            '.data.repository.discussionCategories.nodes[]
+             | select(.name == "Announcements") | .id' | head -1)
+
+          if [ -z "$CATEGORY_ID" ]; then
+            CATEGORY_ID=$(echo "$RESULT" | jq -r \
+              '.data.repository.discussionCategories.nodes[]
+               | select(.name == "General") | .id' | head -1)
+          fi
+
+          echo "repo_id=$REPO_ID"       >> "$GITHUB_OUTPUT"
+          echo "category_id=$CATEGORY_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Build discussion body
+        id: build-body
+        env:
+          RELEASE_TAG:  ${{ github.event.release.tag_name }}
+          RELEASE_BODY: ${{ github.event.release.body }}
+          RELEASE_URL:  ${{ github.event.release.html_url }}
+        run: |
+          # Write body to a temp file to safely pass multi-line content
+          cat > /tmp/discussion_body.md <<'DISCUSSION_BODY_EOF'
+          ## 🚀 SupaConductor $RELEASE_TAG is out!
+
+          $RELEASE_BODY
+
+          ---
+
+          **How to update:**
+
+          If you installed via the Claude Code marketplace:
+          ```
+          /install Ibrahim-3d/orchestrator-supaconductor
+          ```
+
+          If you cloned via git:
+          ```bash
+          cd ~/.claude/plugins/orchestrator-supaconductor && git pull
+          ```
+
+          **Full release notes:** $RELEASE_URL
+
+          Have questions or feedback? Drop a reply below! 👇
+          DISCUSSION_BODY_EOF
+
+          # Expand variables
+          sed -i \
+            -e "s|\$RELEASE_TAG|$RELEASE_TAG|g" \
+            -e "s|\$RELEASE_BODY|$RELEASE_BODY|g" \
+            -e "s|\$RELEASE_URL|$RELEASE_URL|g" \
+            /tmp/discussion_body.md
+
+          # Escape for JSON
+          BODY=$(jq -Rs '.' < /tmp/discussion_body.md)
+          echo "body=$BODY" >> "$GITHUB_OUTPUT"
+
+      - name: Create Discussion post
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_ID: ${{ steps.repo-info.outputs.repo_id }}
+          CATEGORY_ID: ${{ steps.repo-info.outputs.category_id }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          if [ -z "$CATEGORY_ID" ]; then
+            echo "No suitable discussion category found — skipping."
+            exit 0
+          fi
+
+          TITLE="🚀 SupaConductor $RELEASE_TAG Released"
+          BODY=$(jq -Rs '.' < /tmp/discussion_body.md)
+
+          RESULT=$(gh api graphql \
+            -f query='
+              mutation CreateDiscussion(
+                $repositoryId: ID!,
+                $categoryId: ID!,
+                $title: String!,
+                $body: String!
+              ) {
+                createDiscussion(input: {
+                  repositoryId: $repositoryId
+                  categoryId:   $categoryId
+                  title:        $title
+                  body:         $body
+                }) {
+                  discussion { id url }
+                }
+              }' \
+            -f repositoryId="$REPO_ID" \
+            -f categoryId="$CATEGORY_ID" \
+            -f title="$TITLE" \
+            -f body="$(cat /tmp/discussion_body.md)")
+
+          URL=$(echo "$RESULT" | jq -r '.data.createDiscussion.discussion.url')
+          echo "✅ Discussion created: $URL"
