@@ -12,6 +12,7 @@ File-based message queue enabling workers and board directors to coordinate via 
 ```
 conductor/tracks/{track}/.message-bus/
 ├── queue.jsonl           # Append-only message log (all messages)
+├── .lock_mutex           # OS-level mutex file for atomic lock operations (fcntl)
 ├── locks.json            # Current file locks
 ├── worker-status.json    # Worker heartbeats and states
 ├── events/               # Signal files for polling
@@ -122,33 +123,48 @@ def wait_for_event(bus_path: str, event_pattern: str, timeout: int = 300) -> boo
 ### Acquiring Locks
 
 ```python
+import fcntl
+
 def acquire_lock(bus_path: str, filepath: str, worker_id: str) -> bool:
     locks_file = f"{bus_path}/locks.json"
+    mutex_file = f"{bus_path}/.lock_mutex"
 
-    # read_file current locks
-    locks = json.load(open(locks_file)) if os.path.exists(locks_file) else {}
+    # Use an OS-level exclusive lock on a dedicated mutex file so that
+    # the read → check → write sequence is atomic across concurrent processes.
+    # Open in append mode — we only need the file to exist as a lock target,
+    # not to store any content. Append mode avoids truncation overhead.
+    lock_fd = open(mutex_file, "a")
+    try:
+        fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        lock_fd.close()
+        return False  # Another process is mid-lock; retry later
 
-    # Check if already locked
-    if filepath in locks:
-        existing = locks[filepath]
-        # Check if expired (30 min timeout)
-        if datetime.fromisoformat(existing["expires_at"]) > datetime.utcnow():
-            if existing["worker_id"] != worker_id:
-                return False  # Locked by another worker
+    try:
+        locks = json.load(open(locks_file)) if os.path.exists(locks_file) else {}
 
-    # Acquire lock
-    locks[filepath] = {
-        "worker_id": worker_id,
-        "acquired_at": datetime.utcnow().isoformat() + "Z",
-        "expires_at": (datetime.utcnow() + timedelta(minutes=30)).isoformat() + "Z"
-    }
+        existing = locks.get(filepath)
+        if existing and existing["worker_id"] != worker_id:
+            # Check if the lock has expired (30-min timeout)
+            if datetime.fromisoformat(existing["expires_at"]) > datetime.utcnow():
+                return False  # Legitimately locked by another worker
 
-    with open(locks_file, "w") as f:
-        json.dump(locks, f, indent=2)
+        # Acquire lock
+        locks[filepath] = {
+            "worker_id": worker_id,
+            "acquired_at": datetime.utcnow().isoformat() + "Z",
+            "expires_at": (datetime.utcnow() + timedelta(minutes=30)).isoformat() + "Z"
+        }
 
-    # Post lock message
-    post_message(bus_path, "FILE_LOCK", worker_id, {"filepath": filepath})
-    return True
+        with open(locks_file, "w") as f:
+            json.dump(locks, f, indent=2)
+
+        # Post lock message
+        post_message(bus_path, "FILE_LOCK", worker_id, {"filepath": filepath})
+        return True
+    finally:
+        fcntl.flock(lock_fd, fcntl.LOCK_UN)
+        lock_fd.close()
 ```
 
 ### Releasing Locks
@@ -371,6 +387,7 @@ def init_message_bus(track_path: str):
 
     # Initialize files
     Path(f"{bus_path}/queue.jsonl").touch()
+    Path(f"{bus_path}/.lock_mutex").touch()  # OS-level mutex for atomic lock operations
 
     with open(f"{bus_path}/locks.json", "w") as f:
         json.dump({}, f)

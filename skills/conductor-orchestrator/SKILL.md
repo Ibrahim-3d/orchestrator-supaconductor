@@ -296,9 +296,9 @@ async function detectCurrentStep(trackId: string) {
 | `PLAN` | `IN_PROGRESS` | Resume `loop-planner` |
 | `PLAN` | `PASSED` | Advance to `EVALUATE_PLAN` |
 | `EVALUATE_PLAN` | `NOT_STARTED` | Dispatch `loop-plan-evaluator` + DAG validation |
-| `EVALUATE_PLAN` | `BOARD_REVIEW` | **NEW**: Invoke Board of Directors if major track |
+| `EVALUATE_PLAN` | `BOARD_REVIEW` | Invoke Board (full or collapsed) |
 | `EVALUATE_PLAN` | `PASSED` | Advance to `PARALLEL_EXECUTE` |
-| `EVALUATE_PLAN` | `FAILED` | Go back to `PLAN` with board conditions |
+| `EVALUATE_PLAN` | `FAILED` | Increment `plan_revision_count`; if ≥ max (3) → `completeWithWarnings`; else back to `PLAN` |
 | `PARALLEL_EXECUTE` | `NOT_STARTED` | **NEW**: Initialize message bus, dispatch parallel workers |
 | `PARALLEL_EXECUTE` | `IN_PROGRESS` | Monitor workers via message bus |
 | `PARALLEL_EXECUTE` | `PASSED` | Advance to `EVALUATE_EXECUTION` |
@@ -584,12 +584,27 @@ async function monitorWorkers(busPath: string, taskIds: string[]) {
 
 ### When to Invoke the Board
 
-| Checkpoint | Condition | Board Type |
-|------------|-----------|------------|
-| EVALUATE_PLAN | Major track (arch/integ/infra, 5+ tasks, P0) | Full meeting |
-| EVALUATE_EXECUTION | Always | Quick review |
-| PRE_LAUNCH | Production deploy | Security + Ops deep dive |
-| CONFLICT | Evaluators disagree | Tie-breaker |
+The full multi-agent Board (5 parallel Opus calls + discussion rounds) is reserved for **genuinely high-stakes** decisions. Routine evaluation uses a single structured Opus call ("collapsed board") that delivers comparable depth at ~1/10th the cost.
+
+| Checkpoint | Condition | Review Type |
+|------------|-----------|-------------|
+| EVALUATE_PLAN | Production deploy, security architecture change, breaking API, data-loss migration | Full meeting (5 agents) |
+| EVALUATE_PLAN | All other tracks | Collapsed board (1 Opus call) |
+| EVALUATE_EXECUTION | board_conditions exist from EVALUATE_PLAN | Verify conditions only |
+| CONFLICT | Evaluators disagree with no clear resolution | Full meeting (5 agents) |
+
+```typescript
+function isHighStakesTrack(metadata: dict, planContent: string): boolean {
+  const highStakesSignals = [
+    /production.deploy|prod\s+release/i,
+    /security\s+architect|auth\s+overhaul|oauth\s+migration/i,
+    /breaking\s+(api|change)|remove.*endpoint|rename.*field/i,
+    /data.*migration|schema.*drop|column.*drop|irreversible/i,
+  ];
+  const combined = `${metadata.spec_summary || ''} ${planContent}`;
+  return highStakesSignals.some(re => re.test(combined));
+}
+```
 
 ### Invoking Board at EVALUATE_PLAN
 
@@ -597,72 +612,113 @@ async function monitorWorkers(busPath: string, taskIds: string[]) {
 async function evaluatePlanWithBoard(trackId: string, metadata: dict) {
   // 1. Run standard plan evaluation
   const evalResult = await dispatchPlanEvaluator(trackId);
+  const planContent = await readFile(`conductor/tracks/${trackId}/plan.md`);
 
-  // 2. Check if board is needed
-  const needsBoard = isMajorTrack(metadata) || evalResult.recommends_board;
-
-  if (needsBoard) {
-    // 3. Invoke full board meeting
-    const boardResult = await invokeBoardMeeting(
+  // 2. Choose review type based on stakes
+  let boardResult: dict;
+  if (isHighStakesTrack(metadata, planContent)) {
+    // Full multi-agent deliberation for genuinely high-stakes decisions
+    boardResult = await invokeBoardMeeting(
       busPath: `conductor/tracks/${trackId}/.message-bus`,
       checkpoint: "EVALUATE_PLAN",
-      proposal: await readFile(`conductor/tracks/${trackId}/plan.md`),
+      proposal: planContent,
       context: { spec: metadata.spec_summary, dag: evalResult.dag }
     );
-
-    // 4. Store board session
-    metadata.loop_state.board_sessions.push({
-      session_id: boardResult.session_id,
-      checkpoint: "EVALUATE_PLAN",
-      verdict: boardResult.verdict,
-      vote_summary: boardResult.votes,
-      conditions: boardResult.conditions,
-      timestamp: new Date().toISOString()
-    });
-
-    // 5. Handle board verdict
-    if (boardResult.verdict === "REJECTED") {
-      return {
-        next_step: "PLAN",
-        status: "FAILED",
-        reason: "Board rejected plan",
-        conditions: boardResult.conditions
-      };
-    }
-
-    // Carry forward conditions for EVALUATE_EXECUTION
-    metadata.board_conditions = boardResult.conditions;
+  } else {
+    // Collapsed board: single structured Opus call (routine tracks)
+    boardResult = await collapsedBoardEval(planContent, metadata.spec_summary);
   }
 
+  // 3. Store session record
+  metadata.loop_state.board_sessions.push({
+    checkpoint: "EVALUATE_PLAN",
+    review_type: isHighStakesTrack(metadata, planContent) ? "full" : "collapsed",
+    verdict: boardResult.verdict,
+    conditions: boardResult.conditions,
+    timestamp: new Date().toISOString()
+  });
+
+  // 4. Handle verdict
+  if (boardResult.verdict === "REJECTED") {
+    return {
+      next_step: "PLAN",
+      status: "FAILED",
+      reason: "Board rejected plan",
+      conditions: boardResult.conditions
+    };
+  }
+
+  // Carry forward conditions for EVALUATE_EXECUTION
+  metadata.board_conditions = boardResult.conditions;
   return { next_step: "PARALLEL_EXECUTE", status: "PASSED" };
 }
 ```
 
-### Board Quick Review at EVALUATE_EXECUTION
+### Collapsed Board Evaluation (Single Opus Call)
+
+For all non-high-stakes tracks, replace the 10+ Opus call board with one structured call:
+
+```typescript
+async function collapsedBoardEval(planContent: string, specSummary: string): Promise<dict> {
+  const result = await Task({
+    subagent_type: "general-purpose",
+    model: "opus",
+    description: "Multi-lens plan evaluation",
+    prompt: `Evaluate this implementation plan from 5 perspectives.
+For each lens give: verdict (APPROVE/REJECT/CONCERN), score 1-10, up to 3 conditions.
+
+SPEC: ${specSummary}
+
+PLAN:
+${planContent}
+
+Lenses: technical_architecture | product_value | security_risk | operational_feasibility | ux_impact
+
+Output strictly as JSON:
+{
+  "lenses": {
+    "technical_architecture": {"verdict": "APPROVE|REJECT|CONCERN", "score": 0, "conditions": []},
+    "product_value":          {"verdict": "APPROVE|REJECT|CONCERN", "score": 0, "conditions": []},
+    "security_risk":          {"verdict": "APPROVE|REJECT|CONCERN", "score": 0, "conditions": []},
+    "operational_feasibility":{"verdict": "APPROVE|REJECT|CONCERN", "score": 0, "conditions": []},
+    "ux_impact":              {"verdict": "APPROVE|REJECT|CONCERN", "score": 0, "conditions": []}
+  },
+  "verdict": "APPROVED|REJECTED|CONDITIONS",
+  "blocking_conditions": [],
+  "advisory_conditions": []
+}`
+  });
+
+  const parsed = JSON.parse(result.output);
+  const rejectCount = Object.values(parsed.lenses).filter((l: any) => l.verdict === "REJECT").length;
+
+  return {
+    verdict: rejectCount >= 2 ? "REJECTED" : (parsed.blocking_conditions.length > 0 ? "CONDITIONS" : "APPROVED"),
+    conditions: [...parsed.blocking_conditions, ...parsed.advisory_conditions]
+  };
+}
+```
+
+### Board Condition Verification at EVALUATE_EXECUTION
 
 ```typescript
 async function evaluateExecutionWithBoard(trackId: string, metadata: dict) {
   // 1. Run specialized evaluators
   const evalResults = await dispatchSpecializedEvaluators(trackId);
 
-  // 2. Quick board review (no discussion phase)
-  const boardReview = await invokeBoardReview(
-    busPath: `conductor/tracks/${trackId}/.message-bus`,
-    proposal: summarizeExecutionResults(evalResults)
-  );
-
-  // 3. Verify board conditions from EVALUATE_PLAN were met
-  const conditionsMet = await verifyBoardConditions(
-    metadata.board_conditions,
-    evalResults
-  );
-
-  if (!conditionsMet.all_met) {
-    return {
-      next_step: "FIX",
-      status: "FAILED",
-      reason: `Board conditions not met: ${conditionsMet.unmet.join(", ")}`
-    };
+  // 2. Verify board conditions from EVALUATE_PLAN (if any)
+  if (metadata.board_conditions?.length > 0) {
+    const conditionsMet = await verifyBoardConditions(
+      metadata.board_conditions,
+      evalResults
+    );
+    if (!conditionsMet.all_met) {
+      return {
+        next_step: "FIX",
+        status: "FAILED",
+        reason: `Board conditions not met: ${conditionsMet.unmet.join(", ")}`
+      };
+    }
   }
 
   return evalResults.all_passed
@@ -779,6 +835,11 @@ When orchestrator starts, it resumes from exact state:
 async function resumeOrchestration(trackId: string) {
   const { current_step, step_status, metadata } = await detectCurrentStep(trackId);
 
+  // Reconcile plan.md checkboxes with metadata before resuming EXECUTE
+  if (current_step === 'PARALLEL_EXECUTE' || current_step === 'EXECUTE') {
+    await reconcileProgress(trackId);
+  }
+
   switch (step_status) {
     case 'NOT_STARTED':
       // Start the step fresh
@@ -798,7 +859,19 @@ async function resumeOrchestration(trackId: string) {
     case 'FAILED':
       // Handle based on which step failed
       if (current_step === 'EVALUATE_PLAN') {
-        await updateMetadata(trackId, { current_step: 'PLAN', step_status: 'NOT_STARTED' });
+        // Guard against infinite PLAN→EVALUATE_PLAN loops
+        const revisionCount = (metadata.loop_state.plan_revision_count || 0) + 1;
+        const maxRevisions = config.max_plan_revisions || 3;
+        if (revisionCount > maxRevisions) {
+          await logAutonomousDecision(trackId, 'plan_revision_limit',
+            `Plan revision limit (${maxRevisions}) reached — completing with warnings`);
+          return completeWithWarnings(trackId);
+        }
+        await updateMetadata(trackId, {
+          current_step: 'PLAN',
+          step_status: 'NOT_STARTED',
+          plan_revision_count: revisionCount
+        });
         return dispatchAgent('PLAN', metadata);
       }
       if (current_step === 'EVALUATE_EXECUTION') {
@@ -874,10 +947,11 @@ PLAN ──► EVALUATE_PLAN ──► EXECUTE ──► EVALUATE_EXECUTION
 - **`"human-in-the-loop"`**: Pauses at each trigger below and asks the user.
 
 1. **Fix cycle limit (5 cycles)** → Complete track with warnings, log unresolved issues
-2. **HIGH_IMPACT decision** → Route to Board of Directors for autonomous deliberation
-3. **Lead escalated** → Lead returned `escalate_to: "board"` → route to Board of Directors
-4. **Blocker detected** → Log blocker, skip blocked tasks, continue with unblocked work
-5. **Max iterations (50)** → Complete track with warnings, log all progress
+2. **Plan revision limit (3 revisions)** → Complete track with warnings, log board conditions
+3. **HIGH_IMPACT decision** → Route to Board of Directors for autonomous deliberation
+4. **Lead escalated** → Lead returned `escalate_to: "board"` → route to Board of Directors
+5. **Blocker detected** → Log blocker, skip blocked tasks, continue with unblocked work
+6. **Max iterations (50)** → Complete track with warnings, log all progress
 
 ### Progress Logging Format
 
@@ -938,6 +1012,40 @@ Complete the track with warnings instead of blocking:
 3. Update tracks.md — mark track as "Done (with warnings)"
 4. Log via `logAutonomousDecision("completed_with_warnings", ...)`
 5. Output summary report listing all warnings
+
+### `reconcileProgress(trackId)`
+
+Reconcile `plan.md` checkbox markers with `metadata.json` task count on resumption.
+plan.md is the ground truth — if the counts diverge, update metadata to match:
+
+```typescript
+async function reconcileProgress(trackId: string) {
+  const planPath = `conductor/tracks/${trackId}/plan.md`;
+  const metaPath = `conductor/tracks/${trackId}/metadata.json`;
+  const metadata = await readJSON(metaPath);
+
+  const completedInMeta = metadata.loop_state.checkpoints?.EXECUTE?.tasks_completed || 0;
+  const planMtime = await getFileMtime(planPath);
+  const metaMtime = await getFileMtime(metaPath);
+
+  // Skip reconciliation if metadata was written after plan.md (already in sync)
+  if (metaMtime >= planMtime && completedInMeta > 0) {
+    return;
+  }
+
+  const plan = await readFile(planPath);
+  // Match both '- [x]' and '* [x]' (case-insensitive) to handle markdown variants
+  const completedInPlan = (plan.match(/^[*-] \[[xX]\]/gm) || []).length;
+
+  if (completedInPlan !== completedInMeta) {
+    metadata.loop_state.checkpoints = metadata.loop_state.checkpoints || {};
+    metadata.loop_state.checkpoints.EXECUTE = metadata.loop_state.checkpoints.EXECUTE || {};
+    metadata.loop_state.checkpoints.EXECUTE.tasks_completed = completedInPlan;
+    await writeJSON(metaPath, metadata);
+    console.warn(`[reconcile] plan.md=${completedInPlan} vs metadata=${completedInMeta} — metadata updated`);
+  }
+}
+```
 
 ---
 
@@ -1020,11 +1128,11 @@ The orchestrator integrates the Knowledge Layer for continuous learning:
 
 ### Pre-Planning: Knowledge Manager
 
-**BEFORE** dispatching the planner, run Knowledge Manager to load relevant patterns:
+**BEFORE** dispatching the planner, run Knowledge Manager to load relevant patterns. The brief is **capped at 500 tokens** (top-3 most relevant patterns) to prevent unbounded growth as the knowledge base accumulates:
 
 ```typescript
 async function dispatchPlannerWithKnowledge(trackId: string) {
-  // 1. Run Knowledge Manager first
+  // 1. Run Knowledge Manager with bounded retrieval
   const knowledgeBrief = await Task({
     subagent_type: "general-purpose",
     description: "Load knowledge for track",
@@ -1033,24 +1141,23 @@ async function dispatchPlannerWithKnowledge(trackId: string) {
       Track: ${trackId}
       Spec: ${await readFile(`conductor/tracks/${trackId}/spec.md`)}
 
-      1. Extract keywords from the spec
-      2. Search conductor/knowledge/patterns.md for matching patterns
-      3. Search conductor/knowledge/errors.json for relevant errors
-      4. Return a knowledge brief with:
-         - Relevant patterns to apply
-         - Known errors to avoid
-         - Similar previous tracks (if any)
+      1. Extract the top 5 keywords from the spec
+      2. Score each pattern in conductor/knowledge/patterns.md by keyword overlap count
+      3. Return ONLY the top 3 highest-scoring patterns (skip patterns with score 0)
+      4. Score each entry in conductor/knowledge/errors.json by keyword overlap
+      5. Return ONLY the top 3 highest-scoring errors (skip score-0 entries)
+      6. Cap total output at 500 tokens — truncate lower-priority entries if needed
 
       Follow ${CLAUDE_PLUGIN_ROOT}/skills/knowledge/knowledge-manager/SKILL.md`
   });
 
-  // 2. Dispatch planner WITH knowledge brief injected
+  // 2. Dispatch planner WITH bounded knowledge brief
   await Task({
     subagent_type: "general-purpose",
     description: "Create track plan",
     prompt: `You are the loop-planner agent for track ${trackId}.
 
-      ## KNOWLEDGE BRIEF (from previous tracks)
+      ## KNOWLEDGE BRIEF (top-3 relevant patterns/errors, max 500 tokens)
       ${knowledgeBrief.output}
 
       ## YOUR TASK
