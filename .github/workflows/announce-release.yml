@@ -57,11 +57,17 @@ jobs:
           RELEASE_BODY: ${{ github.event.release.body }}
           RELEASE_URL:  ${{ github.event.release.html_url }}
         run: |
-          # Write body to a temp file to safely pass multi-line content
-          cat > /tmp/discussion_body.md <<'DISCUSSION_BODY_EOF'
-          ## 🚀 SupaConductor $RELEASE_TAG is out!
+          # Use Python to safely handle multi-line / special-character release bodies
+          python3 - <<'PYEOF'
+          import os, textwrap
+          tag  = os.environ["RELEASE_TAG"]
+          body = os.environ["RELEASE_BODY"]
+          url  = os.environ["RELEASE_URL"]
 
-          $RELEASE_BODY
+          content = textwrap.dedent(f"""\
+          ## 🚀 SupaConductor {tag} is out!
+
+          {body}
 
           ---
 
@@ -77,21 +83,14 @@ jobs:
           cd ~/.claude/plugins/orchestrator-supaconductor && git pull
           ```
 
-          **Full release notes:** $RELEASE_URL
+          **Full release notes:** {url}
 
           Have questions or feedback? Drop a reply below! 👇
-          DISCUSSION_BODY_EOF
+          """)
 
-          # Expand variables
-          sed -i \
-            -e "s|\$RELEASE_TAG|$RELEASE_TAG|g" \
-            -e "s|\$RELEASE_BODY|$RELEASE_BODY|g" \
-            -e "s|\$RELEASE_URL|$RELEASE_URL|g" \
-            /tmp/discussion_body.md
-
-          # Escape for JSON
-          BODY=$(jq -Rs '.' < /tmp/discussion_body.md)
-          echo "body=$BODY" >> "$GITHUB_OUTPUT"
+          with open("/tmp/discussion_body.md", "w") as f:
+              f.write(content)
+          PYEOF
 
       - name: Create Discussion post
         env:

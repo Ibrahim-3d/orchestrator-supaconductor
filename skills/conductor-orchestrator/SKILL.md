@@ -630,6 +630,7 @@ async function evaluatePlanWithBoard(trackId: string, metadata: dict) {
   }
 
   // 3. Store session record
+  metadata.loop_state.board_sessions = metadata.loop_state.board_sessions || [];
   metadata.loop_state.board_sessions.push({
     checkpoint: "EVALUATE_PLAN",
     review_type: isHighStakesTrack(metadata, planContent) ? "full" : "collapsed",
@@ -862,7 +863,7 @@ async function resumeOrchestration(trackId: string) {
         // Guard against infinite PLAN→EVALUATE_PLAN loops
         const revisionCount = (metadata.loop_state.plan_revision_count || 0) + 1;
         const maxRevisions = config.max_plan_revisions || 3;
-        if (revisionCount > maxRevisions) {
+        if (revisionCount >= maxRevisions) {
           await logAutonomousDecision(trackId, 'plan_revision_limit',
             `Plan revision limit (${maxRevisions}) reached — completing with warnings`);
           return completeWithWarnings(trackId);
@@ -870,7 +871,10 @@ async function resumeOrchestration(trackId: string) {
         await updateMetadata(trackId, {
           current_step: 'PLAN',
           step_status: 'NOT_STARTED',
-          plan_revision_count: revisionCount
+          loop_state: {
+            ...metadata.loop_state,
+            plan_revision_count: revisionCount
+          }
         });
         return dispatchAgent('PLAN', metadata);
       }

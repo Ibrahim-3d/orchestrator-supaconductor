@@ -141,7 +141,11 @@ def acquire_lock(bus_path: str, filepath: str, worker_id: str) -> bool:
         return False  # Another process is mid-lock; retry later
 
     try:
-        locks = json.load(open(locks_file)) if os.path.exists(locks_file) else {}
+        if os.path.exists(locks_file):
+            with open(locks_file) as f:
+                locks = json.load(f)
+        else:
+            locks = {}
 
         existing = locks.get(filepath)
         if existing and existing["worker_id"] != worker_id:
