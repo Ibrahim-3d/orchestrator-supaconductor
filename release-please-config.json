@@ -1,13 +1,17 @@
 {
   "packages": {
     ".": {
-      "release-type": "node",
+      "release-type": "simple",
       "changelog-path": "CHANGELOG.md",
       "versioning": "default",
       "bump-minor-pre-major": true,
       "bump-patch-for-minor-pre-major": true,
       "extra-files": [
-        ".claude-plugin/plugin.json",
+        {
+          "type": "json",
+          "path": ".claude-plugin/plugin.json",
+          "jsonpath": "$.version"
+        },
         {
           "type": "json",
           "path": ".claude-plugin/marketplace.json",
@@ -17,20 +21,37 @@
           "type": "json",
           "path": ".claude-plugin/marketplace.json",
           "jsonpath": "$.plugins[?(@.name=='orchestrator-supaconductor')].version"
-        },
-        {
-          "type": "generic",
-          "path": "README.md"
         }
       ],
       "changelog-sections": [
-        { "type": "feat", "section": "Features" },
-        { "type": "fix", "section": "Bug Fixes" },
-        { "type": "docs", "section": "Documentation" },
-        { "type": "chore", "section": "Maintenance" },
-        { "type": "refactor", "section": "Refactoring" },
-        { "type": "perf", "section": "Performance" },
-        { "type": "test", "section": "Tests" }
+        {
+          "type": "feat",
+          "section": "Features"
+        },
+        {
+          "type": "fix",
+          "section": "Bug Fixes"
+        },
+        {
+          "type": "docs",
+          "section": "Documentation"
+        },
+        {
+          "type": "chore",
+          "section": "Maintenance"
+        },
+        {
+          "type": "refactor",
+          "section": "Refactoring"
+        },
+        {
+          "type": "perf",
+          "section": "Performance"
+        },
+        {
+          "type": "test",
+          "section": "Tests"
+        }
       ]
     }
   },
