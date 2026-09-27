@@ -5,20 +5,20 @@
 <h1 align="center">SupaConductor</h1>
 
 <p align="center">
-  <strong>Turn Claude Code into a full engineering team.</strong><br/>
+  <strong>Turn your coding agent into a full engineering team.</strong><br/>
   One command builds features, fixes bugs, and ships code — with automated planning, execution, and quality checks.
 </p>
 
 <p align="center">
   <a href="LICENSE"><img alt="AGPL-3.0 License" src="https://img.shields.io/badge/license-AGPL--3.0-blue.svg"/></a>
   <a href="https://github.com/Ibrahim-3d/orchestrator-supaconductor/releases/latest"><img alt="Latest Release" src="https://img.shields.io/github/v/release/Ibrahim-3d/orchestrator-supaconductor?display_name=tag"/></a>
-  <a href="https://docs.anthropic.com/en/docs/claude-code"><img alt="Claude Code" src="https://img.shields.io/badge/Claude_Code-Plugin-blueviolet.svg"/></a>
+  <a href="https://docs.anthropic.com/en/docs/claude-code"><img alt="Claude Code" src="https://img.shields.io/badge/Claude_Code-native-blueviolet.svg"/></a>\n  <a href="docs/platform-support.md"><img alt="Codex" src="https://img.shields.io/badge/Codex-Agent_Plugin-black.svg"/></a>\n  <a href="docs/platform-support.md"><img alt="Cursor" src="https://img.shields.io/badge/Cursor-native-111111.svg"/></a>\n  <a href="docs/platform-support.md"><img alt="Antigravity" src="https://img.shields.io/badge/Antigravity-native-4285F4.svg"/></a>\n  <a href="docs/platform-support.md"><img alt="Windsurf" src="https://img.shields.io/badge/Windsurf-adapter-00BFA5.svg"/></a>
   <a href="https://github.com/Ibrahim-3d/orchestrator-supaconductor/discussions"><img alt="Community" src="https://img.shields.io/badge/community-discussions-orange.svg"/></a>
 </p>
 
 <p align="center">
   <a href="#what-does-this-do">What Is This?</a> &bull;
-  <a href="#installation">Install</a> &bull;
+  <a href="#installation">Install</a> &bull;\n  <a href="docs/platform-support.md">Platforms</a> &bull;
   <a href="#getting-started">Get Started</a> &bull;
   <a href="#how-it-works">How It Works</a> &bull;
   <a href="#all-commands">Commands</a> &bull;
@@ -37,9 +37,9 @@ See the [latest GitHub Release](https://github.com/Ibrahim-3d/orchestrator-supac
 
 ## What Does This Do?
 
-You tell Claude Code what you want. SupaConductor figures out how to build it — step by step, with quality checks at every stage.
+You tell your coding agent what you want. SupaConductor figures out how to build it — step by step, with quality checks at every stage.
 
-**Without SupaConductor**, you prompt Claude Code and hope for the best. You manually review, re-prompt, and fix what it misses.
+**Without SupaConductor**, you prompt your coding agent and hope for the best. You manually review, re-prompt, and fix what it misses.
 
 **With SupaConductor**, you type one command:
 
@@ -76,35 +76,41 @@ Bundles [Superpowers](https://github.com/obra/superpowers) v4.3.0 (MIT) — ever
 
 ## Installation
 
-### Option 1: Claude Code Marketplace (recommended)
+SupaConductor now targets multiple coding-agent hosts from one canonical source. See [Platform Support](docs/platform-support.md) for exact capability differences and package layouts.
 
-Open Claude Code and run:
+### Claude Code — native plugin
 
 ```
 /plugin marketplace add Ibrahim-3d/orchestrator-supaconductor
 /plugin install orchestrator-supaconductor@ibrahim-plugins
 ```
 
-To update later:
+Update later:
 
 ```bash
 claude plugin marketplace update ibrahim-plugins
 claude plugin update orchestrator-supaconductor@ibrahim-plugins
 ```
 
-### Option 2: Clone from GitHub
+### Codex, Cursor, Antigravity, Windsurf, and GitHub Copilot
 
 ```bash
-git clone https://github.com/Ibrahim-3d/orchestrator-supaconductor.git ~/.claude/plugins/orchestrator-supaconductor
+git clone https://github.com/Ibrahim-3d/orchestrator-supaconductor.git
+cd orchestrator-supaconductor
+python3 scripts/build-platform-adapters.py
 ```
 
-### Option 3: Download manually
+Packages are generated under `dist/platforms/`; published releases also attach ready-to-use ZIP packages.
 
-Download the [latest release](https://github.com/Ibrahim-3d/orchestrator-supaconductor/releases) and extract it to `~/.claude/plugins/orchestrator-supaconductor/`.
+| Host | Package |
+|---|---|
+| OpenAI Codex / ChatGPT desktop | `dist/platforms/codex/orchestrator-supaconductor` |
+| Cursor | `dist/platforms/cursor/orchestrator-supaconductor` |
+| Google Antigravity | `dist/platforms/antigravity/orchestrator-supaconductor` |
+| Windsurf / Cascade | `dist/platforms/windsurf/orchestrator-supaconductor` |
+| GitHub Copilot | `dist/platforms/copilot/orchestrator-supaconductor` |
 
-### Verify it works
-
-Start a new Claude Code session and type `/orchestrator-supaconductor:`. You should see a list of commands appear. If you see `/orchestrator-supaconductor:go`, you're all set.
+See [docs/platform-support.md](docs/platform-support.md) for installation paths and command/agent mapping.
 
 ---
 
@@ -370,7 +376,7 @@ All of these are plain Markdown and JSON files. You can read, edit, or delete th
 
 ### Do I need to know how to code?
 
-You need [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed and running — that requires basic terminal knowledge. But once SupaConductor is set up, you describe what you want in plain English and it handles the implementation.
+You need one supported coding-agent host installed and basic terminal knowledge. Claude Code has the reference native integration; Codex, Cursor, Antigravity, Windsurf, and GitHub Copilot use generated platform adapters.
 
 ### How much does this cost in API credits?
 
@@ -397,11 +403,11 @@ Agents run as **separate conversations** with their own context windows, so they
 | Board meeting | ~5,000 tokens | On-demand only |
 | Idle | ~500 tokens | Between steps |
 
-### Does this work with Cursor, Windsurf, or other AI tools?
+### Does this work with Codex, Cursor, Windsurf, Antigravity, or Copilot?
 
-No — SupaConductor is a Claude Code plugin that requires Claude Code's plugin system (agents, skills, slash commands, hooks).
+Yes. SupaConductor now ships generated adapters for **OpenAI Codex, Cursor, Google Antigravity, Windsurf/Cascade, and GitHub Copilot**, while preserving Claude Code as the reference integration.
 
-**However**, the `conductor/` directory it creates is just Markdown files. Any AI tool can read them. If you start with SupaConductor and switch tools later, your specs, plans, and documentation remain useful.
+The hosts do not expose identical plugin APIs, so the adapter maps SupaConductor to each platform's strongest native primitives: Agent Skills, commands/workflows/prompts, and custom agents/subagents where supported. See [Platform Support](docs/platform-support.md) for the exact matrix.
 
 ### Is this overkill for small tasks?
 

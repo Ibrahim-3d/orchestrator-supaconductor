@@ -15,7 +15,17 @@ This is not negotiable. This is not optional. You cannot rationalize your way ou
 
 **In Claude Code:** Use the `Skill` tool. When you invoke a skill, its content is loaded and presented to you—follow it directly. Never use the read_file tool on skill files.
 
-**In other environments:** Check your platform's documentation for how skills are loaded.
+**In OpenAI Codex / Agent Plugins hosts:** install the SupaConductor Agent Plugin. Skills are discovered from `skills/`; generated release packages also expose every Claude command as a `supaconductor-command-*` skill.
+
+**In Cursor:** use the generated Cursor package for native skills, commands, and custom agents.
+
+**In Google Antigravity:** use the generated Antigravity package for native Agent Skills and custom subagents. Claude command entry points are exposed as portable command-skills.
+
+**In Windsurf/Cascade:** merge the generated `.windsurf/` package into the workspace. Commands are slash workflows backed by the same generated command-skills.
+
+**In GitHub Copilot:** merge the generated `.github/` package. Agent Skills, custom agents, and slash-invoked prompt files map SupaConductor's capabilities to Copilot.
+
+See `docs/platform-support.md` for the exact capability matrix and installation paths.
 
 # Using Skills
 

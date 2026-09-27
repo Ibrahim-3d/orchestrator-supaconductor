@@ -30,6 +30,8 @@ for path in ROOT.rglob("*.json"):
         load_json(path)
 
 plugin = load_json(ROOT / ".claude-plugin" / "plugin.json") or {}
+portable_plugin = load_json(ROOT / "plugin.json") or {}
+codex_plugin = load_json(ROOT / ".codex-plugin" / "plugin.json") or {}
 marketplace = load_json(ROOT / ".claude-plugin" / "marketplace.json") or {}
 manifest = load_json(ROOT / ".release-please-manifest.json") or {}
 
@@ -40,14 +42,17 @@ plugin_entry = next(
 
 expected_license = "AGPL-3.0"
 for name, value in {
-    "plugin.json": plugin.get("license"),
+    "Claude plugin.json": plugin.get("license"),
+    "portable plugin.json": portable_plugin.get("license"),
     "marketplace plugin": plugin_entry.get("license"),
 }.items():
     if value != expected_license:
         fail(f"{name}: license must be {expected_license!r}, found {value!r}")
 
 versions = {
-    "plugin.json": plugin.get("version"),
+    "Claude plugin.json": plugin.get("version"),
+    "portable plugin.json": portable_plugin.get("version"),
+    "Codex overlay": codex_plugin.get("version"),
     "marketplace root": marketplace.get("version"),
     "marketplace plugin": plugin_entry.get("version"),
     "release manifest": manifest.get("."),
@@ -89,7 +94,18 @@ for stale in (
     if stale in readme:
         fail(f"README.md: stale public metadata/instruction found: {stale!r}")
 
-required_readme_links = ("ROADMAP.md", "CONTRIBUTING.md", "SUPPORT.md")
+if portable_plugin.get("$schema") != "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json":
+    fail("plugin.json: missing or invalid Agent Plugins schema")
+
+for required_path in (
+    ROOT / ".codex-plugin" / "plugin.json",
+    ROOT / "docs" / "platform-support.md",
+    ROOT / "scripts" / "build-platform-adapters.py",
+):
+    if not required_path.exists():
+        fail(f"missing cross-platform integration file: {required_path.relative_to(ROOT)}")
+
+required_readme_links = ("ROADMAP.md", "CONTRIBUTING.md", "SUPPORT.md", "docs/platform-support.md")
 for link in required_readme_links:
     if link not in readme:
         fail(f"README.md: missing public navigation link to {link}")

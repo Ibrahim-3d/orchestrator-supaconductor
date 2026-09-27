@@ -1,0 +1,28 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "orchestrator-supaconductor",
+  "version": "3.7.1",
+  "description": "Multi-agent engineering orchestration with planning, parallel execution, evaluation loops, debugging, TDD, and executive/technical review skills.",
+  "author": {"name": "Ibrahim", "url": "https://github.com/Ibrahim-3d"},
+  "homepage": "https://github.com/Ibrahim-3d/orchestrator-supaconductor",
+  "repository": "https://github.com/Ibrahim-3d/orchestrator-supaconductor",
+  "license": "AGPL-3.0",
+  "keywords": ["orchestration","multi-agent","agent-skills","planning","evaluation","parallel-agents","tdd","debugging"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "SupaConductor",
+        "shortDescription": "Turn a coding agent into a structured engineering team.",
+        "longDescription": "Reusable Agent Skills for specification, planning, execution, evaluation, debugging, TDD, architecture review, and multi-agent engineering workflows.",
+        "developerName": "Ibrahim",
+        "category": "Productivity",
+        "capabilities": ["Read","Write"],
+        "websiteURL": "https://github.com/Ibrahim-3d/orchestrator-supaconductor",
+        "defaultPrompt": [
+          "Use SupaConductor to plan and implement this feature end to end.",
+          "Use SupaConductor to investigate and fix this bug with verification."
+        ]
+      }
+    }
+  }
+}
