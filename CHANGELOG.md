@@ -5,54 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.7.1](https://github.com/Ibrahim-3d/orchestrator-supaconductor/compare/v3.7.0...v3.7.1) (2026-09-27)
+## [3.7.1](https://github.com/Ibrahim-3d/orchestrator-supaconductor/compare/v3.7.0...v3.7.1) - 2026-09-27
 
+### Public release & installation
+
+- **Restored the GitHub release story** — established the real v3.7.0 baseline so tags, Releases, update checks, and future release automation have a valid starting point.
+- **Corrected Claude Code marketplace installation and update commands** — README and session update guidance now use the current marketplace-qualified workflow.
+- **Aligned licensing** — README, plugin metadata, marketplace metadata, and the repository license now consistently report AGPL-3.0.
 
 ### Bug Fixes
 
-* add YAML frontmatter to business-docs-sync skill ([e2e1afb](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/e2e1afbe9e23475a416b555c1c1c137aab71f137))
-* add YAML frontmatter to business-docs-sync skill ([d14f966](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/d14f9664a85ab2ebfa1c362ff83e23c108e3a22d))
-* align marketplace license metadata with AGPL-3.0 ([2b98179](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/2b9817986be905b1fc446baed2febb00b1419357))
-* align plugin license metadata with AGPL-3.0 ([aafcf64](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/aafcf6405f7e141ded023f8c2957f5482baebc3f))
-* align public install release and license story ([df1c682](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/df1c682a40663f0c321002333d31e801f4ee74c9))
-* bootstrap missing v3.7.0 release history ([653cfd9](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/653cfd9f5bd239f697d5668f63c4380f4f52a57c))
-* bootstrap missing v3.7.0 release history ([91b3e81](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/91b3e815fc93a23e4f0ab44748068c97f943a293))
-* cache session update checks portably ([08e73fc](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/08e73fc9c6adea799041fdb2f769cc76da900fe1))
-* create bootstrap release tag without git identity ([f803d58](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/f803d58f6f80cb0a8fff437782da1c9c4f11f5ee))
-* declare all board-meeting runtime tools ([e9b4302](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/e9b4302f8af531d303084db1f97d4f3fd5462af4))
-* make release announcements run from release workflow ([95ef345](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/95ef345e2b4f6e8a52101ea30ba2219c777ea278))
-* make SupaConductor public repo release-ready ([b8d2f3f](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/b8d2f3f377ef0d8b856d7f6625666ee15ca8fb84))
-* make v3.7.0 release bootstrap non-interactive ([090119d](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/090119d1cec9987f53f3a0d7bec920c214559c19))
-* move UI/UX audit report template out of commands/ ([b8fdde3](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/b8fdde3d27b3d9e471677f1bd1039c8f7687be25))
-* move UI/UX audit report template out of commands/ to docs/ ([c94e52f](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/c94e52f34fe13d4d58bc1c8212ab2d2da0414102))
-* remove stale marketplace update instructions ([55bb937](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/55bb937b644644831195420d23e2e846d5e5f00e))
-* resolve PR [#12](https://github.com/Ibrahim-3d/orchestrator-supaconductor/issues/12) and [#15](https://github.com/Ibrahim-3d/orchestrator-supaconductor/issues/15) correctly ([14fbbc5](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/14fbbc58916ce87c73f30111e018d058f9da190e))
-* use qualified marketplace update instructions ([90443ff](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/90443ffc6ad7d94c882676ce70d8d861b4e049ef))
-* use simple release strategy for non-node plugin ([8a3f8e9](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/8a3f8e9ab58958da9a6cde01973e31ab11c4695e))
+- **Board meeting runtime tools** — declare both `run_shell_command` and `Task`, matching the tools the agent actually uses.
+- **Session update checks** — cache successful GitHub release checks for 24 hours, respect `XDG_CACHE_HOME`, and remove the invalid `find -quiet` path that prevented caching.
+- **Business docs skill discovery** — add the missing skill frontmatter so `business-docs-sync` can be discovered correctly.
+- **UI audit template placement** — move the non-invocable report template out of the command discovery surface.
 
+### Repository experience
 
-### Documentation
-
-* add contributor workflow ([b7cd331](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/b7cd331cf859e446d6ae79047af3fbdd9b1ea202))
-* add security reporting policy ([5f090b1](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/5f090b1b96a672519734361fe4eaeb41fca20431))
-* define support routes ([f3dd4ec](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/f3dd4ec03ae0ec118c1b8f13c499af3d07257275))
-* publish project roadmap ([875d027](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/875d0277fdab7265c40ede10087be49ad6605ca7))
-
-
-### Maintenance
-
-* add pull request template ([f7af47a](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/f7af47aca37358acdde98510bc8605617b9f6e96))
-* add structured bug report form ([cf43465](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/cf43465cb59d54c3571dfff644a7844f94c6fff1))
-* remove one-time release bootstrap ([778ea1c](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/778ea1c3fb9c725f2ed3776919886d1b798da825))
-* remove one-time release bootstrap ([82d7d47](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/82d7d47aafe50f614067a65b6e0ec8d0189c26ed))
-* remove unreachable duplicate release announcement workflow ([8fe28c0](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/8fe28c0ee13329fe5063a48faf300e24ec810237))
-* route support and ideas to discussions ([5bd3d4b](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/5bd3d4b6130b7c0abe188203baf0ef03d8a2af5e))
-
-
-### Tests
-
-* add lightweight repository quality CI ([4ebafda](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/4ebafda52e74718a0332cd3608c8e6e03b6f5347))
-* add repository consistency validator ([8aaefab](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/8aaefab8692cda1d0db0e5123f2f208169d63552))
+- Added a public roadmap plus contribution, support, and security guidance.
+- Added a structured bug-report form and clearer Issues vs Discussions routing.
+- Added a pull-request template and repository quality CI for JSON, version/license consistency, frontmatter, and Bash syntax.
+- Repaired Release Please for this non-Node Claude Code plugin and integrated release announcements into the release workflow.
 
 ## [3.7.0] - 2026-04-03
 
