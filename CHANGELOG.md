@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.1](https://github.com/Ibrahim-3d/orchestrator-supaconductor/compare/v3.7.0...v3.7.1) - 2026-09-27
+
+### Public release & installation
+
+- **Restored the GitHub release story** — established the real v3.7.0 baseline so tags, Releases, update checks, and future release automation have a valid starting point.
+- **Corrected Claude Code marketplace installation and update commands** — README and session update guidance now use the current marketplace-qualified workflow.
+- **Aligned licensing** — README, plugin metadata, marketplace metadata, and the repository license now consistently report AGPL-3.0.
+
+### Bug Fixes
+
+- **Board meeting runtime tools** — declare both `run_shell_command` and `Task`, matching the tools the agent actually uses.
+- **Session update checks** — cache successful GitHub release checks for 24 hours, respect `XDG_CACHE_HOME`, and remove the invalid `find -quiet` path that prevented caching.
+- **Business docs skill discovery** — add the missing skill frontmatter so `business-docs-sync` can be discovered correctly.
+- **UI audit template placement** — move the non-invocable report template out of the command discovery surface.
+
+### Repository experience
+
+- Added a public roadmap plus contribution, support, and security guidance.
+- Added a structured bug-report form and clearer Issues vs Discussions routing.
+- Added a pull-request template and repository quality CI for JSON, version/license consistency, frontmatter, and Bash syntax.
+- Repaired Release Please for this non-Node Claude Code plugin and integrated release announcements into the release workflow.
+
 ## [3.7.0] - 2026-04-03
 
 ### Features
