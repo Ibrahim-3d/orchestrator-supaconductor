@@ -15,7 +15,7 @@ SupaConductor is actively maintained. This roadmap communicates direction, not g
 - Give users clearer control over model inheritance/routing without losing the Opus/Sonnet role split.
 - Improve release and installation verification across fresh Claude Code environments.
 - Expand contributor documentation and externally actionable issues.
-- Evaluate portability to additional coding-agent harnesses, including the request in [#2](https://github.com/Ibrahim-3d/orchestrator-supaconductor/issues/2).
+- Validate the new Codex, Cursor, Antigravity, Windsurf, and GitHub Copilot adapters against fresh host installs and tighten any host-specific behavior gaps.
 
 ## Under consideration
 
@@ -23,6 +23,8 @@ SupaConductor is actively maintained. This roadmap communicates direction, not g
 - A maintained GitHub Project with Roadmap, In Progress, Next Release, and Shipped views.
 
 ## Shipped
+
+- Cross-platform adapter architecture for Codex, Cursor, Google Antigravity, Windsurf/Cascade, and GitHub Copilot, generated from the same canonical skills/commands/agents as the Claude Code plugin (addresses the portability direction behind [#2](https://github.com/Ibrahim-3d/orchestrator-supaconductor/issues/2)).
 
 See [GitHub Releases](https://github.com/Ibrahim-3d/orchestrator-supaconductor/releases) for published versions and [CHANGELOG.md](CHANGELOG.md) for the full history.
 
@@ -32,4 +34,4 @@ See [GitHub Releases](https://github.com/Ibrahim-3d/orchestrator-supaconductor/r
 - Use [Issues](https://github.com/Ibrahim-3d/orchestrator-supaconductor/issues) for reproducible bugs and scoped actionable work.
 - Open a pull request for a concrete improvement that fits the current direction.
 
-Items can move, change scope, or be dropped as Claude Code and its plugin APIs evolve.
+Items can move, change scope, or be dropped as coding-agent hosts and their plugin APIs evolve.

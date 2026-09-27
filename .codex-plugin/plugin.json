@@ -1,0 +1,6 @@
+{
+  "name": "orchestrator-supaconductor",
+  "version": "3.7.1",
+  "description": "SupaConductor multi-agent engineering orchestration for Codex.",
+  "skills": "./skills/"
+}

@@ -23,3 +23,5 @@ reddit-responses*
 conductor/tracks/
 conductor/knowledge/
 .message-bus/
+
+dist/

@@ -26,6 +26,32 @@ jobs:
           manifest-file: .release-please-manifest.json
           token: ${{ secrets.GITHUB_TOKEN }}
 
+
+  package-adapters:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build platform adapters
+        run: python3 scripts/build-platform-adapters.py --output dist/platforms
+
+      - name: Package platform adapters
+        run: |
+          cd dist/platforms
+          for platform in codex cursor antigravity windsurf copilot; do
+            zip -qr "../../supaconductor-${platform}.zip" "${platform}/orchestrator-supaconductor"
+          done
+
+      - name: Upload adapter packages to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ needs.release-please.outputs.tag_name }}
+        run: gh release upload "$RELEASE_TAG" supaconductor-*.zip --clobber
+
   announce:
     needs: release-please
     if: ${{ needs.release-please.outputs.release_created == 'true' }}

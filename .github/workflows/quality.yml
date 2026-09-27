@@ -18,6 +18,9 @@ jobs:
       - name: Validate repository metadata and plugin artifacts
         run: python3 scripts/validate-repo.py
 
+      - name: Validate generated platform adapters
+        run: python3 scripts/build-platform-adapters.py --check
+
       - name: Check Bash syntax
         shell: bash
         run: |
