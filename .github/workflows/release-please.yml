@@ -13,48 +13,88 @@ permissions:
 jobs:
   release-please:
     runs-on: ubuntu-latest
-    outputs:
-      release_created: ${{ steps.release.outputs.release_created }}
-      tag_name: ${{ steps.release.outputs.tag_name }}
-      body: ${{ steps.release.outputs.body }}
-      html_url: ${{ steps.release.outputs.html_url }}
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
+        continue-on-error: true
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
           token: ${{ secrets.GITHUB_TOKEN }}
+          skip-github-release: true
 
-
-  package-adapters:
+  publish-current-version:
     needs: release-please
-    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    if: ${{ always() }}
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    outputs:
+      release_created: ${{ steps.publish.outputs.release_created }}
+      tag_name: ${{ steps.publish.outputs.tag_name }}
+      html_url: ${{ steps.publish.outputs.html_url }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build platform adapters
-        run: python3 scripts/build-platform-adapters.py --output dist/platforms
-
-      - name: Package platform adapters
-        run: |
-          cd dist/platforms
-          for platform in codex cursor antigravity windsurf copilot; do
-            zip -qr "../../supaconductor-${platform}.zip" "${platform}/orchestrator-supaconductor"
-          done
-
-      - name: Upload adapter packages to release
+      - name: Publish version and platform packages
+        id: publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_TAG: ${{ needs.release-please.outputs.tag_name }}
-        run: gh release upload "$RELEASE_TAG" supaconductor-*.zip --clobber
+        run: |
+          set -euo pipefail
+
+          VERSION=$(python3 - <<'PYEOF'
+          import json
+          with open(".release-please-manifest.json", encoding="utf-8") as f:
+              print(json.load(f)["."])
+          PYEOF
+          )
+          TAG="v${VERSION}"
+
+          echo "tag_name=${TAG}" >> "$GITHUB_OUTPUT"
+
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            URL=$(gh release view "${TAG}" --json url --jq '.url')
+            echo "release_created=false" >> "$GITHUB_OUTPUT"
+            echo "html_url=${URL}" >> "$GITHUB_OUTPUT"
+            echo "Release ${TAG} already exists; nothing to publish."
+            exit 0
+          fi
+
+          python3 scripts/build-platform-adapters.py --output dist/platforms
+
+          for platform in codex cursor antigravity windsurf copilot; do
+            (
+              cd dist/platforms
+              zip -qr "../../supaconductor-${platform}.zip" "${platform}/orchestrator-supaconductor"
+            )
+          done
+
+          python3 - "${VERSION}" <<'PYEOF'
+          import re
+          import sys
+          from pathlib import Path
+
+          version = sys.argv[1]
+          text = Path("CHANGELOG.md").read_text(encoding="utf-8")
+          match = re.search(
+              rf"(?ms)^## \[{re.escape(version)}\].*?(?=^## \[|\Z)",
+              text,
+          )
+          if match:
+              body = match.group(0).strip()
+          else:
+              body = f"SupaConductor {version}"
+          Path("/tmp/release-notes.md").write_text(body + "\n", encoding="utf-8")
+          PYEOF
+
+          gh release create "${TAG}"             supaconductor-codex.zip             supaconductor-cursor.zip             supaconductor-antigravity.zip             supaconductor-windsurf.zip             supaconductor-copilot.zip             --target "${GITHUB_SHA}"             --title "${TAG}"             --notes-file /tmp/release-notes.md
+
+          URL=$(gh release view "${TAG}" --json url --jq '.url')
+          echo "release_created=true" >> "$GITHUB_OUTPUT"
+          echo "html_url=${URL}" >> "$GITHUB_OUTPUT"
 
   announce:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    needs: publish-current-version
+    if: ${{ needs.publish-current-version.outputs.release_created == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Resolve Discussions category
@@ -94,10 +134,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO_ID: ${{ steps.discussion.outputs.repo_id }}
           CATEGORY_ID: ${{ steps.discussion.outputs.category_id }}
-          RELEASE_TAG: ${{ needs.release-please.outputs.tag_name }}
-          RELEASE_BODY: ${{ needs.release-please.outputs.body }}
-          RELEASE_URL: ${{ needs.release-please.outputs.html_url }}
+          RELEASE_TAG: ${{ needs.publish-current-version.outputs.tag_name }}
+          RELEASE_URL: ${{ needs.publish-current-version.outputs.html_url }}
         run: |
+          RELEASE_BODY=$(gh release view "$RELEASE_TAG" --json body --jq '.body')
+
           python3 - <<'PYEOF'
           import os
 
