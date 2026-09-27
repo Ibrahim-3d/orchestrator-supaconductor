@@ -137,7 +137,7 @@ jobs:
           RELEASE_TAG: ${{ needs.publish-current-version.outputs.tag_name }}
           RELEASE_URL: ${{ needs.publish-current-version.outputs.html_url }}
         run: |
-          RELEASE_BODY=$(gh release view "$RELEASE_TAG" --json body --jq '.body')
+          export RELEASE_BODY=$(gh release view "$RELEASE_TAG" --json body --jq '.body')
 
           python3 - <<'PYEOF'
           import os
