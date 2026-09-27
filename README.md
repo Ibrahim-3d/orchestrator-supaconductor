@@ -425,23 +425,30 @@ Yes. SupaConductor uses the `/orchestrator-supaconductor:` namespace and doesn't
 
 ### How do I update to a newer version?
 
-If you installed via marketplace:
-```
-/install Ibrahim-3d/orchestrator-supaconductor
+If you installed via the Claude Code marketplace:
+
+```bash
+claude plugin marketplace update ibrahim-plugins
+claude plugin update orchestrator-supaconductor@ibrahim-plugins
 ```
 
 If you cloned via git:
+
 ```bash
 cd ~/.claude/plugins/orchestrator-supaconductor && git pull
 ```
 
 ### How do I uninstall?
 
-```bash
-# Disable without removing
-/plugin    # Toggle it off in the plugin menu
+For a marketplace install:
 
-# Full removal
+```bash
+claude plugin uninstall orchestrator-supaconductor@ibrahim-plugins
+```
+
+For a manual git clone:
+
+```bash
 rm -rf ~/.claude/plugins/orchestrator-supaconductor
 ```
 
