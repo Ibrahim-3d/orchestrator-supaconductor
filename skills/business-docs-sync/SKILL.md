@@ -1,3 +1,8 @@
+---
+name: business-docs-sync
+description: Use when completing a track that changes pricing, AI models, product features, or asset pipelines — syncs business context documents across all tiers.
+---
+
 # Business Document Sync Strategy
 
 Ensures all business strategy, pricing, and product documents stay synchronized when product decisions change during any track execution or evaluation.
