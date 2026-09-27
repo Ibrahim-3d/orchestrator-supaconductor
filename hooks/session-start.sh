@@ -17,14 +17,28 @@ if [ -f "$PLUGIN_JSON" ]; then
 fi
 LOCAL_VERSION="${LOCAL_VERSION:-unknown}"
 
-# Check for latest release on GitHub (non-blocking, 3s timeout)
+# Check for latest release on GitHub (non-blocking, 3s timeout, cached 24h)
 REPO="Ibrahim-3d/orchestrator-supaconductor"
+CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/supaconductor"
+CACHE_FILE="${CACHE_DIR}/last-update-check"
 update_message=""
 if command -v curl &>/dev/null; then
-    latest_tag=$(curl -s --max-time 3 \
-        "https://api.github.com/repos/${REPO}/releases/latest" 2>/dev/null \
-        | sed -n 's/.*"tag_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' \
-        | sed 's/^v//' | head -1) || true
+    latest_tag=""
+
+    # Reuse a successful check for 24 hours to avoid network latency on every session.
+    if [ -f "$CACHE_FILE" ] && find "$CACHE_FILE" -mmin -1440 -print 2>/dev/null | grep -q .; then
+        latest_tag=$(cat "$CACHE_FILE")
+    else
+        latest_tag=$(curl -s --max-time 3 \
+            "https://api.github.com/repos/${REPO}/releases/latest" 2>/dev/null \
+            | sed -n 's/.*"tag_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' \
+            | sed 's/^v//' | head -1) || true
+
+        if [ -n "$latest_tag" ]; then
+            mkdir -p "$CACHE_DIR"
+            printf '%s' "$latest_tag" > "$CACHE_FILE"
+        fi
+    fi
 
     if [ -n "$latest_tag" ] && [ "$latest_tag" != "$LOCAL_VERSION" ]; then
         update_message="\\n\\n**UPDATE AVAILABLE:** SupaConductor v${latest_tag} is available (you have v${LOCAL_VERSION}). Tell the user: A new version of SupaConductor is available (v${latest_tag}). Update with: claude plugin update orchestrator-supaconductor"
