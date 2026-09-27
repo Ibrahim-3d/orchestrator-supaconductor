@@ -27,7 +27,7 @@ jobs:
 
           TARGET="c1177bc36ff043f14332d2f0f00b9adfc9f41a66"
 
-          git tag -a v3.7.0 "$TARGET" -m "SupaConductor v3.7.0"
+          git tag v3.7.0 "$TARGET"
           git push origin v3.7.0
 
           cat > /tmp/v3.7.0-notes.md <<'EOF'
