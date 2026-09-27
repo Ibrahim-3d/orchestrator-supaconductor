@@ -21,7 +21,7 @@
       },
       "homepage": "https://github.com/Ibrahim-3d/orchestrator-supaconductor",
       "repository": "https://github.com/Ibrahim-3d/orchestrator-supaconductor",
-      "license": "MIT",
+      "license": "AGPL-3.0",
       "keywords": [
         "orchestration",
         "evaluate-loop",

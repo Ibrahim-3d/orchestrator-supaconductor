@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  discussions: write
 
 jobs:
   release-please:
@@ -16,6 +17,7 @@ jobs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
       body: ${{ steps.release.outputs.body }}
+      html_url: ${{ steps.release.outputs.html_url }}
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
@@ -23,3 +25,97 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  announce:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve Discussions category
+        id: discussion
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RESULT=$(gh api graphql -f query='
+            query($owner: String!, $name: String!) {
+              repository(owner: $owner, name: $name) {
+                id
+                discussionCategories(first: 20) {
+                  nodes { id name }
+                }
+              }
+            }' \
+            -f owner="${{ github.repository_owner }}" \
+            -f name="${{ github.event.repository.name }}")
+
+          REPO_ID=$(echo "$RESULT" | jq -r '.data.repository.id')
+          CATEGORY_ID=$(echo "$RESULT" | jq -r '
+            .data.repository.discussionCategories.nodes[]
+            | select(.name == "Announcements") | .id' | head -1)
+
+          if [ -z "$CATEGORY_ID" ]; then
+            CATEGORY_ID=$(echo "$RESULT" | jq -r '
+              .data.repository.discussionCategories.nodes[]
+              | select(.name == "General") | .id' | head -1)
+          fi
+
+          echo "repo_id=$REPO_ID" >> "$GITHUB_OUTPUT"
+          echo "category_id=$CATEGORY_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Publish release announcement
+        if: ${{ steps.discussion.outputs.category_id != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_ID: ${{ steps.discussion.outputs.repo_id }}
+          CATEGORY_ID: ${{ steps.discussion.outputs.category_id }}
+          RELEASE_TAG: ${{ needs.release-please.outputs.tag_name }}
+          RELEASE_BODY: ${{ needs.release-please.outputs.body }}
+          RELEASE_URL: ${{ needs.release-please.outputs.html_url }}
+        run: |
+          python3 - <<'PYEOF'
+          import os
+
+          tag = os.environ["RELEASE_TAG"]
+          body = os.environ.get("RELEASE_BODY", "").strip()
+          url = os.environ["RELEASE_URL"]
+
+          content = f"""## SupaConductor {tag}
+
+          {body}
+
+          ---
+
+          **Update**
+          ```bash
+          claude plugin marketplace update ibrahim-plugins
+          claude plugin update orchestrator-supaconductor@ibrahim-plugins
+          ```
+
+          **Full release:** {url}
+          """.strip()
+
+          with open("/tmp/discussion_body.md", "w", encoding="utf-8") as f:
+              f.write(content)
+          PYEOF
+
+          gh api graphql \
+            -f query='
+              mutation CreateDiscussion(
+                $repositoryId: ID!,
+                $categoryId: ID!,
+                $title: String!,
+                $body: String!
+              ) {
+                createDiscussion(input: {
+                  repositoryId: $repositoryId
+                  categoryId: $categoryId
+                  title: $title
+                  body: $body
+                }) {
+                  discussion { url }
+                }
+              }' \
+            -f repositoryId="$REPO_ID" \
+            -f categoryId="$CATEGORY_ID" \
+            -f title="SupaConductor $RELEASE_TAG released" \
+            -f body="$(cat /tmp/discussion_body.md)"

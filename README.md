@@ -10,8 +10,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Ibrahim-3d/orchestrator-supaconductor/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-  <a href="https://github.com/Ibrahim-3d/orchestrator-supaconductor"><img alt="Version" src="https://img.shields.io/badge/version-3.7.0-green.svg"/></a>
+  <a href="LICENSE"><img alt="AGPL-3.0 License" src="https://img.shields.io/badge/license-AGPL--3.0-blue.svg"/></a>
+  <a href="https://github.com/Ibrahim-3d/orchestrator-supaconductor/releases/latest"><img alt="Latest Release" src="https://img.shields.io/github/v/release/Ibrahim-3d/orchestrator-supaconductor?display_name=tag"/></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img alt="Claude Code" src="https://img.shields.io/badge/Claude_Code-Plugin-blueviolet.svg"/></a>
   <a href="https://github.com/Ibrahim-3d/orchestrator-supaconductor/discussions"><img alt="Community" src="https://img.shields.io/badge/community-discussions-orange.svg"/></a>
 </p>
@@ -23,18 +23,15 @@
   <a href="#how-it-works">How It Works</a> &bull;
   <a href="#all-commands">Commands</a> &bull;
   <a href="#faq">FAQ</a> &bull;
+  <a href="ROADMAP.md">Roadmap</a> &bull;
   <a href="#community">Community</a>
 </p>
 
 ---
 
-## What's New in v3.7.0
+## Latest Release
 
-- **Board of Directors fast-path** — Routine tracks now use a single Opus call (all 5 lenses in one pass) at ~1/10th the cost of the full multi-agent deliberation. Full board is reserved for high-stakes decisions: production deploys, security architecture, breaking API changes, data-loss migrations.
-- **Plan revision guard** — Prevents infinite planning loops. Tracks the number of times a plan is rejected and calls it done (with warnings) after 3 revisions.
-- **Execution state reconciliation** — On session resume, `plan.md` checkboxes are now treated as the source of truth. Prevents already-completed tasks from being re-executed after a crash.
-- **Atomic file locks** — Parallel workers can no longer accidentally acquire the same file lock simultaneously. Uses `fcntl` OS-level locking on a dedicated mutex file.
-- **Bounded knowledge injection** — The knowledge brief injected before planning is capped at 500 tokens (top-3 most relevant patterns and errors). Prevents context growth as your project's knowledge base accumulates.
+See the [latest GitHub Release](https://github.com/Ibrahim-3d/orchestrator-supaconductor/releases/latest) for current changes, fixes, upgrade notes, and known limitations. The [changelog](CHANGELOG.md) keeps the full version history.
 
 ---
 
@@ -79,12 +76,20 @@ Bundles [Superpowers](https://github.com/obra/superpowers) v4.3.0 (MIT) — ever
 
 ## Installation
 
-### Option 1: Marketplace (recommended)
+### Option 1: Claude Code Marketplace (recommended)
 
 Open Claude Code and run:
 
 ```
-/install Ibrahim-3d/orchestrator-supaconductor
+/plugin marketplace add Ibrahim-3d/orchestrator-supaconductor
+/plugin install orchestrator-supaconductor@ibrahim-plugins
+```
+
+To update later:
+
+```bash
+claude plugin marketplace update ibrahim-plugins
+claude plugin update orchestrator-supaconductor@ibrahim-plugins
 ```
 
 ### Option 2: Clone from GitHub
@@ -420,23 +425,30 @@ Yes. SupaConductor uses the `/orchestrator-supaconductor:` namespace and doesn't
 
 ### How do I update to a newer version?
 
-If you installed via marketplace:
-```
-/install Ibrahim-3d/orchestrator-supaconductor
+If you installed via the Claude Code marketplace:
+
+```bash
+claude plugin marketplace update ibrahim-plugins
+claude plugin update orchestrator-supaconductor@ibrahim-plugins
 ```
 
 If you cloned via git:
+
 ```bash
 cd ~/.claude/plugins/orchestrator-supaconductor && git pull
 ```
 
 ### How do I uninstall?
 
-```bash
-# Disable without removing
-/plugin    # Toggle it off in the plugin menu
+For a marketplace install:
 
-# Full removal
+```bash
+claude plugin uninstall orchestrator-supaconductor@ibrahim-plugins
+```
+
+For a manual git clone:
+
+```bash
 rm -rf ~/.claude/plugins/orchestrator-supaconductor
 ```
 
@@ -459,9 +471,12 @@ Your existing tracks and data are safe — only the command prefix changed from 
 
 ## Community
 
-- [Discussions](https://github.com/Ibrahim-3d/orchestrator-supaconductor/discussions) — Ask questions, share ideas, show what you've built
-- [Issues](https://github.com/Ibrahim-3d/orchestrator-supaconductor/issues) — Report bugs or request features
-- [Changelog](CHANGELOG.md) — See what's new in each release
+- [Discussions](https://github.com/Ibrahim-3d/orchestrator-supaconductor/discussions) — Questions, ideas, feedback, and what you've built
+- [Issues](https://github.com/Ibrahim-3d/orchestrator-supaconductor/issues) — Reproducible bugs and scoped actionable work
+- [Roadmap](ROADMAP.md) — Current direction, near-term priorities, and items under consideration
+- [Changelog](CHANGELOG.md) — Full version history
+- [Contributing](CONTRIBUTING.md) — Development and pull-request workflow
+- [Support](SUPPORT.md) — Where to ask for help
 
 ---
 
@@ -476,4 +491,6 @@ Bundles [Superpowers](https://github.com/obra/superpowers) v4.3.0 by [Jesse Vinc
 
 ## License
 
-MIT — see [LICENSE](LICENSE)
+SupaConductor is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)** — see [LICENSE](LICENSE).
+
+Bundled third-party components retain their original licenses. Superpowers is MIT-licensed; see [LICENSES/superpowers-MIT](LICENSES/superpowers-MIT).

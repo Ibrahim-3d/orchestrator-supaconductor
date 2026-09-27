@@ -1,0 +1,27 @@
+name: Repository Quality
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate repository metadata and plugin artifacts
+        run: python3 scripts/validate-repo.py
+
+      - name: Check Bash syntax
+        shell: bash
+        run: |
+          while IFS= read -r -d '' file; do
+            echo "Checking $file"
+            bash -n "$file"
+          done < <(find hooks scripts -type f -name '*.sh' -print0)

@@ -41,7 +41,7 @@ if command -v curl &>/dev/null; then
     fi
 
     if [ -n "$latest_tag" ] && [ "$latest_tag" != "$LOCAL_VERSION" ]; then
-        update_message="\\n\\n**UPDATE AVAILABLE:** SupaConductor v${latest_tag} is available (you have v${LOCAL_VERSION}). Tell the user: A new version of SupaConductor is available (v${latest_tag}). Update with: claude plugin update orchestrator-supaconductor"
+        update_message="\\n\\n**UPDATE AVAILABLE:** SupaConductor v${latest_tag} is available (you have v${LOCAL_VERSION}). Tell the user: A new version of SupaConductor is available (v${latest_tag}). Update with: claude plugin marketplace update ibrahim-plugins && claude plugin update orchestrator-supaconductor@ibrahim-plugins"
     fi
 fi
 

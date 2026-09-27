@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and support
+    url: https://github.com/Ibrahim-3d/orchestrator-supaconductor/discussions
+    about: Ask installation, usage, and troubleshooting questions.
+  - name: Feature ideas
+    url: https://github.com/Ibrahim-3d/orchestrator-supaconductor/discussions
+    about: Discuss product ideas before turning them into scoped implementation work.
+  - name: Security vulnerabilities
+    url: https://github.com/Ibrahim-3d/orchestrator-supaconductor/security
+    about: Use private vulnerability reporting when available. Do not publish vulnerability details in an issue.
