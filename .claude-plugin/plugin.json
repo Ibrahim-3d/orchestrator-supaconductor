@@ -5,7 +5,7 @@
   "author": {
     "name": "Ibrahim"
   },
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "keywords": [
     "orchestration",
     "evaluate-loop",
