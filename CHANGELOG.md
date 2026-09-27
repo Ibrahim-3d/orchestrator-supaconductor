@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.8.0](https://github.com/Ibrahim-3d/orchestrator-supaconductor/compare/v3.7.1...v3.8.0) (2026-09-27)
+
+
+### Features
+
+* add multi-agent platform adapters ([#24](https://github.com/Ibrahim-3d/orchestrator-supaconductor/issues/24)) ([ce8a31a](https://github.com/Ibrahim-3d/orchestrator-supaconductor/commit/ce8a31ade4c2aee11c54f315f1cac7c9d0871c4f))
+
 ## [3.7.1](https://github.com/Ibrahim-3d/orchestrator-supaconductor/compare/v3.7.0...v3.7.1) - 2026-09-27
 
 ### Public release & installation
